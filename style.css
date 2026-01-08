@@ -327,3 +327,13 @@ nav ul li a.active::after, nav ul li a:hover::after {
     gap: 25px;
     margin: 100px 0;
 }
+.github-profile {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: #ff4081;
+    border: 1px solid #ff4081;
+    transition: all 0.3s ease;
+}
