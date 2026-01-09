@@ -1133,6 +1133,54 @@ nav ul li a.active::after, nav ul li a:hover::after {
     transform: translateY(-50%) scale(1.1);
 }
 
+/* ============================================
+   AUTH BUTTONS
+   ============================================ */
+.auth-buttons {
+    position: absolute;
+    right: 140px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.btn-login,
+.btn-register {
+    padding: 8px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-login {
+    color: var(--accent-cyan);
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid var(--accent-cyan);
+}
+
+.btn-login:hover {
+    background: var(--accent-cyan);
+    color: #0f0c29;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+}
+
+.btn-register {
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    border: none;
+}
+
+.btn-register:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(127, 0, 255, 0.5);
+}
+
 body.light-mode {
     background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
     color: #1a1a1a;
@@ -1859,6 +1907,18 @@ body.light-mode .value-card {
 
 /* Responsive para novas seções */
 @media (max-width: 768px) {
+    .auth-buttons {
+        position: static;
+        transform: none;
+        justify-content: center;
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    .theme-toggle {
+        right: 20px;
+    }
+
     .tech-grid {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         gap: 20px;
