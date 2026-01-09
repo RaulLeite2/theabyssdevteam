@@ -1,0 +1,14 @@
+{
+  "name": "theabyssdevteam",
+  "version": "1.0.0",
+  "description": "The Abyss Development Team - Portfolio e Blog",
+  "private": true,
+  "dependencies": {
+    "@vercel/kv": "^1.0.1"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Build complete'",
+    "deploy": "vercel --prod"
+  }
+}

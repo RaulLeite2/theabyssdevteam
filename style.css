@@ -1361,6 +1361,91 @@ body.light-mode .value-card {
 }
 
 /* ============================================
+   BLOG SECTION
+   ============================================ */
+.blog-section {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.blog-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.blog-post-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.blog-post-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 10px 40px rgba(0, 255, 255, 0.2);
+}
+
+.blog-post-card h3 {
+    color: var(--accent-cyan);
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.blog-post-meta {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.blog-post-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.blog-post-content {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.blog-post-read-more {
+    color: var(--accent-cyan);
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.blog-post-read-more:hover {
+    gap: 10px;
+}
+
+.loading-posts {
+    text-align: center;
+    color: var(--accent-cyan);
+    padding: 40px;
+    font-size: 1.1rem;
+}
+
+.no-posts {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 40px;
+    font-size: 1.1rem;
+}
+
+/* ============================================
    DEPOIMENTOS
    ============================================ */
 .testimonials-section {

@@ -601,3 +601,63 @@ function setupContactForm() {
         });
     }
 }
+
+// ============================================
+// BLOG POSTS LOADER
+// ============================================
+async function loadBlogPosts() {
+    const container = document.getElementById('blogPosts');
+    
+    if (!container) return;
+    
+    try {
+        const response = await fetch('/api/posts');
+        const data = await response.json();
+        
+        if (!data.posts || data.posts.length === 0) {
+            container.innerHTML = '<div class="no-posts">Nenhum post publicado ainda. Em breve teremos novidades! 🚀</div>';
+            return;
+        }
+        
+        // Mostrar apenas os 3 posts mais recentes
+        const recentPosts = data.posts.slice(0, 3);
+        
+        container.innerHTML = recentPosts.map(post => `
+            <div class="blog-post-card">
+                <h3>${escapeHtml(post.title)}</h3>
+                <div class="blog-post-meta">
+                    <span>👤 ${escapeHtml(post.author)}</span>
+                    <span>📅 ${formatDate(post.createdAt)}</span>
+                </div>
+                <div class="blog-post-content">
+                    ${escapeHtml(post.content).substring(0, 150)}${post.content.length > 150 ? '...' : ''}
+                </div>
+                <span class="blog-post-read-more">Ler mais →</span>
+            </div>
+        `).join('');
+        
+    } catch (error) {
+        console.error('Erro ao carregar posts:', error);
+        container.innerHTML = '<div class="no-posts">Erro ao carregar posts. Tente novamente mais tarde.</div>';
+    }
+}
+
+// Funções auxiliares para blog
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString('pt-BR', options);
+}
+
+// Carregar posts quando a página carregar
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadBlogPosts);
+} else {
+    loadBlogPosts();
+}
