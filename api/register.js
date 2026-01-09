@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv';
+import { kvGet, kvSet } from './redis.js';
 import crypto from 'crypto';
 
 function hashPassword(password) {
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
     }
 
     // Verificar se usuário já existe
-    const existingUser = await kv.get(`user:${username}`);
+    const existingUser = await kvGet(`user:${username}`);
     if (existingUser) {
       return res.status(400).json({ error: 'Usuário já existe' });
     }
@@ -58,17 +58,17 @@ export default async function handler(req, res) {
       createdAt: Date.now()
     };
 
-    // Salvar usuário no KV
-    await kv.set(`user:${username}`, JSON.stringify(userData));
+    // Salvar usuário no Redis
+    await kvSet(`user:${username}`, userData);
 
     // Adicionar à lista de usuários pendentes
-    const pendingUsers = await kv.get('pending_users') || [];
+    const pendingUsers = await kvGet('pending_users') || [];
     const parsedPending = typeof pendingUsers === 'string' ? JSON.parse(pendingUsers) : pendingUsers;
     const pendingArray = Array.isArray(parsedPending) ? parsedPending : [];
     
     if (!pendingArray.includes(username)) {
       pendingArray.push(username);
-      await kv.set('pending_users', JSON.stringify(pendingArray));
+      await kvSet('pending_users', pendingArray);
     }
 
     return res.status(201).json({

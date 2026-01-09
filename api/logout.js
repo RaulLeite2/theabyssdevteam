@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv';
+import { kvDel } from './redis.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     }
 
     // Deletar sessão
-    await kv.del(`session:${token}`);
+    await kvDel(`session:${token}`);
 
     return res.status(200).json({ success: true });
 

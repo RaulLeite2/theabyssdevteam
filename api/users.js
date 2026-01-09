@@ -1,21 +1,21 @@
-import { kv } from '@vercel/kv';
+import { kvGet, kvSet, kvDel, kvKeys } from './redis.js';
 
 // Verificar se é admin
 async function isAdmin(token) {
   if (!token) return false;
   
-  const sessionData = await kv.get(`session:${token}`);
+  const sessionData = await kvGet(`session:${token}`);
   if (!sessionData) return false;
   
   const session = typeof sessionData === 'string' ? JSON.parse(sessionData) : sessionData;
   
   if (session.expiresAt < Date.now()) {
-    await kv.del(`session:${token}`);
+    await kvDel(`session:${token}`);
     return false;
   }
 
   // Verificar se o usuário é admin
-  const userData = await kv.get(`user:${session.username}`);
+  const userData = await kvGet(`user:${session.username}`);
   if (!userData) {
     // Se não existe como user, verificar se é o admin original
     const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
@@ -46,16 +46,16 @@ export default async function handler(req, res) {
   try {
     // GET - Listar todos os usuários
     if (req.method === 'GET') {
-      const pendingUsers = await kv.get('pending_users') || [];
+      const pendingUsers = await kvGet('pending_users') || [];
       const parsedPending = typeof pendingUsers === 'string' ? JSON.parse(pendingUsers) : pendingUsers;
       const pendingArray = Array.isArray(parsedPending) ? parsedPending : [];
 
       // Buscar dados de todos os usuários
       const users = [];
-      const allKeys = await kv.keys('user:*');
+      const allKeys = await kvKeys('user:*');
       
       for (const key of allKeys) {
-        const userData = await kv.get(key);
+        const userData = await kvGet(key);
         if (userData) {
           const user = typeof userData === 'string' ? JSON.parse(userData) : userData;
           users.push({
@@ -82,7 +82,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Username e action são obrigatórios' });
       }
 
-      const userData = await kv.get(`user:${username}`);
+      const userData = await kvGet(`user:${username}`);
       if (!userData) {
         return res.status(404).json({ error: 'Usuário não encontrado' });
       }
@@ -91,28 +91,28 @@ export default async function handler(req, res) {
 
       if (action === 'approve') {
         user.approved = true;
-        await kv.set(`user:${username}`, JSON.stringify(user));
+        await kvSet(`user:${username}`, user);
 
         // Remover da lista de pendentes
-        const pendingUsers = await kv.get('pending_users') || [];
+        const pendingUsers = await kvGet('pending_users') || [];
         const parsedPending = typeof pendingUsers === 'string' ? JSON.parse(pendingUsers) : pendingUsers;
         const pendingArray = Array.isArray(parsedPending) ? parsedPending : [];
         const updatedPending = pendingArray.filter(u => u !== username);
-        await kv.set('pending_users', JSON.stringify(updatedPending));
+        await kvSet('pending_users', updatedPending);
 
         return res.status(200).json({ success: true, message: 'Usuário aprovado' });
       }
 
       if (action === 'reject') {
         // Deletar usuário
-        await kv.del(`user:${username}`);
+        await kvDel(`user:${username}`);
 
         // Remover da lista de pendentes
-        const pendingUsers = await kv.get('pending_users') || [];
+        const pendingUsers = await kvGet('pending_users') || [];
         const parsedPending = typeof pendingUsers === 'string' ? JSON.parse(pendingUsers) : pendingUsers;
         const pendingArray = Array.isArray(parsedPending) ? parsedPending : [];
         const updatedPending = pendingArray.filter(u => u !== username);
-        await kv.set('pending_users', JSON.stringify(updatedPending));
+        await kvSet('pending_users', updatedPending);
 
         return res.status(200).json({ success: true, message: 'Usuário rejeitado' });
       }
@@ -128,14 +128,14 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Username é obrigatório' });
       }
 
-      await kv.del(`user:${username}`);
+      await kvDel(`user:${username}`);
 
       // Remover da lista de pendentes se existir
-      const pendingUsers = await kv.get('pending_users') || [];
+      const pendingUsers = await kvGet('pending_users') || [];
       const parsedPending = typeof pendingUsers === 'string' ? JSON.parse(pendingUsers) : pendingUsers;
       const pendingArray = Array.isArray(parsedPending) ? parsedPending : [];
       const updatedPending = pendingArray.filter(u => u !== username);
-      await kv.set('pending_users', JSON.stringify(updatedPending));
+      await kvSet('pending_users', updatedPending);
 
       return res.status(200).json({ success: true, message: 'Usuário deletado' });
     }

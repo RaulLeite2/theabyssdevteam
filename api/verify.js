@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv';
+import { kvGet, kvDel } from './redis.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -22,8 +22,8 @@ export default async function handler(req, res) {
       return res.status(401).json({ authenticated: false });
     }
 
-    // Verificar sessão no KV
-    const sessionData = await kv.get(`session:${token}`);
+    // Verificar sessão no Redis
+    const sessionData = await kvGet(`session:${token}`);
 
     if (!sessionData) {
       return res.status(401).json({ authenticated: false });
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 
     // Verificar se a sessão expirou
     if (session.expiresAt < Date.now()) {
-      await kv.del(`session:${token}`);
+      await kvDel(`session:${token}`);
       return res.status(401).json({ authenticated: false });
     }
 

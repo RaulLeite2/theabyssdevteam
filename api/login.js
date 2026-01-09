@@ -1,4 +1,4 @@
-import { kv } from '@vercel/kv';
+import { kvGet, kvSet } from './redis.js';
 import crypto from 'crypto';
 
 // Configuração - ALTERE estas credenciais!
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       userRole = 'admin';
     } else {
       // Verificar se é um usuário registrado
-      const userData = await kv.get(`user:${username}`);
+      const userData = await kvGet(`user:${username}`);
       
       if (userData) {
         const user = typeof userData === 'string' ? JSON.parse(userData) : userData;
@@ -76,8 +76,8 @@ export default async function handler(req, res) {
       expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 dias
     };
 
-    // Salvar sessão no KV
-    await kv.set(`session:${sessionToken}`, JSON.stringify(sessionData), {
+    // Salvar sessão no Redis
+    await kvSet(`session:${sessionToken}`, sessionData, {
       ex: 7 * 24 * 60 * 60 // 7 dias em segundos
     });
 

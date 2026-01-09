@@ -1,16 +1,16 @@
-import { kv } from '@vercel/kv';
+import { kvGet, kvSet, kvDel } from './redis.js';
 
 // Verificar autenticação
 async function isAuthenticated(token) {
   if (!token) return false;
   
-  const sessionData = await kv.get(`session:${token}`);
+  const sessionData = await kvGet(`session:${token}`);
   if (!sessionData) return false;
   
   const session = typeof sessionData === 'string' ? JSON.parse(sessionData) : sessionData;
   
   if (session.expiresAt < Date.now()) {
-    await kv.del(`session:${token}`);
+    await kvDel(`session:${token}`);
     return false;
   }
   
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
   try {
     // GET - Listar todos os posts (público)
     if (req.method === 'GET') {
-      const posts = await kv.get('blog:posts') || [];
+      const posts = await kvGet('blog:posts') || [];
       const parsedPosts = typeof posts === 'string' ? JSON.parse(posts) : posts;
       
       // Ordenar por data (mais recente primeiro)
@@ -69,7 +69,7 @@ export default async function handler(req, res) {
       };
 
       // Buscar posts existentes
-      const posts = await kv.get('blog:posts') || [];
+      const posts = await kvGet('blog:posts') || [];
       const parsedPosts = typeof posts === 'string' ? JSON.parse(posts) : posts;
       const postsArray = Array.isArray(parsedPosts) ? parsedPosts : [];
       
@@ -77,7 +77,7 @@ export default async function handler(req, res) {
       postsArray.push(newPost);
       
       // Salvar
-      await kv.set('blog:posts', JSON.stringify(postsArray));
+      await kvSet('blog:posts', postsArray);
 
       return res.status(201).json({ success: true, post: newPost });
     }
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'ID, título e conteúdo são obrigatórios' });
       }
 
-      const posts = await kv.get('blog:posts') || [];
+      const posts = await kvGet('blog:posts') || [];
       const parsedPosts = typeof posts === 'string' ? JSON.parse(posts) : posts;
       const postsArray = Array.isArray(parsedPosts) ? parsedPosts : [];
       
@@ -113,7 +113,7 @@ export default async function handler(req, res) {
         updatedAt: Date.now()
       };
 
-      await kv.set('blog:posts', JSON.stringify(postsArray));
+      await kvSet('blog:posts', postsArray);
 
       return res.status(200).json({ success: true, post: postsArray[postIndex] });
     }
@@ -132,7 +132,7 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'ID é obrigatório' });
       }
 
-      const posts = await kv.get('blog:posts') || [];
+      const posts = await kvGet('blog:posts') || [];
       const parsedPosts = typeof posts === 'string' ? JSON.parse(posts) : posts;
       const postsArray = Array.isArray(parsedPosts) ? parsedPosts : [];
       
@@ -142,7 +142,7 @@ export default async function handler(req, res) {
         return res.status(404).json({ error: 'Post não encontrado' });
       }
 
-      await kv.set('blog:posts', JSON.stringify(filteredPosts));
+      await kvSet('blog:posts', filteredPosts);
 
       return res.status(200).json({ success: true });
     }
