@@ -3,21 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Abyss Dev Team</title>
+    <title>The Abyss Dev Team - Desenvolvimento de Elite</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Partículas de fundo animadas -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Indicador de scroll -->
+    <div class="scroll-indicator" id="scrollIndicator">
+        <div class="scroll-progress"></div>
+    </div>
 
-<header>
-    <h1>The Abyss Dev Team</h1>
-    <nav>
-        <ul>
-            <li><a href="#" class="tab-link active" data-tab="home">Home</a></li>
-            <li><a href="#" class="tab-link" data-tab="projects">Projetos</a></li>
-            <li><a href="#" class="tab-link" data-tab="members">Membros</a></li>
-            <li><a href="#" class="tab-link" data-tab="contact">Contato</a></li>
-        </ul>
-    </nav>
+<header class="glassmorphism">
+    <div class="header-content">
+        <h1>
+            <span class="logo-icon">⚡</span>
+            The Abyss Dev Team
+            <span class="badge-premium">ELITE</span>
+        </h1>
+        <nav>
+            <ul>
+                <li><a href="#" class="tab-link active" data-tab="home">Home</a></li>
+                <li><a href="#" class="tab-link" data-tab="projects">Projetos</a></li>
+                <li><a href="#" class="tab-link" data-tab="members">Membros</a></li>
+                <li><a href="#" class="tab-link" data-tab="contact">Contato</a></li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
 <main>
@@ -26,29 +39,50 @@
 <section id="home" class="tab-content active">
 
     <!-- HERO -->
-    <div class="hero">
-        <h2>Código que emerge do abismo.</h2>
+    <div class="hero parallax-section">
+        <div class="hero-badge">🏆 Desenvolvimento de Elite</div>
+        <h2 class="glitch" data-text="Código que emerge do abismo.">Código que emerge do abismo.</h2>
         <p>
-            Somos a <strong>The Abyss Development Team</strong>.<br>
+            Somos a <strong class="highlight-text">The Abyss Development Team</strong>.<br>
             Projetos reais. Código limpo. Estilo que marca.
         </p>
+        <div class="hero-features">
+            <div class="feature-badge">
+                <span class="icon">🚀</span>
+                <span>Performance</span>
+            </div>
+            <div class="feature-badge">
+                <span class="icon">💎</span>
+                <span>Qualidade</span>
+            </div>
+            <div class="feature-badge">
+                <span class="icon">🎨</span>
+                <span>Design</span>
+            </div>
+        </div>
     </div>
 
     <div class="quick-stats">
 
-    <div class="stat-card">
-        <h3>2</h3>
+    <div class="stat-card animate-on-scroll">
+        <div class="stat-icon">📊</div>
+        <h3 class="counter" data-target="2">0</h3>
         <p>Projetos Criados</p>
+        <div class="stat-progress"><div class="progress-bar" style="width: 40%"></div></div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card animate-on-scroll" style="animation-delay: 0.2s">
+        <div class="stat-icon">⚡</div>
         <h3>24/7</h3>
         <p>Código em Movimento</p>
+        <div class="stat-progress"><div class="progress-bar" style="width: 100%"></div></div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card animate-on-scroll" style="animation-delay: 0.4s">
+        <div class="stat-icon">💡</div>
         <h3>∞</h3>
         <p>Ideias em Construção</p>
+        <div class="stat-progress"><div class="progress-bar" style="width: 85%"></div></div>
     </div>
 
     </div>
@@ -56,46 +90,106 @@
     <!-- SEÇÕES VISUAIS -->
     <div class="sections">
 
-        <div class="section-card">
-            <img src="img/projects.png" alt="Projetos">
+        <div class="section-card animate-on-scroll">
+            <div class="image-wrapper">
+                <img src="img/projects.png" alt="Projetos">
+                <div class="image-overlay">🎯</div>
+            </div>
             <div class="section-text">
+                <span class="section-number">01</span>
                 <h3>Projetos</h3>
                 <p>Aplicações, bots e sistemas criados do zero, focados em performance e identidade.</p>
+                <ul class="feature-list">
+                    <li>✓ Código otimizado</li>
+                    <li>✓ Arquitetura escalável</li>
+                    <li>✓ Documentação completa</li>
+                </ul>
             </div>
         </div>
 
-        <div class="section-card reverse">
-            <img src="img/tech.png" alt="Tecnologias">
+        <div class="section-card reverse animate-on-scroll">
+            <div class="image-wrapper">
+                <img src="img/tech.png" alt="Tecnologias">
+                <div class="image-overlay">⚙️</div>
+            </div>
             <div class="section-text">
+                <span class="section-number">02</span>
                 <h3>Tecnologia</h3>
                 <p>Backend sólido, frontend animado e decisões técnicas bem pensadas.</p>
+                <ul class="feature-list">
+                    <li>✓ Stack moderna</li>
+                    <li>✓ Performance máxima</li>
+                    <li>✓ Segurança em primeiro lugar</li>
+                </ul>
             </div>
         </div>
 
-        <div class="section-card">
-            <img src="img/philosophy.png" alt="Filosofia">
+        <div class="section-card animate-on-scroll">
+            <div class="image-wrapper">
+                <img src="img/philosophy.png" alt="Filosofia">
+                <div class="image-overlay">🧠</div>
+            </div>
             <div class="section-text">
+                <span class="section-number">03</span>
                 <h3>Filosofia</h3>
                 <p>Não seguimos tendências. Criamos soluções que fazem sentido e duram.</p>
+                <ul class="feature-list">
+                    <li>✓ Qualidade acima de tudo</li>
+                    <li>✓ Inovação constante</li>
+                    <li>✓ Resultados mensuráveis</li>
+                </ul>
             </div>
         </div>
 
+    </div>
+
+    <!-- SEÇÃO DE VALOR -->
+    <div class="value-proposition animate-on-scroll">
+        <h2>Por que escolher a The Abyss?</h2>
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="value-icon">💪</div>
+                <h3>Expertise Comprovada</h3>
+                <p>Equipe especializada com experiência em projetos complexos</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">⚡</div>
+                <h3>Entrega Rápida</h3>
+                <p>Desenvolvimento ágil sem comprometer a qualidade</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">🎯</div>
+                <h3>Foco em Resultados</h3>
+                <p>Soluções que agregam valor real ao seu negócio</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">🛡️</div>
+                <h3>Suporte Contínuo</h3>
+                <p>Manutenção e evolução constante dos projetos</p>
+            </div>
+        </div>
     </div>
 
     <!-- CTA -->
-    <div class="home-cta">
-        <p>Curtiu a vibe? Cola com a gente.</p>
-        <a href="https://discord.gg/VBkbExK8Ky" target="_blank" class="discord-btn">
-            🚀 Entrar no Discord
-        </a>
+    <div class="home-cta animate-on-scroll">
+        <div class="cta-container">
+            <h2>Pronto para mergulhar?</h2>
+            <p>Curtiu a vibe? Cola com a gente e faça parte da elite do desenvolvimento.</p>
+            <a href="https://discord.gg/VBkbExK8Ky" target="_blank" class="discord-btn pulse-animation">
+                🚀 Entrar no Discord
+            </a>
+            <p class="cta-subtitle">Junte-se a desenvolvedores de elite</p>
+        </div>
     </div>
     <div class="dual-cta">
-        <div class="why-abyss">
+        <div class="why-abyss animate-on-scroll">
+            <div class="quote-icon">"</div>
             <h3>Por que Abyss?</h3>
             <p>
             Porque os problemas mais interessantes não vivem na superfície.
             A gente mergulha fundo, resolve e volta com algo melhor.
             </p>
+            <div class="signature">— The Abyss Philosophy</div>
         </div>
     </div>
 
@@ -103,55 +197,96 @@
 
 <!-- PROJETOS -->
 <section id="projects" class="tab-content">
-    <h2>Projetos</h2>
+    <h2 class="section-title">Nossos Projetos</h2>
+    <p class="section-subtitle">Criando experiências que fazem a diferença</p>
 
     <div class="project-grid">
-        <div class="project-card">
+        <div class="project-card featured">
+            <div class="project-status live">● Live</div>
+            <div class="project-icon">🎮</div>
             <h3>The Abyss</h3>
             <p>Bot de Discord de RPG focado na diversão e imersão do servidor.</p>
+            <div class="project-tags">
+                <span class="tag">Python</span>
+                <span class="tag">Discord.py</span>
+                <span class="tag">RPG</span>
+            </div>
+            <div class="project-stats">
+                <span>⭐ Premium</span>
+                <span>👥 Ativo</span>
+            </div>
         </div>
 
         <div class="project-card">
-            <h3>Luma Bot (em breve)</h3>
+            <div class="project-status upcoming">● Em Breve</div>
+            <div class="project-icon">🤖</div>
+            <h3>Luma Bot</h3>
             <p>Bot inspirado na Loritta com múltiplas funções de utilidade.</p>
+            <div class="project-tags">
+                <span class="tag">Python</span>
+                <span class="tag">Multi-purpose</span>
+            </div>
+            <div class="project-stats">
+                <span>🚀 Em desenvolvimento</span>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- MEMBROS -->
 <section id="members" class="tab-content">
-    <h2>Membros</h2>
-    <p class="section-subtitle">Pessoas reais. Código real.</p>
+    <h2 class="section-title">Nossa Equipe</h2>
+    <p class="section-subtitle">Pessoas reais. Código real. Resultados reais.</p>
 
     <div class="members-grid">
-        <div class="member-card">
-            <img src="img/rauldp.png", class="member-photo">
+        <div class="member-card founder">
+            <div class="member-badge">👑 Founder</div>
+            <div class="member-photo-wrapper">
+                <img src="img/rauldp.png" class="member-photo">
+                <div class="member-status online"></div>
+            </div>
             <h3>Raul "Milk" Leite</h3>
-            <span>Founder · Python Dev</span>
-
-            <a href="https://discord.com/users/947849382278094880"
-               target="_blank"
-               class="discord-profile">
-                💬 Discord
-            </a>
-            <a href="https://github.com/RaulLeite2"
-                target="_blank"
-                class="github-profile">
-                 🐙 GitHub
-            </a>
-        </div>
-        <div class="members-grid">
-            <div class="member-card">
-                <img src="img/sel.png", class="member-photo">
-                <h3>ImSeleverr</h3>
-                <span>Co-Founder · Idealista</span>
-
-                <a href="https://discord.com/users/928433630093656154"
+            <span class="member-role">Founder · Python Dev</span>
+            <p class="member-bio">Especialista em backend e arquitetura de sistemas</p>
+            <div class="member-skills">
+                <span class="skill">Python</span>
+                <span class="skill">Discord.py</span>
+                <span class="skill">Backend</span>
+            </div>
+            <div class="member-links">
+                <a href="https://discord.com/users/947849382278094880"
                    target="_blank"
                    class="discord-profile">
                     💬 Discord
                 </a>
-                <a href="
+                <a href="https://github.com/RaulLeite2"
+                    target="_blank"
+                    class="github-profile">
+                     🐙 GitHub
+                </a>
+            </div>
+        </div>
+        
+        <div class="member-card cofounder">
+            <div class="member-badge">⚡ Co-Founder</div>
+            <div class="member-photo-wrapper">
+                <img src="img/sel.png" class="member-photo">
+                <div class="member-status online"></div>
+            </div>
+            <h3>ImSeleverr</h3>
+            <span class="member-role">Co-Founder · Idealista</span>
+            <p class="member-bio">Visão criativa e estratégia de desenvolvimento</p>
+            <div class="member-skills">
+                <span class="skill">Strategy</span>
+                <span class="skill">Design</span>
+                <span class="skill">Planning</span>
+            </div>
+            <div class="member-links">
+                <a href="https://discord.com/users/500632474233153044"
+                   target="_blank"
+                   class="discord-profile">
+                    💬 Discord
+                </a>
             </div>
         </div>
     </div>
@@ -159,17 +294,44 @@
 
 <!-- CONTATO -->
 <section id="contact" class="tab-content">
-    <h2>Contato</h2>
-    <p>Entre em contato com a gente pelo Discord:</p>
+    <h2 class="section-title">Vamos Conversar?</h2>
+    <p class="section-subtitle">Estamos prontos para dar vida ao seu projeto</p>
 
-    <a href="https://discord.gg/VBkbExK8Ky"
-       target="_blank"
-       class="discord-btn">
-        🚀 Entrar no Discord
-    </a>
+    <div class="contact-container">
+        <div class="contact-info">
+            <div class="contact-item">
+                <div class="contact-icon">💬</div>
+                <h3>Discord</h3>
+                <p>Nosso hub principal de comunicação</p>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">⚡</div>
+                <h3>Resposta Rápida</h3>
+                <p>Respondemos em até 24 horas</p>
+            </div>
+            <div class="contact-item">
+                <div class="contact-icon">🤝</div>
+                <h3>Consultoria Grátis</h3>
+                <p>Primeira conversa sem compromisso</p>
+            </div>
+        </div>
+
+        <a href="https://discord.gg/VBkbExK8Ky"
+           target="_blank"
+           class="discord-btn pulse-animation">
+            🚀 Entrar no Discord
+        </a>
+        
+        <p class="contact-note">✨ Junte-se a nossa comunidade de desenvolvedores</p>
+    </div>
 </section>
 
 </main>
+
+<footer class="footer">
+    <p>© 2026 The Abyss Development Team - Elite Development</p>
+    <p class="footer-tagline">Do abismo emergem as melhores soluções 🌊</p>
+</footer>
 
 <script src="script.js"></script>
 </body>
