@@ -1,4 +1,17 @@
 // ============================================
+// LOADING SCREEN
+// ============================================
+window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loadingScreen');
+    setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+        }, 500);
+    }, 2000);
+});
+
+// ============================================
 // NAVEGAÇÃO POR ABAS
 // ============================================
 const tabs = document.querySelectorAll('.tab-link');
@@ -19,6 +32,14 @@ tabs.forEach(tab => {
         
         // Scroll suave para o topo
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Fecha o menu mobile se estiver aberto
+        const nav = document.getElementById('mainNav');
+        const toggle = document.getElementById('mobileMenuToggle');
+        if (nav && toggle) {
+            nav.classList.remove('active');
+            toggle.classList.remove('active');
+        }
     });
 });
 
@@ -263,38 +284,320 @@ document.addEventListener('DOMContentLoaded', () => {
     setupParallax();
     setupDynamicHeader();
     setupMouseTrail();
+    setupThemeToggle();
+    setupMobileMenu();
+    setupTypingEffect();
+    setupCustomCursor();
+    setupProjectModal();
+    setupTestimonialCarousel();
+    setupFAQ();
+    setupContactForm();
     
     console.log('%c🌊 The Abyss Dev Team 🌊', 'font-size: 20px; color: #00ffff; font-weight: bold;');
     console.log('%cWebsite loaded successfully!', 'font-size: 14px; color: #7f00ff;');
 });
 
 // ============================================
-// EASTER EGG - KONAMI CODE
+// THEME TOGGLE
 // ============================================
-let konamiCode = [];
-const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-
-document.addEventListener('keydown', (e) => {
-    konamiCode.push(e.key);
-    konamiCode = konamiCode.slice(-10);
+function setupThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
     
-    if (konamiCode.join(',') === konamiSequence.join(',')) {
-        document.body.style.animation = 'rainbow 2s linear infinite';
-        
-        if (!document.getElementById('rainbow-animation')) {
-            const style = document.createElement('style');
-            style.id = 'rainbow-animation';
-            style.textContent = `
-                @keyframes rainbow {
-                    0% { filter: hue-rotate(0deg); }
-                    100% { filter: hue-rotate(360deg); }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        setTimeout(() => {
-            document.body.style.animation = '';
-        }, 5000);
+    // Carregar tema salvo
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.querySelector('.theme-icon').textContent = '☀️';
     }
-});
+    
+    themeToggle.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        const isLight = body.classList.contains('light-mode');
+        
+        themeToggle.querySelector('.theme-icon').textContent = isLight ? '☀️' : '🌙';
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+}
+
+// ============================================
+// MOBILE MENU
+// ============================================
+function setupMobileMenu() {
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    const nav = document.getElementById('mainNav');
+    
+    if (mobileMenuToggle && nav) {
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenuToggle.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+        
+        // Fechar ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                nav.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+            }
+        });
+    }
+}
+
+// ============================================
+// TYPING EFFECT
+// ============================================
+function setupTypingEffect() {
+    const element = document.getElementById('typingText');
+    if (!element) return;
+    
+    const text = 'Código que emerge do abismo.';
+    let index = 0;
+    element.textContent = '';
+    
+    function type() {
+        if (index < text.length) {
+            element.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, 100);
+        }
+    }
+    
+    setTimeout(type, 500);
+}
+
+// ============================================
+// CURSOR CUSTOMIZADO
+// ============================================
+function setupCustomCursor() {
+    const cursor = document.getElementById('customCursor');
+    const trail = document.getElementById('cursorTrail');
+    
+    if (!cursor || !trail) return;
+    
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let trailX = 0, trailY = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+    
+    function animateCursor() {
+        cursorX += (mouseX - cursorX) * 0.2;
+        cursorY += (mouseY - cursorY) * 0.2;
+        
+        trailX += (mouseX - trailX) * 0.1;
+        trailY += (mouseY - trailY) * 0.1;
+        
+        cursor.style.left = cursorX + 'px';
+        cursor.style.top = cursorY + 'px';
+        trail.style.left = trailX + 'px';
+        trail.style.top = trailY + 'px';
+        
+        requestAnimationFrame(animateCursor);
+    }
+    
+    animateCursor();
+}
+
+// ============================================
+// PROJECT MODAL
+// ============================================
+function setupProjectModal() {
+    const modal = document.getElementById('projectModal');
+    const modalBody = document.getElementById('modalBody');
+    const modalClose = document.getElementById('modalClose');
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    const projectData = {
+        abyss: {
+            title: 'The Abyss Bot',
+            status: 'Live',
+            description: 'Bot de RPG completo para Discord com sistema de combate, missões, inventário e progressão de personagem.',
+            features: [
+                'Sistema de combate em tempo real',
+                'Mais de 50 missões únicas',
+                'Sistema de classes e habilidades',
+                'Economia integrada',
+                'Boss battles épicos',
+                'Sistema de guilds'
+            ],
+            tech: ['Python', 'Discord.py', 'PostgreSQL', 'Redis'],
+            stats: {
+                users: '1000+',
+                uptime: '99.9%',
+                commands: '150+'
+            }
+        },
+        luma: {
+            title: 'Luma Bot',
+            status: 'Em Desenvolvimento',
+            description: 'Bot multi-propósito inspirado na Loritta com foco em entretenimento e utilidades.',
+            features: [
+                'Moderação automática',
+                'Mini-games diversos',
+                'Sistema de economia',
+                'Comandos de utilidade',
+                'Integração com APIs',
+                'Dashboard web'
+            ],
+            tech: ['Python', 'Discord.py', 'FastAPI', 'MongoDB'],
+            stats: {
+                progress: '60%',
+                eta: 'Q2 2026',
+                commands: '80+'
+            }
+        }
+    };
+    
+    projectCards.forEach(card => {
+        const detailsBtn = card.querySelector('.project-details-btn');
+        if (detailsBtn) {
+            detailsBtn.addEventListener('click', () => {
+                const projectId = card.dataset.project;
+                const data = projectData[projectId];
+                
+                if (data) {
+                    modalBody.innerHTML = `
+                        <div class="modal-project-header">
+                            <h2>${data.title}</h2>
+                            <span class="project-status ${data.status === 'Live' ? 'live' : 'upcoming'}">
+                                ● ${data.status}
+                            </span>
+                        </div>
+                        <p class="modal-description">${data.description}</p>
+                        
+                        <div class="modal-section">
+                            <h3>🚀 Funcionalidades</h3>
+                            <ul class="modal-features">
+                                ${data.features.map(f => `<li>✓ ${f}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h3>⚙️ Tecnologias</h3>
+                            <div class="modal-tech">
+                                ${data.tech.map(t => `<span class="tech-badge">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h3>📊 Estatísticas</h3>
+                            <div class="modal-stats">
+                                ${Object.entries(data.stats).map(([key, value]) => 
+                                    `<div class="stat-item">
+                                        <span class="stat-label">${key}</span>
+                                        <span class="stat-value">${value}</span>
+                                    </div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    `;
+                    
+                    modal.classList.add('active');
+                }
+            });
+        }
+    });
+    
+    modalClose.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+}
+
+// ============================================
+// TESTIMONIAL CAROUSEL
+// ============================================
+function setupTestimonialCarousel() {
+    const testimonials = document.querySelectorAll('.testimonial-card');
+    const dots = document.querySelectorAll('.carousel-dots .dot');
+    let currentIndex = 0;
+    
+    function showTestimonial(index) {
+        testimonials.forEach(t => t.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        
+        if (testimonials[index]) {
+            testimonials[index].classList.add('active');
+        }
+        if (dots[index]) {
+            dots[index].classList.add('active');
+        }
+    }
+    
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentIndex = index;
+            showTestimonial(currentIndex);
+        });
+    });
+    
+    // Auto-rotate
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % testimonials.length;
+        showTestimonial(currentIndex);
+    }, 5000);
+}
+
+// ============================================
+// FAQ
+// ============================================
+function setupFAQ() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            
+            // Fecha todos os outros
+            faqItems.forEach(i => i.classList.remove('active'));
+            
+            // Abre o clicado se não estava ativo
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+}
+
+// ============================================
+// CONTACT FORM
+// ============================================
+function setupContactForm() {
+    const form = document.getElementById('contactForm');
+    
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const projectType = document.getElementById('projectType').value;
+            const message = document.getElementById('message').value;
+            
+            // Aqui você pode adicionar integração com backend
+            console.log('Form submitted:', { name, email, projectType, message });
+            
+            // Feedback visual
+            const submitBtn = form.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '✓ Mensagem Enviada!';
+            submitBtn.style.background = 'linear-gradient(135deg, #00ff00, #00aa00)';
+            
+            setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.style.background = 'linear-gradient(135deg, #00ffff, #7f00ff)';
+                form.reset();
+            }, 3000);
+        });
+    }
+}

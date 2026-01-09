@@ -4,9 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Abyss Dev Team - Desenvolvimento de Elite</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="The Abyss Development Team - Equipe elite de desenvolvimento. Criamos bots para Discord, aplicações web e soluções personalizadas com código limpo e design premium.">
+    <meta name="keywords" content="desenvolvimento, discord bot, python, web development, the abyss, programação, elite">
+    <meta name="author" content="The Abyss Development Team">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://theabyssdev.team/">
+    <meta property="og:title" content="The Abyss Dev Team - Desenvolvimento de Elite">
+    <meta property="og:description" content="Código que emerge do abismo. Projetos reais, código limpo, estilo que marca.">
+    <meta property="og:image" content="https://theabyssdev.team/img/og-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://theabyssdev.team/">
+    <meta property="twitter:title" content="The Abyss Dev Team - Desenvolvimento de Elite">
+    <meta property="twitter:description" content="Código que emerge do abismo. Projetos reais, código limpo, estilo que marca.">
+    <meta property="twitter:image" content="https://theabyssdev.team/img/og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f0c29">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">⚡</div>
+            <div class="loading-text">THE ABYSS</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <div class="loading-subtitle">Carregando experiência premium...</div>
+        </div>
+    </div>
+
+    <!-- Cursor Customizado -->
+    <div class="custom-cursor" id="customCursor"></div>
+    <div class="cursor-trail" id="cursorTrail"></div>
+
     <!-- Partículas de fundo animadas -->
     <div class="particles" id="particles"></div>
     
@@ -22,7 +67,20 @@
             The Abyss Dev Team
             <span class="badge-premium">ELITE</span>
         </h1>
-        <nav>
+        
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+            <span class="theme-icon">🌙</span>
+        </button>
+        
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <nav id="mainNav">
             <ul>
                 <li><a href="#" class="tab-link active" data-tab="home">Home</a></li>
                 <li><a href="#" class="tab-link" data-tab="projects">Projetos</a></li>
@@ -41,7 +99,7 @@
     <!-- HERO -->
     <div class="hero parallax-section">
         <div class="hero-badge">🏆 Desenvolvimento de Elite</div>
-        <h2 class="glitch" data-text="Código que emerge do abismo.">Código que emerge do abismo.</h2>
+        <h2 class="glitch typing-effect" data-text="Código que emerge do abismo." id="typingText"></h2>
         <p>
             Somos a <strong class="highlight-text">The Abyss Development Team</strong>.<br>
             Projetos reais. Código limpo. Estilo que marca.
@@ -170,6 +228,198 @@
         </div>
     </div>
 
+    <!-- SEÇÃO DE TECNOLOGIAS -->
+    <div class="tech-section animate-on-scroll">
+        <h2>Tecnologias que Dominamos</h2>
+        <p class="section-subtitle">Stack moderna para soluções de ponta</p>
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-icon">🐍</div>
+                <h3>Python</h3>
+                <p>Backend robusto e automações</p>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon">⚛️</div>
+                <h3>React</h3>
+                <p>Interfaces modernas e reativas</p>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon">🟢</div>
+                <h3>Node.js</h3>
+                <p>APIs escaláveis e performáticas</p>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon">💬</div>
+                <h3>Discord.py</h3>
+                <p>Bots avançados e interativos</p>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon">🗄️</div>
+                <h3>PostgreSQL</h3>
+                <p>Banco de dados confiável</p>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon">🐳</div>
+                <h3>Docker</h3>
+                <p>Deploy e escalabilidade</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- DEPOIMENTOS -->
+    <div class="testimonials-section animate-on-scroll">
+        <h2>O que dizem sobre nós</h2>
+        <div class="testimonials-carousel">
+            <div class="testimonial-card active">
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"A The Abyss transformou nossa ideia em um bot incrível. Profissionalismo e qualidade em cada linha de código."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">👤</div>
+                    <div>
+                        <h4>Cliente Satisfeito</h4>
+                        <span>Projeto Discord Bot</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Código limpo, documentação perfeita e suporte excepcional. Recomendo fortemente!"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">👥</div>
+                    <div>
+                        <h4>Equipe Parceira</h4>
+                        <span>Sistema Web</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
+
+    <!-- ROADMAP -->
+    <div class="roadmap-section animate-on-scroll">
+        <h2>Roadmap 2026</h2>
+        <p class="section-subtitle">O que está por vir</p>
+        <div class="timeline">
+            <div class="timeline-item completed">
+                <div class="timeline-marker">✓</div>
+                <div class="timeline-content">
+                    <h3>Q1 2026</h3>
+                    <h4>The Abyss Bot v2.0</h4>
+                    <p>Sistema de RPG completo implementado</p>
+                </div>
+            </div>
+            <div class="timeline-item active">
+                <div class="timeline-marker">⚡</div>
+                <div class="timeline-content">
+                    <h3>Q2 2026</h3>
+                    <h4>Luma Bot Launch</h4>
+                    <p>Bot multi-propósito em desenvolvimento</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker">○</div>
+                <div class="timeline-content">
+                    <h3>Q3 2026</h3>
+                    <h4>Dashboard Web</h4>
+                    <p>Painel de controle para gerenciar bots</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker">○</div>
+                <div class="timeline-content">
+                    <h3>Q4 2026</h3>
+                    <h4>API Pública</h4>
+                    <p>API para integração com nossos serviços</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section animate-on-scroll">
+        <h2>Perguntas Frequentes</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Como posso contratar a The Abyss?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Entre no nosso Discord e mande uma mensagem! Faremos uma consulta gratuita para entender seu projeto e apresentar uma proposta.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Quais tipos de projetos vocês desenvolvem?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Desenvolvemos bots para Discord, aplicações web, APIs, sistemas de automação e soluções personalizadas. Se envolve código, provavelmente podemos fazer!</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Quanto tempo leva um projeto?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Depende da complexidade. Projetos simples podem levar 1-2 semanas, enquanto projetos complexos podem levar alguns meses. Sempre mantemos o cliente atualizado.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Vocês oferecem suporte após a entrega?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Sim! Oferecemos suporte contínuo e manutenção para todos os nossos projetos. Seu sucesso é nosso sucesso.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    <span>Posso ter acesso ao código fonte?</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Absolutamente! Todo o código desenvolvido é entregue com documentação completa. Você terá total propriedade do seu projeto.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BLOG/NEWS -->
+    <div class="blog-section animate-on-scroll">
+        <h2>Últimas Atualizações</h2>
+        <p class="section-subtitle">Fique por dentro do que estamos fazendo</p>
+        <div class="blog-grid">
+            <article class="blog-card">
+                <div class="blog-badge">🎉 Novidade</div>
+                <div class="blog-date">09 Jan 2026</div>
+                <h3>Site Oficial Lançado!</h3>
+                <p>Nosso novo site está no ar com design premium e todas as informações sobre a equipe e projetos.</p>
+                <a href="#" class="blog-link">Ler mais →</a>
+            </article>
+            <article class="blog-card">
+                <div class="blog-badge">🚀 Projeto</div>
+                <div class="blog-date">05 Jan 2026</div>
+                <h3>The Abyss Bot Atualizado</h3>
+                <p>Nova versão com sistema de combate melhorado e novas missões. Confira as novidades!</p>
+                <a href="#" class="blog-link">Ler mais →</a>
+            </article>
+            <article class="blog-card">
+                <div class="blog-badge">💡 Tutorial</div>
+                <div class="blog-date">28 Dez 2025</div>
+                <h3>Como Criar um Bot do Zero</h3>
+                <p>Guia completo sobre desenvolvimento de bots para Discord usando Python e discord.py.</p>
+                <a href="#" class="blog-link">Ler mais →</a>
+            </article>
+        </div>
+    </div>
+
     <!-- CTA -->
     <div class="home-cta animate-on-scroll">
         <div class="cta-container">
@@ -201,7 +451,7 @@
     <p class="section-subtitle">Criando experiências que fazem a diferença</p>
 
     <div class="project-grid">
-        <div class="project-card featured">
+        <div class="project-card featured" data-project="abyss">
             <div class="project-status live">● Live</div>
             <div class="project-icon">🎮</div>
             <h3>The Abyss</h3>
@@ -215,9 +465,10 @@
                 <span>⭐ Premium</span>
                 <span>👥 Ativo</span>
             </div>
+            <button class="project-details-btn">Ver Detalhes</button>
         </div>
 
-        <div class="project-card">
+        <div class="project-card" data-project="luma">
             <div class="project-status upcoming">● Em Breve</div>
             <div class="project-icon">🤖</div>
             <h3>Luma Bot</h3>
@@ -229,9 +480,20 @@
             <div class="project-stats">
                 <span>🚀 Em desenvolvimento</span>
             </div>
+            <button class="project-details-btn">Ver Detalhes</button>
         </div>
     </div>
 </section>
+
+<!-- Modal de Projetos -->
+<div class="modal-overlay" id="projectModal">
+    <div class="modal-content">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <div class="modal-body" id="modalBody">
+            <!-- Conteúdo dinâmico -->
+        </div>
+    </div>
+</div>
 
 <!-- MEMBROS -->
 <section id="members" class="tab-content">
@@ -242,7 +504,7 @@
         <div class="member-card founder">
             <div class="member-badge">👑 Founder</div>
             <div class="member-photo-wrapper">
-                <img src="img/rauldp.png" class="member-photo">
+                <img src="img/rauldp.png" class="member-photo" loading="lazy" alt="Raul Leite">
                 <div class="member-status online"></div>
             </div>
             <h3>Raul "Milk" Leite</h3>
@@ -270,7 +532,7 @@
         <div class="member-card cofounder">
             <div class="member-badge">⚡ Co-Founder</div>
             <div class="member-photo-wrapper">
-                <img src="img/sel.png" class="member-photo">
+                <img src="img/sel.png" class="member-photo" loading="lazy" alt="ImSeleverr">
                 <div class="member-status online"></div>
             </div>
             <h3>ImSeleverr</h3>
@@ -321,6 +583,33 @@
            class="discord-btn pulse-animation">
             🚀 Entrar no Discord
         </a>
+        
+        <!-- Formulário de Contato -->
+        <div class="contact-form-section">
+            <h3>Ou envie uma mensagem direta</h3>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Seu nome" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Seu e-mail" required>
+                </div>
+                <div class="form-group">
+                    <select id="projectType" required>
+                        <option value="">Tipo de projeto</option>
+                        <option value="bot">Bot para Discord</option>
+                        <option value="web">Aplicação Web</option>
+                        <option value="api">API/Backend</option>
+                        <option value="automation">Automação</option>
+                        <option value="other">Outro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" rows="4" placeholder="Conte-nos sobre seu projeto..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Enviar Mensagem</button>
+            </form>
+        </div>
         
         <p class="contact-note">✨ Junte-se a nossa comunidade de desenvolvedores</p>
     </div>
