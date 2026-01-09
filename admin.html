@@ -172,6 +172,105 @@
             color: var(--accent-cyan);
             padding: 40px;
         }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-cyan);
+            border-bottom-color: var(--accent-cyan);
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .users-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .user-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-item.pending {
+            border-color: rgba(255, 193, 7, 0.5);
+            background: rgba(255, 193, 7, 0.05);
+        }
+
+        .user-info h4 {
+            color: var(--accent-cyan);
+            margin: 0 0 5px 0;
+        }
+
+        .user-info p {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .user-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+        .badge-pending {
+            background: rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+        }
+
+        .badge-approved {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+        }
+
+        .badge-admin {
+            background: rgba(156, 39, 176, 0.3);
+            color: #9c27b0;
+        }
+
+        .btn-success {
+            background: rgba(76, 175, 80, 0.8);
+            color: #fff;
+        }
+
+        .btn-warning {
+            background: rgba(255, 152, 0, 0.8);
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -188,6 +287,10 @@
         </div>
 
         <div class="posts-section">
+            <div class="tabs" id="adminTabs">
+                <button class="tab-btn active" data-tab="posts">Posts do Blog</button>
+                <button class="tab-btn" data-tab="users" id="usersTab" style="display: none;">Gerenciar Usuários</button>
+            </div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="color: #fff; margin: 0;">Posts do Blog</h2>
                 <button class="btn btn-primary" onclick="togglePostForm()">➕ Novo Post</button>
@@ -223,12 +326,28 @@
             <div id="postsContainer">
                 <div class="loading">Carregando posts...</div>
             </div>
+            </div>
+
+            <!-- TAB: USERS -->
+            <div class="tab-content" id="usersTabContent">
+                <h2 style="color: #fff; margin-bottom: 20px;">Gerenciar Usuários</h2>
+                
+                <div id="usersContainer">
+                    <div class="loading">Carregando usuários...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+                    <div class="loading">Carregando usuários...</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         let authToken = null;
         let editingPostId = null;
+        let userRole = null;
 
         // Verificar autenticação ao carregar
         async function checkAuth() {
@@ -255,7 +374,14 @@
                 }
 
                 authToken = token;
-                document.getElementById('userInfo').textContent = `Logado como: ${data.user.username}`;
+                userRole = data.user.role;
+                document.getElementById('userInfo').textContent = `Logado como: ${data.user.username} (${data.user.role === 'admin' ? 'Admin' : 'Poster'})`;
+                
+                // Mostrar aba de usuários apenas para admins
+                if (userRole === 'admin') {
+                    document.getElementById('usersTab').style.display = 'block';
+                }
+
                 loadPosts();
 
             } catch (error) {
@@ -440,6 +566,171 @@
         function formatDate(timestamp) {
             const date = new Date(timestamp);
             return date.toLocaleDateString('pt-BR') + ' ' + date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // ============================================
+        // TABS
+        // ============================================
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.dataset.tab;
+                
+                // Atualizar botões
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Atualizar conteúdo
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                if (targetTab === 'posts') {
+                    document.getElementById('postsTab').classList.add('active');
+                } else if (targetTab === 'users') {
+                    document.getElementById('usersTabContent').classList.add('active');
+                    loadUsers();
+                }
+            });
+        });
+
+        // ============================================
+        // GERENCIAR USUÁRIOS
+        // ============================================
+        async function loadUsers() {
+            if (userRole !== 'admin') {
+                document.getElementById('usersContainer').innerHTML = '<div class="no-posts">Acesso negado.</div>';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/users', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const data = await response.json();
+
+                const container = document.getElementById('usersContainer');
+
+                if (!data.users || data.users.length === 0) {
+                    container.innerHTML = '<div class="no-posts">Nenhum usuário cadastrado.</div>';
+                    return;
+                }
+
+                const pendingUsers = data.pending || [];
+                
+                container.innerHTML = '<div class="users-list">' +
+                    data.users.map(user => {
+                        const isPending = !user.approved;
+                        const badgeClass = user.role === 'admin' ? 'badge-admin' : (isPending ? 'badge-pending' : 'badge-approved');
+                        const badgeText = user.role === 'admin' ? 'Admin' : (isPending ? 'Pendente' : 'Aprovado');
+                        
+                        return `
+                            <div class="user-item ${isPending ? 'pending' : ''}">
+                                <div class="user-info">
+                                    <h4>
+                                        ${escapeHtml(user.username)}
+                                        <span class="user-badge ${badgeClass}">${badgeText}</span>
+                                    </h4>
+                                    <p>📧 ${escapeHtml(user.email)} • 📅 ${formatDate(user.createdAt)}</p>
+                                </div>
+                                <div class="post-actions">
+                                    ${isPending ? `
+                                        <button class="btn btn-small btn-success" onclick="approveUser('${user.username}')">✓ Aprovar</button>
+                                        <button class="btn btn-small btn-danger" onclick="rejectUser('${user.username}')">✗ Rejeitar</button>
+                                    ` : user.role !== 'admin' ? `
+                                        <button class="btn btn-small btn-danger" onclick="deleteUser('${user.username}')">Deletar</button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('') +
+                    '</div>';
+
+            } catch (error) {
+                console.error('Erro ao carregar usuários:', error);
+                document.getElementById('usersContainer').innerHTML = '<div class="no-posts">Erro ao carregar usuários.</div>';
+            }
+        }
+
+        async function approveUser(username) {
+            if (!confirm(`Aprovar usuário ${username}?`)) return;
+
+            try {
+                const response = await fetch('/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ username, action: 'approve' })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert('Usuário aprovado!');
+                    loadUsers();
+                } else {
+                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao aprovar usuário');
+            }
+        }
+
+        async function rejectUser(username) {
+            if (!confirm(`Rejeitar usuário ${username}? Esta ação não pode ser desfeita.`)) return;
+
+            try {
+                const response = await fetch('/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ username, action: 'reject' })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert('Usuário rejeitado!');
+                    loadUsers();
+                } else {
+                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao rejeitar usuário');
+            }
+        }
+
+        async function deleteUser(username) {
+            if (!confirm(`Deletar usuário ${username}? Esta ação não pode ser desfeita.`)) return;
+
+            try {
+                const response = await fetch('/api/users', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ username })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert('Usuário deletado!');
+                    loadUsers();
+                } else {
+                    alert('Erro: ' + (data.error || 'Erro desconhecido'));
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao deletar usuário');
+            }
         }
 
         // Inicializar

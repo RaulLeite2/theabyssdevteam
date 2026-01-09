@@ -36,10 +36,34 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Username e password são obrigatórios' });
     }
 
-    // Verificar credenciais
     const passwordHash = hashPassword(password);
-    
-    if (username !== ADMIN_USERNAME || passwordHash !== ADMIN_PASSWORD_HASH) {
+    let isValidUser = false;
+    let userRole = null;
+
+    // Verificar se é o admin original
+    if (username === ADMIN_USERNAME && passwordHash === ADMIN_PASSWORD_HASH) {
+      isValidUser = true;
+      userRole = 'admin';
+    } else {
+      // Verificar se é um usuário registrado
+      const userData = await kv.get(`user:${username}`);
+      
+      if (userData) {
+        const user = typeof userData === 'string' ? JSON.parse(userData) : userData;
+        
+        // Verificar senha
+        if (user.passwordHash === passwordHash) {
+          // Verificar se está aprovado
+          if (!user.approved) {
+            return res.status(403).json({ error: 'Conta pendente de aprovação' });
+          }
+          isValidUser = true;
+          userRole = user.role || 'poster';
+        }
+      }
+    }
+
+    if (!isValidUser) {
       return res.status(401).json({ error: 'Credenciais inválidas' });
     }
 
@@ -47,6 +71,7 @@ export default async function handler(req, res) {
     const sessionToken = generateSessionToken();
     const sessionData = {
       username,
+      role: userRole,
       createdAt: Date.now(),
       expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000) // 7 dias
     };
@@ -59,7 +84,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       token: sessionToken,
-      user: { username }
+      user: { username, role: userRole }
     });
 
   } catch (error) {

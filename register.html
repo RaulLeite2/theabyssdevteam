@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - The Abyss Dev Team</title>
+    <title>Criar Conta - The Abyss Dev Team</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .login-container {
@@ -29,8 +29,15 @@
         .login-box h1 {
             color: var(--accent-cyan);
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             font-size: 2rem;
+        }
+
+        .login-box .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+            font-size: 0.9rem;
         }
 
         .form-group {
@@ -83,10 +90,7 @@
             cursor: not-allowed;
         }
 
-        .error-message {
-            background: rgba(255, 0, 0, 0.2);
-            border: 1px solid rgba(255, 0, 0, 0.4);
-            color: #ff6b6b;
+        .message {
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -94,7 +98,19 @@
             display: none;
         }
 
-        .error-message.show {
+        .error-message {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid rgba(255, 0, 0, 0.4);
+            color: #ff6b6b;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid rgba(0, 255, 0, 0.4);
+            color: #51cf66;
+        }
+
+        .message.show {
             display: block;
         }
 
@@ -111,114 +127,132 @@
             color: #fff;
         }
 
-        .register-link {
-            display: block;
-            text-align: center;
+        .info-box {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
             color: rgba(255, 255, 255, 0.8);
-            margin-top: 15px;
-            text-decoration: none;
             font-size: 0.9rem;
         }
 
-        .register-link:hover {
+        .info-box strong {
             color: var(--accent-cyan);
-        }
-
-        .divider {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.4);
-            margin: 20px 0 10px 0;
-            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
         <div class="login-box">
-            <h1>⚡ Admin Login</h1>
+            <h1>📝 Criar Conta</h1>
+            <p class="subtitle">Solicite acesso para postar no blog</p>
+            
+            <div class="info-box">
+                <strong>ℹ️ Importante:</strong> Sua conta será criada, mas você precisará aguardar a aprovação de um administrador para poder fazer posts.
+            </div>
             
             <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
             
-            <form id="loginForm">
+            <form id="registerForm">
                 <div class="form-group">
                     <label for="username">Usuário</label>
-                    <input type="text" id="username" name="username" required autocomplete="username">
+                    <input type="text" id="username" name="username" required autocomplete="username" minlength="3">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required autocomplete="email">
                 </div>
                 
                 <div class="form-group">
                     <label for="password">Senha</label>
-                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                    <input type="password" id="password" name="password" required autocomplete="new-password" minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Senha</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password" minlength="6">
                 </div>
                 
-                <button type="submit" class="login-btn" id="loginBtn">Entrar</button>
+                <button type="submit" class="login-btn" id="registerBtn">Criar Conta</button>
             </form>
-
-            <div class="divider">ou</div>
-            <a href="register.html" class="register-link">✨ Criar nova conta</a>
             
-            <a href="index.html" class="back-link">← Voltar ao site</a>
+            <a href="login.html" class="back-link">← Já tem conta? Faça login</a>
         </div>
     </div>
 
     <script>
-        const form = document.getElementById('loginForm');
+        const form = document.getElementById('registerForm');
         const errorMessage = document.getElementById('errorMessage');
-        const loginBtn = document.getElementById('loginBtn');
-
-        // Verificar se já está logado
-        const token = localStorage.getItem('admin_token');
-        if (token) {
-            fetch('/api/verify', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.authenticated) {
-                    window.location.href = 'admin.html';
-                }
-            });
-        }
+        const successMessage = document.getElementById('successMessage');
+        const registerBtn = document.getElementById('registerBtn');
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const username = document.getElementById('username').value;
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
             
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Entrando...';
+            // Validações
+            if (username.length < 3) {
+                showError('O usuário deve ter pelo menos 3 caracteres');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('A senha deve ter pelo menos 6 caracteres');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('As senhas não coincidem');
+                return;
+            }
+            
+            registerBtn.disabled = true;
+            registerBtn.textContent = 'Criando conta...';
             errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
             
             try {
-                const response = await fetch('/api/login', {
+                const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ username, password })
+                    body: JSON.stringify({ username, email, password })
                 });
                 
                 const data = await response.json();
                 
                 if (response.ok && data.success) {
-                    localStorage.setItem('admin_token', data.token);
-                    localStorage.setItem('admin_user', JSON.stringify(data.user));
-                    window.location.href = 'admin.html';
+                    successMessage.textContent = '✓ Conta criada com sucesso! Aguarde a aprovação do administrador.';
+                    successMessage.classList.add('show');
+                    form.reset();
+                    
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 3000);
                 } else {
-                    errorMessage.textContent = data.error || 'Erro ao fazer login';
-                    errorMessage.classList.add('show');
+                    showError(data.error || 'Erro ao criar conta');
                 }
             } catch (error) {
                 console.error('Erro:', error);
-                errorMessage.textContent = 'Erro de conexão. Tente novamente.';
-                errorMessage.classList.add('show');
+                showError('Erro de conexão. Tente novamente.');
             } finally {
-                loginBtn.disabled = false;
-                loginBtn.textContent = 'Entrar';
+                registerBtn.disabled = false;
+                registerBtn.textContent = 'Criar Conta';
             }
         });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+        }
     </script>
 </body>
 </html>
