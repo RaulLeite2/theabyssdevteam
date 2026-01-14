@@ -611,26 +611,49 @@ async function loadBlogPosts() {
     if (!container) return;
     
     try {
-        const response = await fetch('/api/posts');
-        const data = await response.json();
+        // Lista de posts disponíveis (adicione mais conforme criar novos posts)
+        const postFiles = ['post1', 'post2', 'post3'];
+        const posts = [];
         
-        if (!data.posts || data.posts.length === 0) {
+        // Carregar metadados de cada post
+        for (const postFile of postFiles) {
+            try {
+                const metaResponse = await fetch(`/posts/${postFile}.json`);
+                const metadata = await metaResponse.json();
+                
+                posts.push({
+                    id: postFile,
+                    title: metadata.title,
+                    author: metadata.author,
+                    date: metadata.date,
+                    excerpt: metadata.excerpt,
+                    htmlFile: `/posts/${postFile}.html`
+                });
+            } catch (error) {
+                console.error(`Erro ao carregar ${postFile}:`, error);
+            }
+        }
+        
+        if (posts.length === 0) {
             container.innerHTML = '<div class="no-posts">Nenhum post publicado ainda. Em breve teremos novidades! 🚀</div>';
             return;
         }
         
+        // Ordenar por data (mais recentes primeiro)
+        posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
         // Mostrar apenas os 3 posts mais recentes
-        const recentPosts = data.posts.slice(0, 3);
+        const recentPosts = posts.slice(0, 3);
         
         container.innerHTML = recentPosts.map(post => `
-            <div class="blog-post-card">
+            <div class="blog-post-card" onclick="window.open('${post.htmlFile}', '_blank')">
                 <h3>${escapeHtml(post.title)}</h3>
                 <div class="blog-post-meta">
                     <span>👤 ${escapeHtml(post.author)}</span>
-                    <span>📅 ${formatDate(post.createdAt)}</span>
+                    <span>📅 ${formatDate(post.date)}</span>
                 </div>
                 <div class="blog-post-content">
-                    ${escapeHtml(post.content).substring(0, 150)}${post.content.length > 150 ? '...' : ''}
+                    ${escapeHtml(post.excerpt)}
                 </div>
                 <span class="blog-post-read-more">Ler mais →</span>
             </div>
@@ -649,8 +672,8 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-function formatDate(timestamp) {
-    const date = new Date(timestamp);
+function formatDate(dateString) {
+    const date = new Date(dateString);
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return date.toLocaleDateString('pt-BR', options);
 }
