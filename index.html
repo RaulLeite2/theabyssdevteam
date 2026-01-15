@@ -145,57 +145,512 @@
 
     </div>
 
-    <!-- SEÇÕES VISUAIS -->
-    <div class="sections">
-
-        <div class="section-card animate-on-scroll">
-            <div class="image-wrapper">
-                <img src="img/projects.png" alt="Projetos">
-                <div class="image-overlay">🎯</div>
-            </div>
-            <div class="section-text">
+    <!-- AUTO-ROTATING TABS SECTIONS - ESTILO JETBRAINS -->
+    <div class="rotating-tabs-section animate-on-scroll">
+        
+        <!-- PROJETOS -->
+        <div class="rotating-section">
+            <div class="section-header">
                 <span class="section-number">01</span>
-                <h3>Projetos</h3>
-                <p>Aplicações, bots e sistemas criados do zero, focados em performance e identidade.</p>
-                <ul class="feature-list">
-                    <li>✓ Código otimizado</li>
-                    <li>✓ Arquitetura escalável</li>
-                    <li>✓ Documentação completa</li>
-                </ul>
+                <h2>Projetos</h2>
+                <p class="section-subtitle">Aplicações que fazem a diferença</p>
+            </div>
+            
+            <div class="rotating-tabs-container">
+                <div class="tabs-navigation">
+                    <button class="tab-btn active" data-section="projects" data-tab="discord-bots">
+                        <span class="tab-icon">🤖</span>
+                        <span class="tab-label">Discord Bots</span>
+                    </button>
+                    <button class="tab-btn" data-section="projects" data-tab="web-apps">
+                        <span class="tab-icon">🌐</span>
+                        <span class="tab-label">Web Apps</span>
+                    </button>
+                    <button class="tab-btn" data-section="projects" data-tab="automation">
+                        <span class="tab-icon">⚡</span>
+                        <span class="tab-label">Automação</span>
+                    </button>
+                    <button class="tab-btn" data-section="projects" data-tab="custom">
+                        <span class="tab-icon">🎯</span>
+                        <span class="tab-label">Customizado</span>
+                    </button>
+                </div>
+                
+                <div class="tabs-content-wrapper">
+                    <div class="tab-content-item active" data-content="discord-bots">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="code-preview">
+                                    <div class="code-header">
+                                        <span class="file-icon">📄</span>
+                                        <span>bot.py</span>
+                                    </div>
+                                    <pre><code>@bot.command()
+async def status(ctx):
+    """Sistema de status avançado"""
+    embed = discord.Embed(
+        title="⚡ Status do Servidor",
+        color=0x00ff00
+    )
+    embed.add_field(
+        name="Uptime",
+        value=get_uptime()
+    )
+    await ctx.send(embed=embed)</code></pre>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Bots Discord Profissionais</h3>
+                                <p>Criamos bots personalizados com comandos avançados, sistemas de moderação, economia, música e muito mais.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> Comandos Slash modernos</li>
+                                    <li><span class="check-icon">✓</span> Sistema de permissões</li>
+                                    <li><span class="check-icon">✓</span> Integração com APIs</li>
+                                    <li><span class="check-icon">✓</span> Dashboard web integrado</li>
+                                </ul>
+                                <div class="tech-badges">
+                                    <span class="tech-badge">Discord.py</span>
+                                    <span class="tech-badge">Python</span>
+                                    <span class="tech-badge">PostgreSQL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content-item" data-content="web-apps">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="browser-mockup">
+                                    <div class="browser-header">
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div class="browser-content">
+                                        <div class="app-preview">
+                                            <div class="app-sidebar">
+                                                <div class="sidebar-item">📊 Dashboard</div>
+                                                <div class="sidebar-item">👥 Usuários</div>
+                                                <div class="sidebar-item">⚙️ Config</div>
+                                            </div>
+                                            <div class="app-main">
+                                                <div class="stat-box">1.2K</div>
+                                                <div class="stat-box">89%</div>
+                                                <div class="stat-box">342</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Aplicações Web Modernas</h3>
+                                <p>Desenvolvemos plataformas web completas com design responsivo, APIs RESTful e arquitetura escalável.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> Interface responsiva</li>
+                                    <li><span class="check-icon">✓</span> APIs REST/GraphQL</li>
+                                    <li><span class="check-icon">✓</span> Autenticação segura</li>
+                                    <li><span class="check-icon">✓</span> Real-time updates</li>
+                                </ul>
+                                <div class="tech-badges">
+                                    <span class="tech-badge">React</span>
+                                    <span class="tech-badge">Node.js</span>
+                                    <span class="tech-badge">TypeScript</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content-item" data-content="automation">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="automation-diagram">
+                                    <div class="automation-step">
+                                        <div class="step-icon">📥</div>
+                                        <div class="step-label">Input</div>
+                                    </div>
+                                    <div class="automation-arrow">→</div>
+                                    <div class="automation-step">
+                                        <div class="step-icon">⚙️</div>
+                                        <div class="step-label">Process</div>
+                                    </div>
+                                    <div class="automation-arrow">→</div>
+                                    <div class="automation-step">
+                                        <div class="step-icon">📤</div>
+                                        <div class="step-label">Output</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Automação Inteligente</h3>
+                                <p>Scripts e sistemas que automatizam tarefas repetitivas, economizando tempo e reduzindo erros.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> Web scraping avançado</li>
+                                    <li><span class="check-icon">✓</span> Processamento de dados</li>
+                                    <li><span class="check-icon">✓</span> Agendamento de tarefas</li>
+                                    <li><span class="check-icon">✓</span> Notificações automáticas</li>
+                                </ul>
+                                <div class="tech-badges">
+                                    <span class="tech-badge">Python</span>
+                                    <span class="tech-badge">Selenium</span>
+                                    <span class="tech-badge">Cron</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content-item" data-content="custom">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="custom-grid">
+                                    <div class="custom-card">💡 Ideias</div>
+                                    <div class="custom-card">🎨 Design</div>
+                                    <div class="custom-card">⚡ Código</div>
+                                    <div class="custom-card">🚀 Deploy</div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Soluções Personalizadas</h3>
+                                <p>Desenvolvemos projetos sob medida para atender necessidades específicas do seu negócio.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> Análise de requisitos</li>
+                                    <li><span class="check-icon">✓</span> Arquitetura customizada</li>
+                                    <li><span class="check-icon">✓</span> Integração com sistemas</li>
+                                    <li><span class="check-icon">✓</span> Suporte dedicado</li>
+                                </ul>
+                                <div class="tech-badges">
+                                    <span class="tech-badge">Flexible</span>
+                                    <span class="tech-badge">Scalable</span>
+                                    <span class="tech-badge">Custom</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="section-card reverse animate-on-scroll">
-            <div class="image-wrapper">
-                <img src="img/tech.png" alt="Tecnologias">
-                <div class="image-overlay">⚙️</div>
-            </div>
-            <div class="section-text">
+        <!-- TECNOLOGIA -->
+        <div class="rotating-section">
+            <div class="section-header">
                 <span class="section-number">02</span>
-                <h3>Tecnologia</h3>
-                <p>Backend sólido, frontend animado e decisões técnicas bem pensadas.</p>
-                <ul class="feature-list">
-                    <li>✓ Stack moderna</li>
-                    <li>✓ Performance máxima</li>
-                    <li>✓ Segurança em primeiro lugar</li>
-                </ul>
+                <h2>Tecnologia</h2>
+                <p class="section-subtitle">Stack moderna para soluções de ponta</p>
+            </div>
+            
+            <div class="rotating-tabs-container">
+                <div class="tabs-navigation">
+                    <button class="tab-btn active" data-section="tech" data-tab="backend">
+                        <span class="tab-icon">🔧</span>
+                        <span class="tab-label">Backend</span>
+                    </button>
+                    <button class="tab-btn" data-section="tech" data-tab="frontend">
+                        <span class="tab-icon">🎨</span>
+                        <span class="tab-label">Frontend</span>
+                    </button>
+                    <button class="tab-btn" data-section="tech" data-tab="devops">
+                        <span class="tab-icon">🐳</span>
+                        <span class="tab-label">DevOps</span>
+                    </button>
+                    <button class="tab-btn" data-section="tech" data-tab="database">
+                        <span class="tab-icon">🗄️</span>
+                        <span class="tab-label">Database</span>
+                    </button>
+                </div>
+                
+                <div class="tabs-content-wrapper">
+                    <div class="tab-content-item active" data-content="backend">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="tech-showcase">
+                                    <div class="tech-item">
+                                        <div class="tech-logo">🐍</div>
+                                        <div class="tech-name">Python</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 95%"></div></div>
+                                    </div>
+                                    <div class="tech-item">
+                                        <div class="tech-logo">🟢</div>
+                                        <div class="tech-name">Node.js</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 90%"></div></div>
+                                    </div>
+                                    <div class="tech-item">
+                                        <div class="tech-logo">⚡</div>
+                                        <div class="tech-name">FastAPI</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 88%"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Backend Robusto</h3>
+                                <p>Construímos APIs escaláveis e performáticas com as melhores tecnologias do mercado.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> APIs RESTful e GraphQL</li>
+                                    <li><span class="check-icon">✓</span> Microserviços</li>
+                                    <li><span class="check-icon">✓</span> WebSockets em tempo real</li>
+                                    <li><span class="check-icon">✓</span> Autenticação JWT</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content-item" data-content="frontend">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="tech-showcase">
+                                    <div class="tech-item">
+                                        <div class="tech-logo">⚛️</div>
+                                        <div class="tech-name">React</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 92%"></div></div>
+                                    </div>
+                                    <div class="tech-item">
+                                        <div class="tech-logo">🎨</div>
+                                        <div class="tech-name">Tailwind CSS</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 90%"></div></div>
+                                    </div>
+                                    <div class="tech-item">
+                                        <div class="tech-logo">📘</div>
+                                        <div class="tech-name">TypeScript</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 87%"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Frontend Moderno</h3>
+                                <p>Interfaces elegantes e responsivas que proporcionam experiências incríveis aos usuários.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> Design responsivo</li>
+                                    <li><span class="check-icon">✓</span> Performance otimizada</li>
+                                    <li><span class="check-icon">✓</span> Animações fluidas</li>
+                                    <li><span class="check-icon">✓</span> Acessibilidade (a11y)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content-item" data-content="devops">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="tech-showcase">
+                                    <div class="tech-item">
+                                        <div class="tech-logo">🐳</div>
+                                        <div class="tech-name">Docker</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 85%"></div></div>
+                                    </div>
+                                    <div class="tech-item">
+                                        <div class="tech-logo">☸️</div>
+                                        <div class="tech-name">Kubernetes</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 75%"></div></div>
+                                    </div>
+                                    <div class="tech-item">
+                                        <div class="tech-logo">🔄</div>
+                                        <div class="tech-name">CI/CD</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 88%"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>DevOps & Deploy</h3>
+                                <p>Infraestrutura como código e deploy automatizado para máxima eficiência.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> Containerização</li>
+                                    <li><span class="check-icon">✓</span> Orquestração</li>
+                                    <li><span class="check-icon">✓</span> Pipeline CI/CD</li>
+                                    <li><span class="check-icon">✓</span> Monitoramento</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content-item" data-content="database">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="tech-showcase">
+                                    <div class="tech-item">
+                                        <div class="tech-logo">🐘</div>
+                                        <div class="tech-name">PostgreSQL</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 90%"></div></div>
+                                    </div>
+                                    <div class="tech-item">
+                                        <div class="tech-logo">🔴</div>
+                                        <div class="tech-name">Redis</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 85%"></div></div>
+                                    </div>
+                                    <div class="tech-item">
+                                        <div class="tech-logo">🍃</div>
+                                        <div class="tech-name">MongoDB</div>
+                                        <div class="tech-bar"><div class="tech-progress" style="width: 80%"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Database Management</h3>
+                                <p>Soluções de armazenamento otimizadas para performance e escalabilidade.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> SQL e NoSQL</li>
+                                    <li><span class="check-icon">✓</span> Cache estratégico</li>
+                                    <li><span class="check-icon">✓</span> Backup automático</li>
+                                    <li><span class="check-icon">✓</span> Otimização de queries</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="section-card animate-on-scroll">
-            <div class="image-wrapper">
-                <img src="img/philosophy.png" alt="Filosofia">
-                <div class="image-overlay">🧠</div>
-            </div>
-            <div class="section-text">
+        <!-- FILOSOFIA -->
+        <div class="rotating-section">
+            <div class="section-header">
                 <span class="section-number">03</span>
-                <h3>Filosofia</h3>
-                <p>Não seguimos tendências. Criamos soluções que fazem sentido e duram.</p>
-                <ul class="feature-list">
-                    <li>✓ Qualidade acima de tudo</li>
-                    <li>✓ Inovação constante</li>
-                    <li>✓ Resultados mensuráveis</li>
-                </ul>
+                <h2>Filosofia</h2>
+                <p class="section-subtitle">Nossos princípios e valores</p>
+            </div>
+            
+            <div class="rotating-tabs-container">
+                <div class="tabs-navigation">
+                    <button class="tab-btn active" data-section="philosophy" data-tab="quality">
+                        <span class="tab-icon">💎</span>
+                        <span class="tab-label">Qualidade</span>
+                    </button>
+                    <button class="tab-btn" data-section="philosophy" data-tab="innovation">
+                        <span class="tab-icon">🚀</span>
+                        <span class="tab-label">Inovação</span>
+                    </button>
+                    <button class="tab-btn" data-section="philosophy" data-tab="code">
+                        <span class="tab-icon">📝</span>
+                        <span class="tab-label">Clean Code</span>
+                    </button>
+                    <button class="tab-btn" data-section="philosophy" data-tab="results">
+                        <span class="tab-icon">🎯</span>
+                        <span class="tab-label">Resultados</span>
+                    </button>
+                </div>
+                
+                <div class="tabs-content-wrapper">
+                    <div class="tab-content-item active" data-content="quality">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="philosophy-visual">
+                                    <div class="quality-meter">
+                                        <div class="meter-label">Code Quality</div>
+                                        <div class="meter-circle">
+                                            <svg viewBox="0 0 100 100">
+                                                <circle cx="50" cy="50" r="45" fill="none" stroke="#333" stroke-width="8"/>
+                                                <circle cx="50" cy="50" r="45" fill="none" stroke="#00ff88" stroke-width="8" 
+                                                        stroke-dasharray="283" stroke-dashoffset="28" 
+                                                        transform="rotate(-90 50 50)"/>
+                                            </svg>
+                                            <div class="meter-value">90%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Qualidade Acima de Tudo</h3>
+                                <p>Não entregamos código funcional. Entregamos código excelente, testado e documentado.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> Code review rigoroso</li>
+                                    <li><span class="check-icon">✓</span> Testes automatizados</li>
+                                    <li><span class="check-icon">✓</span> Documentação completa</li>
+                                    <li><span class="check-icon">✓</span> Padrões de código</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content-item" data-content="innovation">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="philosophy-visual">
+                                    <div class="innovation-grid">
+                                        <div class="innovation-item">💡 Ideias</div>
+                                        <div class="innovation-item">🔬 Pesquisa</div>
+                                        <div class="innovation-item">⚡ Implementação</div>
+                                        <div class="innovation-item">🚀 Inovação</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Inovação Constante</h3>
+                                <p>Sempre buscamos novas tecnologias e metodologias para entregar o melhor resultado.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> Tecnologias de ponta</li>
+                                    <li><span class="check-icon">✓</span> Experimentos controlados</li>
+                                    <li><span class="check-icon">✓</span> Aprendizado contínuo</li>
+                                    <li><span class="check-icon">✓</span> Melhoria incremental</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content-item" data-content="code">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="code-principles">
+                                    <div class="principle-item">
+                                        <div class="principle-icon">📖</div>
+                                        <div class="principle-text">Legível</div>
+                                    </div>
+                                    <div class="principle-item">
+                                        <div class="principle-icon">🔧</div>
+                                        <div class="principle-text">Manutenível</div>
+                                    </div>
+                                    <div class="principle-item">
+                                        <div class="principle-icon">⚡</div>
+                                        <div class="principle-text">Performático</div>
+                                    </div>
+                                    <div class="principle-item">
+                                        <div class="principle-icon">🛡️</div>
+                                        <div class="principle-text">Seguro</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Clean Code</h3>
+                                <p>Seguimos os princípios SOLID e boas práticas para código limpo e sustentável.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> Princípios SOLID</li>
+                                    <li><span class="check-icon">✓</span> Design Patterns</li>
+                                    <li><span class="check-icon">✓</span> Refatoração constante</li>
+                                    <li><span class="check-icon">✓</span> Nomenclatura clara</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content-item" data-content="results">
+                        <div class="content-grid">
+                            <div class="content-visual">
+                                <div class="results-dashboard">
+                                    <div class="result-metric">
+                                        <div class="metric-icon">📈</div>
+                                        <div class="metric-value">+150%</div>
+                                        <div class="metric-label">Performance</div>
+                                    </div>
+                                    <div class="result-metric">
+                                        <div class="metric-icon">⏱️</div>
+                                        <div class="metric-value">-60%</div>
+                                        <div class="metric-label">Tempo</div>
+                                    </div>
+                                    <div class="result-metric">
+                                        <div class="metric-icon">💰</div>
+                                        <div class="metric-value">-40%</div>
+                                        <div class="metric-label">Custos</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-info">
+                                <h3>Foco em Resultados</h3>
+                                <p>Entregamos soluções que agregam valor mensurável ao seu negócio.</p>
+                                <ul class="feature-checklist">
+                                    <li><span class="check-icon">✓</span> Métricas claras</li>
+                                    <li><span class="check-icon">✓</span> ROI mensurável</li>
+                                    <li><span class="check-icon">✓</span> Impacto real</li>
+                                    <li><span class="check-icon">✓</span> Evolução contínua</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -684,3 +684,111 @@ if (document.readyState === 'loading') {
 } else {
     loadBlogPosts();
 }
+
+// ============================================
+// AUTO-ROTATING TABS - ESTILO JETBRAINS
+// ============================================
+
+class RotatingTabs {
+    constructor(section, autoRotateInterval = 5000) {
+        this.section = section;
+        this.buttons = section.querySelectorAll('.tab-btn');
+        this.contents = section.querySelectorAll('.tab-content-item');
+        this.autoRotateInterval = autoRotateInterval;
+        this.currentIndex = 0;
+        this.isPaused = false;
+        this.intervalId = null;
+        
+        this.init();
+    }
+    
+    init() {
+        // Event listeners para os botões
+        this.buttons.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                this.switchTab(index);
+                this.pauseAutoRotate();
+            });
+            
+            // Pausa a rotação quando hover no botão
+            btn.addEventListener('mouseenter', () => this.pauseAutoRotate());
+            btn.addEventListener('mouseleave', () => this.resumeAutoRotate());
+        });
+        
+        // Pausa quando hover no conteúdo
+        this.contents.forEach(content => {
+            content.addEventListener('mouseenter', () => this.pauseAutoRotate());
+            content.addEventListener('mouseleave', () => this.resumeAutoRotate());
+        });
+        
+        // Inicia a rotação automática
+        this.startAutoRotate();
+    }
+    
+    switchTab(index) {
+        // Remove active de todos
+        this.buttons.forEach(btn => btn.classList.remove('active'));
+        this.contents.forEach(content => content.classList.remove('active'));
+        
+        // Adiciona active no selecionado
+        this.buttons[index].classList.add('active');
+        this.contents[index].classList.add('active');
+        
+        this.currentIndex = index;
+    }
+    
+    nextTab() {
+        const nextIndex = (this.currentIndex + 1) % this.buttons.length;
+        this.switchTab(nextIndex);
+    }
+    
+    startAutoRotate() {
+        if (this.intervalId) return;
+        
+        this.intervalId = setInterval(() => {
+            if (!this.isPaused) {
+                this.nextTab();
+            }
+        }, this.autoRotateInterval);
+    }
+    
+    pauseAutoRotate() {
+        this.isPaused = true;
+    }
+    
+    resumeAutoRotate() {
+        this.isPaused = false;
+    }
+    
+    stopAutoRotate() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
+    }
+}
+
+// Inicializa todas as seções de rotating tabs
+document.addEventListener('DOMContentLoaded', () => {
+    const rotatingSections = document.querySelectorAll('.rotating-section');
+    
+    rotatingSections.forEach(section => {
+        new RotatingTabs(section, 5000); // 5 segundos por tab
+    });
+});
+
+// Pausa a rotação quando a aba não está visível
+document.addEventListener('visibilitychange', () => {
+    const rotatingSections = document.querySelectorAll('.rotating-section');
+    
+    rotatingSections.forEach(section => {
+        const buttons = section.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => {
+            if (document.hidden) {
+                btn.dispatchEvent(new Event('mouseenter'));
+            } else {
+                btn.dispatchEvent(new Event('mouseleave'));
+            }
+        });
+    });
+});
