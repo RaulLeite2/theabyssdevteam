@@ -17,30 +17,46 @@ window.addEventListener('load', () => {
 const tabs = document.querySelectorAll('.tab-link');
 const contents = document.querySelectorAll('.tab-content');
 
+// Função para mudar de aba
+function switchToTab(target) {
+    // Remove active de tudo
+    tabs.forEach(t => t.classList.remove('active'));
+    contents.forEach(c => c.classList.remove('active'));
+
+    // Ativa a aba
+    const targetTab = document.querySelector(`.tab-link[data-tab="${target}"]`);
+    if (targetTab) targetTab.classList.add('active');
+    
+    const targetContent = document.getElementById(target);
+    if (targetContent) targetContent.classList.add('active');
+    
+    // Scroll suave para o topo
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Fecha o menu mobile se estiver aberto
+    const nav = document.getElementById('mainNav');
+    const toggle = document.getElementById('mobileMenuToggle');
+    if (nav && toggle) {
+        nav.classList.remove('active');
+        toggle.classList.remove('active');
+    }
+}
+
 tabs.forEach(tab => {
     tab.addEventListener('click', (e) => {
         e.preventDefault();
         const target = tab.dataset.tab;
-
-        // Remove active de tudo
-        tabs.forEach(t => t.classList.remove('active'));
-        contents.forEach(c => c.classList.remove('active'));
-
-        // Ativa a aba clicada
-        tab.classList.add('active');
-        document.getElementById(target).classList.add('active');
-        
-        // Scroll suave para o topo
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        
-        // Fecha o menu mobile se estiver aberto
-        const nav = document.getElementById('mainNav');
-        const toggle = document.getElementById('mobileMenuToggle');
-        if (nav && toggle) {
-            nav.classList.remove('active');
-            toggle.classList.remove('active');
-        }
+        switchToTab(target);
     });
+});
+
+// Botões de CTA que levam para outras abas
+document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-tab]') && !e.target.classList.contains('tab-link')) {
+        e.preventDefault();
+        const target = e.target.closest('[data-tab]').dataset.tab;
+        switchToTab(target);
+    }
 });
 
 // ============================================

@@ -240,6 +240,317 @@ nav ul li a.active::after, nav ul li a:hover::after {
     opacity: 0.9;
 }
 
+/* ============================================
+   HERO ESTILO PYCHARM
+   ============================================ */
+
+.hero-pycharm {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 40px 20px;
+}
+
+/* Formas orgânicas de fundo */
+.hero-shapes {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.6;
+    animation: float 20s ease-in-out infinite;
+}
+
+.shape-1 {
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #4a5f3d 0%, transparent 70%);
+    top: -10%;
+    right: -5%;
+    animation-delay: 0s;
+}
+
+.shape-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #3d6e4a 0%, transparent 70%);
+    top: 15%;
+    right: 10%;
+    animation-delay: -5s;
+}
+
+.shape-3 {
+    width: 550px;
+    height: 550px;
+    background: radial-gradient(circle, #00bfa5 0%, transparent 70%);
+    top: 25%;
+    right: 5%;
+    animation-delay: -10s;
+}
+
+.shape-4 {
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, #c6ff00 0%, transparent 70%);
+    top: 40%;
+    right: 15%;
+    animation-delay: -15s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(-20px, 20px) scale(1.05);
+    }
+    50% {
+        transform: translate(10px, -15px) scale(0.95);
+    }
+    75% {
+        transform: translate(-15px, 10px) scale(1.02);
+    }
+}
+
+/* Content wrapper */
+.hero-content-wrapper {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: center;
+    width: 100%;
+}
+
+/* Seção de texto */
+.hero-text-section {
+    text-align: left;
+    padding-left: 60px;
+}
+
+.hero-brand {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.hero-main-title {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 30px;
+    color: #fff;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 40px;
+    max-width: 600px;
+}
+
+.hero-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #00bfa5 0%, #00acc1 100%);
+    color: white;
+    padding: 18px 45px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 191, 165, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 191, 165, 0.5);
+    background: linear-gradient(135deg, #00acc1 0%, #00bfa5 100%);
+}
+
+.hero-note {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+/* Logo flutuante */
+.hero-logo-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.floating-logo {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: floatLogo 6s ease-in-out infinite;
+}
+
+@keyframes floatLogo {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.logo-bg-gradient {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, 
+        rgba(0, 191, 165, 0.3) 0%,
+        rgba(198, 255, 0, 0.2) 35%,
+        rgba(0, 188, 212, 0.15) 70%,
+        transparent 100%);
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.logo-symbol {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 6rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+    z-index: 2;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .hero-main-title {
+        font-size: 3rem;
+    }
+    
+    .hero-content-wrapper {
+        gap: 40px;
+    }
+    
+    .floating-logo {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .logo-symbol {
+        width: 150px;
+        height: 150px;
+        font-size: 4rem;
+    }
+}
+
+@media (max-width: 968px) {
+    .hero-pycharm {
+        min-height: auto;
+        padding: 60px 20px;
+    }
+    
+    .hero-content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+    
+    .hero-text-section {
+        padding-left: 20px;
+        text-align: center;
+    }
+    
+    .hero-main-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+        max-width: 100%;
+    }
+    
+    .hero-cta {
+        align-items: center;
+    }
+    
+    .hero-shapes {
+        width: 100%;
+        opacity: 0.3;
+    }
+    
+    .floating-logo {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .logo-symbol {
+        width: 120px;
+        height: 120px;
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-main-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .btn-primary {
+        padding: 14px 35px;
+        font-size: 1rem;
+    }
+}
+
 /* SEÇÕES */
 .sections {
     display: flex;
