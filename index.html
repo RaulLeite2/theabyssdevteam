@@ -34,6 +34,7 @@
     <meta name="theme-color" content="#0f0c29">
     
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth-dashboard.css">
 </head>
 <body>
     <!-- Loading Screen -->
@@ -60,34 +61,43 @@
         <div class="scroll-progress"></div>
     </div>
 
-<header class="glassmorphism">
+<header class="glassmorphism" role="banner">
     <div class="header-content">
-        <h1>
-            <span class="logo-icon">⚡</span>
-            The Abyss Dev Team
-            <span class="badge-premium">ELITE</span>
-        </h1>
+        <!-- Logo/Brand - Esquerda -->
+        <div class="header-brand">
+            <a href="#" class="brand-link tab-link" data-tab="home" aria-label="The Abyss Dev Team - Home">
+                <span class="logo-icon" aria-hidden="true">⚡</span>
+                <span class="brand-name">The Abyss</span>
+                <span class="badge-premium" aria-label="Elite">ELITE</span>
+            </a>
+        </div>
         
-        <!-- Theme Toggle -->
-        <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
-            <span class="theme-icon">🌙</span>
-        </button>
-        
-        <!-- Mobile Menu Toggle -->
-        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        
-        <nav id="mainNav">
+        <!-- Navegação - Direita -->
+        <nav id="mainNav" class="header-nav" role="navigation" aria-label="Navegação principal">
             <ul>
-                <li><a href="#" class="tab-link active" data-tab="home">Home</a></li>
+                <li><a href="#" class="tab-link active" data-tab="home" aria-current="page">Home</a></li>
                 <li><a href="#" class="tab-link" data-tab="projects">Projetos</a></li>
-                <li><a href="#" class="tab-link" data-tab="members">Membros</a></li>
+                <li><a href="#" class="tab-link" data-tab="about">Sobre</a></li>
+                <li><a href="#" class="tab-link" data-tab="members">Equipe</a></li>
                 <li><a href="#" class="tab-link" data-tab="contact">Contato</a></li>
             </ul>
         </nav>
+        
+        <!-- Actions - Extrema Direita -->
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro">
+                <span class="theme-icon" aria-hidden="true">🌙</span>
+            </button>
+            <button class="btn-login" id="loginBtn" aria-label="Fazer login">
+                <span class="login-icon" aria-hidden="true">👤</span>
+                <span class="login-text">Entrar</span>
+            </button>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
     </div>
 </header>
 
@@ -924,8 +934,74 @@ async def status(ctx):
 
 </section>
 
+<!-- DASHBOARD (Área Logada) -->
+<section id="dashboard" class="tab-content dashboard-section" style="display: none;">
+    <div class="dashboard-header">
+        <h2 class="section-title">Dashboard</h2>
+        <button class="btn-logout" id="logoutBtn">
+            <span>🚪</span> Sair
+        </button>
+    </div>
+    
+    <div class="dashboard-grid">
+        <div class="dashboard-card profile-card">
+            <h3>👤 Perfil</h3>
+            <div class="profile-info">
+                <div class="profile-avatar">
+                    <span class="avatar-placeholder">👤</span>
+                </div>
+                <div class="profile-details">
+                    <h4 id="dashboardUserName">Usuário</h4>
+                    <p id="dashboardUserEmail">email@exemplo.com</p>
+                    <span class="profile-badge">🌟 Membro</span>
+                </div>
+            </div>
+            <button class="btn-secondary">Editar Perfil</button>
+        </div>
+        
+        <div class="dashboard-card stats-card">
+            <h3>📊 Estatísticas</h3>
+            <div class="stats-list">
+                <div class="stat-item">
+                    <span class="stat-label">Projetos Salvos</span>
+                    <span class="stat-value" id="savedProjects">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Últi access</span>
+                    <span class="stat-value" id="lastAccess">Agora</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Dias ativo</span>
+                    <span class="stat-value" id="activeDays">1</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-card activity-card">
+            <h3>⚡ Atividade Recente</h3>
+            <div class="activity-list" id="recentActivity">
+                <div class="activity-item">
+                    <span class="activity-icon">✓</span>
+                    <div class="activity-details">
+                        <p>Conta criada com sucesso</p>
+                        <span class="activity-time">Agora</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-card projects-card">
+            <h3>🚀 Meus Projetos</h3>
+            <div class="saved-projects" id="userProjects">
+                <p class="empty-state">Nenhum projeto salvo ainda</p>
+            </div>
+            <button class="btn-primary">Explorar Projetos</button>
+        </div>
+    </div>
+</section>
+
 <!-- PROJETOS -->
-<section id="projects" class="tab-content">
+<section id="projects" class="tab-content" role="main">
     <h2 class="section-title">Nossos Projetos</h2>
     <p class="section-subtitle">Criando experiências que fazem a diferença</p>
 
@@ -965,17 +1041,239 @@ async def status(ctx):
 </section>
 
 <!-- Modal de Projetos -->
-<div class="modal-overlay" id="projectModal">
+<div class="modal-overlay" id="projectModal" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-content">
-        <button class="modal-close" id="modalClose">&times;</button>
+        <button class="modal-close" id="modalClose" aria-label="Fechar modal">&times;</button>
         <div class="modal-body" id="modalBody">
             <!-- Conteúdo dinâmico -->
         </div>
     </div>
 </div>
 
+<!-- Modal de Login/Cadastro -->
+<div class="modal-overlay" id="authModal" role="dialog" aria-labelledby="authModalTitle" aria-hidden="true">
+    <div class="modal-content auth-modal">
+        <button class="modal-close" id="authModalClose" aria-label="Fechar">&times;</button>
+        
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-auth-tab="login" aria-label="Aba de login">Login</button>
+            <button class="auth-tab" data-auth-tab="register" aria-label="Aba de cadastro">Cadastro</button>
+        </div>
+        
+        <!-- Login Form -->
+        <div class="auth-form-container active" id="loginForm">
+            <h2 id="authModalTitle">Bem-vindo de volta</h2>
+            <p class="auth-subtitle">Entre para acessar sua área exclusiva</p>
+            
+            <form class="auth-form" id="loginFormElement">
+                <div class="form-group">
+                    <label for="loginEmail">E-mail</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="seu@email.com" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Senha</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember" aria-label="Lembrar de mim">
+                        <span>Lembrar de mim</span>
+                    </label>
+                    <button type="button" class="link-btn" id="forgotPasswordBtn">Esqueci minha senha</button>
+                </div>
+                <button type="submit" class="btn-primary" aria-label="Fazer login">Entrar</button>
+            </form>
+            
+            <div class="auth-divider">
+                <span>ou continue com</span>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-btn discord-btn" aria-label="Entrar com Discord">
+                    <span>💬</span> Discord
+                </button>
+                <button class="social-btn github-btn" aria-label="Entrar com GitHub">
+                    <span>🐙</span> GitHub
+                </button>
+            </div>
+        </div>
+        
+        <!-- Register Form -->
+        <div class="auth-form-container" id="registerForm">
+            <h2>Criar conta</h2>
+            <p class="auth-subtitle">Junte-se à comunidade Abyss</p>
+            
+            <form class="auth-form" id="registerFormElement">
+                <div class="form-group">
+                    <label for="registerName">Nome completo</label>
+                    <input type="text" id="registerName" name="name" placeholder="Seu nome" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">E-mail</label>
+                    <input type="email" id="registerEmail" name="email" placeholder="seu@email.com" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Senha</label>
+                    <input type="password" id="registerPassword" name="password" placeholder="Mínimo 8 caracteres" required autocomplete="new-password" minlength="8">
+                </div>
+                <div class="form-group">
+                    <label for="registerPasswordConfirm">Confirmar senha</label>
+                    <input type="password" id="registerPasswordConfirm" name="passwordConfirm" placeholder="Digite a senha novamente" required autocomplete="new-password" minlength="8">
+                </div>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="terms" required aria-label="Aceitar termos">
+                    <span>Aceito os <a href="#" class="link">termos de uso</a> e <a href="#" class="link">política de privacidade</a></span>
+                </label>
+                <button type="submit" class="btn-primary" aria-label="Criar conta">Criar Conta</button>
+            </form>
+            
+            <div class="auth-divider">
+                <span>ou cadastre-se com</span>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-btn discord-btn" aria-label="Cadastrar com Discord">
+                    <span>💬</span> Discord
+                </button>
+                <button class="social-btn github-btn" aria-label="Cadastrar com GitHub">
+                    <span>🐙</span> GitHub
+                </button>
+            </div>
+        </div>
+        
+        <!-- Forgot Password -->
+        <div class="auth-form-container" id="forgotPasswordForm">
+            <h2>Recuperar senha</h2>
+            <p class="auth-subtitle">Enviaremos um link de recuperação para seu e-mail</p>
+            
+            <form class="auth-form" id="forgotPasswordFormElement">
+                <div class="form-group">
+                    <label for="recoveryEmail">E-mail</label>
+                    <input type="email" id="recoveryEmail" name="email" placeholder="seu@email.com" required autocomplete="email">
+                </div>
+                <button type="submit" class="btn-primary" aria-label="Enviar link de recuperação">Enviar Link</button>
+                <button type="button" class="btn-secondary" id="backToLoginBtn">Voltar ao Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- SOBRE -->
+<section id="about" class="tab-content" role="main">
+    <h2 class="section-title">Sobre a The Abyss</h2>
+    <p class="section-subtitle">Do abismo emergem as melhores soluções</p>
+    
+    <div class="about-hero animate-on-scroll">
+        <div class="about-content">
+            <h3>A História</h3>
+            <p class="lead-text">
+                The Abyss Development Team nasceu de uma visão simples mas poderosa: 
+                <strong>os problemas mais interessantes não vivem na superfície</strong>.
+            </p>
+            <p>
+                Em 2024, Raul Leite fundou a Abyss com uma filosofia clara: mergulhar fundo nos desafios, 
+                resolver com elegância técnica e emergir com soluções que marcam. 
+                O nome "Abyss" representa essa jornada - descemos ao âmago dos problemas para criar 
+                algo verdadeiramente excepcional.
+            </p>
+            <p>
+                Não somos apenas desenvolvedores. Somos engenheiros do caos, arquitetos de sistemas, 
+                criadores de experiências. Cada linha de código carrega nossa assinatura de qualidade.
+            </p>
+        </div>
+        
+        <div class="about-visual">
+            <div class="about-stats-grid">
+                <div class="about-stat">
+                    <div class="stat-value">2024</div>
+                    <div class="stat-label">Fundação</div>
+                </div>
+                <div class="about-stat">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Elite</div>
+                </div>
+                <div class="about-stat">
+                    <div class="stat-value">∞</div>
+                    <div class="stat-label">Possibilidades</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="about-values animate-on-scroll">
+        <h3>Nossa Visão</h3>
+        <div class="values-grid">
+            <div class="value-item">
+                <div class="value-icon">🎯</div>
+                <h4>Excelência Técnica</h4>
+                <p>Código limpo, arquitetura sólida, performance otimizada. Sem meias medidas.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">🚀</div>
+                <h4>Inovação Constante</h4>
+                <p>Sempre explorando novas tecnologias e metodologias para entregar o melhor.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">💎</div>
+                <h4>Qualidade Premium</h4>
+                <p>Design que impressiona, funcionalidades que surpreendem, resultado que marca.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">🤝</div>
+                <h4>Compromisso Real</h4>
+                <p>Seu sucesso é nosso sucesso. Suporte contínuo e evolução constante.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="about-founder animate-on-scroll">
+        <h3>Fundador</h3>
+        <div class="founder-spotlight">
+            <div class="founder-photo-section">
+                <img src="img/rauldp.png" alt="Raul Leite - Fundador da The Abyss" class="founder-photo">
+                <div class="founder-badge">👑 Founder & Lead Developer</div>
+            </div>
+            <div class="founder-bio-section">
+                <h4>Raul "Milk" Leite</h4>
+                <p class="founder-title">Founder · Python Specialist · Backend Architect</p>
+                <p class="founder-description">
+                    Especialista em arquitetura de sistemas e desenvolvimento backend. 
+                    Com anos de experiência em Python, Discord.py e construção de APIs escaláveis, 
+                    Raul lidera a visão técnica e filosófica da Abyss.
+                </p>
+                <p class="founder-quote">
+                    "Código é arte. Mas arte que funciona, escala e resolve problemas reais. 
+                    Essa é a diferença entre um desenvolvedor e um engenheiro."
+                </p>
+                <div class="founder-expertise">
+                    <span class="expertise-tag">Python</span>
+                    <span class="expertise-tag">Discord.py</span>
+                    <span class="expertise-tag">Backend Architecture</span>
+                    <span class="expertise-tag">PostgreSQL</span>
+                    <span class="expertise-tag">System Design</span>
+                    <span class="expertise-tag">API Development</span>
+                </div>
+                <div class="founder-links">
+                    <a href="https://discord.com/users/947849382278094880" target="_blank" class="founder-link discord" aria-label="Discord do fundador">
+                        💬 Discord
+                    </a>
+                    <a href="https://github.com/RaulLeite2" target="_blank" class="founder-link github" aria-label="GitHub do fundador">
+                        🐙 GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="about-join animate-on-scroll">
+        <h3>Junte-se ao Abismo</h3>
+        <p>Procuramos talentos que compartilham nossa paixão por código excepcional e soluções elegantes.</p>
+        <a href="#" class="btn-primary tab-link" data-tab="contact">Entre em Contato</a>
+    </div>
+</section>
+
 <!-- MEMBROS -->
-<section id="members" class="tab-content">
+<section id="members" class="tab-content" role="main">
     <h2 class="section-title">Nossa Equipe</h2>
     <p class="section-subtitle">Pessoas reais. Código real. Resultados reais.</p>
 
@@ -1102,6 +1400,7 @@ async def status(ctx):
 </footer>
 
 <script src="script.js"></script>
+<script src="auth-system.js"></script>
 </body>
 </html>
 
