@@ -1128,13 +1128,27 @@
 
 <!-- PROJETOS -->
 <section id="projects" class="tab-content" role="main">
-    <h2 class="section-title">Nossos Projetos</h2>
-    <p class="section-subtitle">Criando experiências que fazem a diferença</p>
+    <div class="projects-header-section">
+        <h2 class="section-title">Nossos Projetos</h2>
+        <p class="section-subtitle">Criando experiências que fazem a diferença</p>
+    </div>
 
+    <!-- Filtros de Projetos -->
+    <div class="projects-filters">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="live">Live</button>
+        <button class="filter-btn" data-filter="development">Em Desenvolvimento</button>
+        <button class="filter-btn" data-filter="upcoming">Em Breve</button>
+    </div>
+
+    <!-- Grid de Projetos -->
     <div class="project-grid">
-        <div class="project-card featured" data-project="abyss">
-            <div class="project-status live">● Live</div>
-            <div class="project-icon">🎮</div>
+        <!-- The Abyss -->
+        <div class="project-card featured animate-on-scroll" data-project="abyss" data-category="live">
+            <div class="project-header">
+                <div class="project-status live">● Live</div>
+                <div class="project-icon">🎮</div>
+            </div>
             <h3>The Abyss</h3>
             <p>Bot de Discord de RPG focado na diversão e imersão do servidor.</p>
             <div class="project-tags">
@@ -1143,25 +1157,173 @@
                 <span class="tag">RPG</span>
             </div>
             <div class="project-stats">
-                <span>⭐ Premium</span>
-                <span>👥 Ativo</span>
+                <div class="stat">
+                    <span class="stat-icon">⭐</span>
+                    <span>Premium</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">👥</span>
+                    <span>Ativo</span>
+                </div>
             </div>
             <button class="project-details-btn">Ver Detalhes</button>
         </div>
 
-        <div class="project-card" data-project="luma">
-            <div class="project-status upcoming">● Em Breve</div>
-            <div class="project-icon">🤖</div>
+        <!-- Luma Bot -->
+        <div class="project-card animate-on-scroll" data-project="luma" data-category="development" style="animation-delay: 0.1s">
+            <div class="project-header">
+                <div class="project-status development">● Em Desenvolvimento</div>
+                <div class="project-icon">🤖</div>
+            </div>
             <h3>Luma Bot</h3>
             <p>Bot inspirado na Loritta com múltiplas funções de utilidade.</p>
             <div class="project-tags">
                 <span class="tag">Python</span>
                 <span class="tag">Multi-purpose</span>
+                <span class="tag">PostgreSQL</span>
             </div>
             <div class="project-stats">
-                <span>🚀 Em desenvolvimento</span>
+                <div class="stat">
+                    <span class="stat-icon">🚀</span>
+                    <span>60% Completo</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">💻</span>
+                    <span>80+ Comandos</span>
+                </div>
             </div>
             <button class="project-details-btn">Ver Detalhes</button>
+        </div>
+
+        <!-- Dashboard Web -->
+        <div class="project-card animate-on-scroll" data-project="dashboard" data-category="live" style="animation-delay: 0.2s">
+            <div class="project-header">
+                <div class="project-status live">● Live</div>
+                <div class="project-icon">📊</div>
+            </div>
+            <h3>Dashboard Web</h3>
+            <p>Painel de controle moderno para gerenciamento de projetos e equipe.</p>
+            <div class="project-tags">
+                <span class="tag">HTML/CSS</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">Node.js</span>
+            </div>
+            <div class="project-stats">
+                <div class="stat">
+                    <span class="stat-icon">✨</span>
+                    <span>Novo</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">📈</span>
+                    <span>Analytics</span>
+                </div>
+            </div>
+            <button class="project-details-btn">Ver Detalhes</button>
+        </div>
+
+        <!-- API Custom -->
+        <div class="project-card animate-on-scroll" data-project="api" data-category="development" style="animation-delay: 0.3s">
+            <div class="project-header">
+                <div class="project-status development">● Em Desenvolvimento</div>
+                <div class="project-icon">⚡</div>
+            </div>
+            <h3>API Custom</h3>
+            <p>RESTful API completa com FastAPI para integração de serviços.</p>
+            <div class="project-tags">
+                <span class="tag">Python</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">Redis</span>
+            </div>
+            <div class="project-stats">
+                <div class="stat">
+                    <span class="stat-icon">⚙️</span>
+                    <span>45% Completo</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">🔐</span>
+                    <span>Seguro</span>
+                </div>
+            </div>
+            <button class="project-details-btn">Ver Detalhes</button>
+        </div>
+
+        <!-- Automation Scripts -->
+        <div class="project-card animate-on-scroll" data-project="automation" data-category="live" style="animation-delay: 0.4s">
+            <div class="project-header">
+                <div class="project-status live">● Live</div>
+                <div class="project-icon">🔧</div>
+            </div>
+            <h3>Automation Scripts</h3>
+            <p>Scripts Python para automação de tarefas e processamento de dados.</p>
+            <div class="project-tags">
+                <span class="tag">Python</span>
+                <span class="tag">Selenium</span>
+                <span class="tag">BeautifulSoup</span>
+            </div>
+            <div class="project-stats">
+                <div class="stat">
+                    <span class="stat-icon">🎯</span>
+                    <span>Produção</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">⏱️</span>
+                    <span>Rápido</span>
+                </div>
+            </div>
+            <button class="project-details-btn">Ver Detalhes</button>
+        </div>
+
+        <!-- Web Portfolio -->
+        <div class="project-card animate-on-scroll" data-project="portfolio" data-category="upcoming" style="animation-delay: 0.5s">
+            <div class="project-header">
+                <div class="project-status upcoming">● Em Breve</div>
+                <div class="project-icon">🌐</div>
+            </div>
+            <h3>Web Portfolio</h3>
+            <p>Site de portfólio interativo com design moderno e animações.</p>
+            <div class="project-tags">
+                <span class="tag">React</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Tailwind</span>
+            </div>
+            <div class="project-stats">
+                <div class="stat">
+                    <span class="stat-icon">🎨</span>
+                    <span>Design Pronto</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">📅</span>
+                    <span>Q1 2026</span>
+                </div>
+            </div>
+            <button class="project-details-btn">Ver Detalhes</button>
+        </div>
+    </div>
+
+    <!-- Estatísticas de Projetos -->
+    <div class="projects-stats-section">
+        <h3 class="stats-title">Estatísticas Gerais</h3>
+        <div class="stats-grid-projects">
+            <div class="stat-card-projects">
+                <div class="stat-icon-large">🚀</div>
+                <div class="stat-number">6</div>
+                <div class="stat-label">Projetos Totais</div>
+            </div>
+            <div class="stat-card-projects">
+                <div class="stat-icon-large">✅</div>
+                <div class="stat-number">3</div>
+                <div class="stat-label">Live</div>
+            </div>
+            <div class="stat-card-projects">
+                <div class="stat-icon-large">⚙️</div>
+                <div class="stat-number">2</div>
+                <div class="stat-label">Em Desenvolvimento</div>
+            </div>
+            <div class="stat-card-projects">
+                <div class="stat-icon-large">🎯</div>
+                <div class="stat-number">1</div>
+                <div class="stat-label">Planejado</div>
+            </div>
         </div>
     </div>
 </section>

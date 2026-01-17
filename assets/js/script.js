@@ -808,3 +808,33 @@ document.addEventListener('visibilitychange', () => {
         });
     });
 });
+
+// ============================================
+// FILTROS DE PROJETOS
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active de todos os botões
+            filterBtns.forEach(b => b.classList.remove('active'));
+            // Adiciona active ao botão clicado
+            btn.classList.add('active');
+            
+            const filter = btn.dataset.filter;
+            
+            projectCards.forEach(card => {
+                const category = card.dataset.category;
+                
+                if (filter === 'all' || category === filter) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.6s ease forwards';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+});
