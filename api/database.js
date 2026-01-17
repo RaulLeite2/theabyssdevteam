@@ -9,56 +9,153 @@ const RETRY_DELAY = 3000; // 3 segundos
 // Função para esperar
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+// Função para mascarar senha nos logs
+function maskPassword(password) {
+  if (!password) return '(empty)';
+  if (password.length <= 4) return '*'.repeat(password.length);
+  return password.substring(0, 2) + '*'.repeat(password.length - 4) + password.substring(password.length - 2);
+}
+
+// Função para construir configuração do PostgreSQL
+function buildDatabaseConfig() {
+  console.log('🔍 Detecting database configuration method...');
+  console.log('');
+  
+  // PRIORIDADE 1: DATABASE_URL
+  const databaseUrl = process.env.DATABASE_URL;
+  
+  if (databaseUrl) {
+    console.log('✅ METHOD: DATABASE_URL detected');
+    console.log('   Priority: 1 (highest)');
+    console.log('');
+    
+    // Parsear URL para validação e logs
+    const urlMatch = databaseUrl.match(/postgresql:\/\/([^:]+):([^@]+)@([^:/?]+):?(\d+)?\/([^?]+)/);
+    
+    if (urlMatch) {
+      const [, user, password, host, port, database] = urlMatch;
+      console.log('📊 Parsed Database Configuration:');
+      console.log('   Protocol: PostgreSQL');
+      console.log('   User:', user);
+      console.log('   Password:', maskPassword(password));
+      console.log('   Host:', host);
+      console.log('   Port:', port || '5432 (default)');
+      console.log('   Database:', database);
+      console.log('');
+      
+      return {
+        method: 'DATABASE_URL',
+        connectionString: databaseUrl,
+        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      };
+    } else {
+      console.warn('⚠️ DATABASE_URL format not recognized, using as-is');
+      console.log('   Format expected: postgresql://user:pass@host:port/db');
+      console.log('');
+      
+      return {
+        method: 'DATABASE_URL (unparsed)',
+        connectionString: databaseUrl,
+        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      };
+    }
+  }
+  
+  // PRIORIDADE 2: Variáveis separadas (PGHOST, PGPORT, PGUSER, PGPASSWORD, PGDATABASE)
+  console.log('ℹ️ DATABASE_URL not found, checking individual variables...');
+  console.log('');
+  
+  const pgHost = process.env.PGHOST;
+  const pgPort = process.env.PGPORT;
+  const pgUser = process.env.PGUSER;
+  const pgPassword = process.env.PGPASSWORD;
+  const pgDatabase = process.env.PGDATABASE;
+  
+  // Validar variáveis necessárias
+  const missing = [];
+  if (!pgHost) missing.push('PGHOST');
+  if (!pgUser) missing.push('PGUSER');
+  if (!pgPassword) missing.push('PGPASSWORD');
+  if (!pgDatabase) missing.push('PGDATABASE');
+  
+  if (missing.length > 0) {
+    console.error('');
+    console.error('═'.repeat(60));
+    console.error('❌❌❌ DATABASE CONFIGURATION MISSING ❌❌❌');
+    console.error('═'.repeat(60));
+    console.error('');
+    console.error('🚨 PostgreSQL is REQUIRED for this application!');
+    console.error('');
+    console.error('📋 Missing variables:', missing.join(', '));
+    console.error('');
+    console.error('💡 Configuration Options:');
+    console.error('');
+    console.error('   OPTION 1 (Recommended): Single DATABASE_URL');
+    console.error('   ────────────────────────────────────────');
+    console.error('   DATABASE_URL=postgresql://user:pass@host:port/db');
+    console.error('');
+    console.error('   OPTION 2: Separate Variables');
+    console.error('   ────────────────────────────────────────');
+    console.error('   PGHOST=your-host.com');
+    console.error('   PGPORT=5432');
+    console.error('   PGUSER=your-user');
+    console.error('   PGPASSWORD=your-password');
+    console.error('   PGDATABASE=your-database');
+    console.error('');
+    console.error('👉 Railway Setup:');
+    console.error('   1. Add PostgreSQL service to your project');
+    console.error('   2. Railway auto-configures DATABASE_URL');
+    console.error('   3. Redeploy your application');
+    console.error('');
+    console.error('═'.repeat(60));
+    console.error('');
+    
+    throw new Error(`Missing required database configuration: ${missing.join(', ')}`);
+  }
+  
+  console.log('✅ METHOD: Individual variables (PG*)');
+  console.log('   Priority: 2 (fallback)');
+  console.log('');
+  console.log('📊 Database Configuration:');
+  console.log('   Host:', pgHost);
+  console.log('   Port:', pgPort || '5432 (default)');
+  console.log('   User:', pgUser);
+  console.log('   Password:', maskPassword(pgPassword));
+  console.log('   Database:', pgDatabase);
+  console.log('');
+  
+  return {
+    method: 'PG Variables',
+    host: pgHost,
+    port: parseInt(pgPort) || 5432,
+    user: pgUser,
+    password: pgPassword,
+    database: pgDatabase,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  };
+}
+
 export function getPool() {
   if (!pool) {
     console.log('📦 Creating PostgreSQL connection pool...');
-    
-    const databaseUrl = process.env.DATABASE_URL;
-    
-    if (!databaseUrl) {
-      console.error('');
-      console.error('❌❌❌ DATABASE_URL NOT CONFIGURED ❌❌❌');
-      console.error('');
-      console.error('🚨 PostgreSQL is REQUIRED for this application to work!');
-      console.error('');
-      console.error('👉 Railway Setup:');
-      console.error('   1. Go to your Railway project');
-      console.error('   2. Click "+ New" button');
-      console.error('   3. Select "Database" → "Add PostgreSQL"');
-      console.error('   4. Railway will auto-configure DATABASE_URL');
-      console.error('   5. Redeploy your application');
-      console.error('');
-      throw new Error('DATABASE_URL environment variable is not set');
-    }
-    
-    // Parsear URL para mostrar detalhes (escondendo senha)
-    const urlParts = databaseUrl.match(/postgresql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
-    if (urlParts) {
-      console.log('📊 Database Connection Details:');
-      console.log('   User:', urlParts[1]);
-      console.log('   Password:', '*'.repeat(urlParts[2].length));
-      console.log('   Host:', urlParts[3]);
-      console.log('   Port:', urlParts[4]);
-      console.log('   Database:', urlParts[5]);
-    } else {
-      console.log('📊 Database URL:', databaseUrl.substring(0, 40) + '...');
-    }
     console.log('');
     
     try {
+      const dbConfig = buildDatabaseConfig();
+      
       console.log('⚙️ Pool Configuration:');
+      console.log('   Connection Method:', dbConfig.method);
       console.log('   Max connections: 20');
       console.log('   Min connections: 2');
       console.log('   Idle timeout: 30000ms');
       console.log('   Connection timeout: 30000ms');
-      console.log('   SSL:', process.env.NODE_ENV === 'production' ? 'enabled' : 'disabled');
+      console.log('   SSL:', dbConfig.ssl ? 'enabled' : 'disabled');
       console.log('   Keep-alive: enabled');
       console.log('');
       
-      // Configuração otimizada para Railway
+      // Configuração otimizada para Railway e outros ambientes
       pool = new Pool({
-        connectionString: databaseUrl,
-        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+        ...dbConfig,
         max: 20,
         min: 2,
         idleTimeoutMillis: 30000,
