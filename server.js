@@ -1,6 +1,8 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import https from 'https';
+import http from 'http';
 import { initDatabase } from './api/database.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -74,6 +76,47 @@ console.log('   📍 Health: GET /health');
 console.log('');
 
 // Função para fazer auto-request ao servidor após inicialização
+function makeRequest(url) {
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    const protocol = urlObj.protocol === 'https:' ? https : http;
+    
+    const options = {
+      hostname: urlObj.hostname,
+      port: urlObj.port || (urlObj.protocol === 'https:' ? 443 : 80),
+      path: urlObj.pathname + urlObj.search,
+      method: 'GET',
+      timeout: 10000,
+      headers: {
+        'User-Agent': 'Railway-Auto-Ping/1.0'
+      }
+    };
+    
+    const req = protocol.request(options, (res) => {
+      const chunks = [];
+      
+      res.on('data', (chunk) => chunks.push(chunk));
+      res.on('end', () => {
+        resolve({
+          ok: res.statusCode >= 200 && res.statusCode < 300,
+          status: res.statusCode,
+          statusText: res.statusMessage,
+          headers: res.headers,
+          contentLength: Buffer.concat(chunks).length
+        });
+      });
+    });
+    
+    req.on('error', (error) => reject(error));
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Request timeout'));
+    });
+    
+    req.end();
+  });
+}
+
 async function pingServer() {
   // Aguardar 2 segundos para garantir que o servidor está pronto
   await new Promise(resolve => setTimeout(resolve, 2000));
@@ -97,17 +140,16 @@ async function pingServer() {
     console.log('📍 Target URL:', railwayUrl);
     console.log('🔌 Sending GET request...');
     
-    const response = await fetch(railwayUrl);
+    const response = await makeRequest(railwayUrl);
     const duration = Date.now() - startTime;
     
     if (response.ok) {
-      const contentLength = response.headers.get('content-length');
       console.log('');
       console.log('✅ Auto-ping SUCCESSFUL!');
       console.log('   Status:', response.status, response.statusText);
       console.log('   Response Time:', duration + 'ms');
-      console.log('   Content-Type:', response.headers.get('content-type') || 'N/A');
-      console.log('   Content-Length:', contentLength ? contentLength + ' bytes' : 'N/A');
+      console.log('   Content-Type:', response.headers['content-type'] || 'N/A');
+      console.log('   Content-Length:', response.contentLength ? response.contentLength + ' bytes' : 'N/A');
       console.log('');
       console.log('🎉 Server is publicly accessible and responding!');
       console.log('');
