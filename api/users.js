@@ -161,5 +161,3 @@ export function requirePermission(...allowedRoles) {
     }
   };
 }
-
-export default router;

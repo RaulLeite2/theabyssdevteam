@@ -157,5 +157,3 @@ ID da mensagem: ${contact.id}
   
   return res.status(405).json({ error: 'Método não permitido' });
 }
-
-export default router;

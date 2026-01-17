@@ -4,8 +4,8 @@ import { fileURLToPath } from 'url';
 import https from 'https';
 import http from 'http';
 import { initDatabase } from './api/database.js';
-import usersRouter from './api/users.js';
-import contactRouter from './api/contact.js';
+import { handler as usersHandler } from './api/users.js';
+import { handler as contactHandler } from './api/contact.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -73,8 +73,10 @@ app.get("/health", async (req, res) => {
 });
 
 // API Routes
-app.use('/api/users', usersRouter);
-app.use('/api/contact', contactRouter);
+app.all('/api/users', usersHandler);
+app.all('/api/users/:action', usersHandler);
+app.all('/api/contact', contactHandler);
+app.all('/api/contact/:action', contactHandler);
 
 console.log('   ✅ Routes configured');
 console.log('   📍 Main: GET /');
