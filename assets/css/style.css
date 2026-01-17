@@ -63,8 +63,7 @@ header {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding: 20px;
-    text-align: center;
+    padding: 15px 30px;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -72,23 +71,34 @@ header {
 }
 
 .header-content {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-}
-
-header h1 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    animation: fadeInDown 1s ease;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Header Brand (Logo) */
+.header-brand {
+    flex-shrink: 0;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
     gap: 10px;
-    flex-wrap: wrap;
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.brand-link:hover {
+    transform: translateY(-2px);
 }
 
 .logo-icon {
-    font-size: 2.5rem;
+    font-size: 2rem;
     animation: rotate 3s linear infinite;
     display: inline-block;
 }
@@ -96,6 +106,12 @@ header h1 {
 @keyframes rotate {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
 }
 
 .badge-premium {
@@ -110,45 +126,179 @@ header h1 {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
-nav ul {
-    list-style: none;
+/* Header Navigation */
+.header-nav {
+    flex: 1;
     display: flex;
     justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
 }
 
-nav ul li a {
+.header-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+}
+
+.header-nav ul li a {
     color: #fff;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
     position: relative;
     transition: all 0.3s ease;
-    padding: 8px 16px;
+    padding: 10px 20px;
     border-radius: 8px;
+    display: block;
+    font-size: 0.95rem;
 }
 
-nav ul li a.active, nav ul li a:hover {
+.header-nav ul li a.active, 
+.header-nav ul li a:hover {
     color: #00ffff;
     background: rgba(0, 255, 255, 0.1);
-    transform: translateY(-2px);
 }
 
-nav ul li a::after {
+.header-nav ul li a::after {
     content: '';
     position: absolute;
     width: 0%;
-    height: 3px;
+    height: 2px;
     background: linear-gradient(90deg, #00ffff, #7f00ff);
-    bottom: 0;
+    bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 2px;
     transition: width 0.3s ease;
 }
 
-nav ul li a.active::after, nav ul li a:hover::after {
-    width: 80%;
+.header-nav ul li a.active::after, 
+.header-nav ul li a:hover::after {
+    width: 70%;
+}
+
+/* Header Actions */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.theme-toggle,
+.btn-dashboard,
+.btn-login {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.theme-toggle:hover,
+.btn-dashboard:hover,
+.btn-login:hover {
+    background: rgba(0, 255, 255, 0.15);
+    border-color: rgba(0, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
+}
+
+.theme-toggle {
+    padding: 10px;
+}
+
+.dashboard-icon,
+.login-icon,
+.theme-icon {
+    font-size: 1.1rem;
+}
+
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.mobile-menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background: #fff;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-content {
+        flex-wrap: wrap;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .header-nav {
+        display: none;
+        width: 100%;
+        order: 3;
+    }
+    
+    .header-nav.active {
+        display: block;
+    }
+    
+    .header-nav ul {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .header-nav ul li a {
+        padding: 12px 20px;
+    }
+    
+    .header-actions {
+        gap: 5px;
+    }
+    
+    .dashboard-text,
+    .login-text {
+        display: none;
+    }
+    
+    .btn-dashboard,
+    .btn-login {
+        padding: 10px;
+    }
+    
+    .brand-name {
+        font-size: 1.2rem;
+    }
 }
 
 /* CONTEÚDO DAS ABAS */
@@ -3340,25 +3490,43 @@ body.light-mode .value-card {
 /* ============================================
    PROJECTS SECTION - PYCHARM STYLE
    ============================================ */
+/* ===================================
+   SEÇÃO DE PROJETOS - HOMEPAGE
+   =================================== */
+
 .projects-pycharm-section {
-    padding: 80px 20px;
+    padding: 100px 20px;
     max-width: 1400px;
     margin: 0 auto;
+    position: relative;
 }
 
 .pycharm-container {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 50px;
-    backdrop-filter: blur(10px);
+    background: linear-gradient(135deg, rgba(15, 12, 41, 0.6) 0%, rgba(48, 43, 99, 0.4) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 60px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.pycharm-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.5), transparent);
 }
 
 .pycharm-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 50px;
+    align-items: flex-start;
+    margin-bottom: 60px;
     flex-wrap: wrap;
     gap: 30px;
 }
@@ -3369,154 +3537,215 @@ body.light-mode .value-card {
 }
 
 .pycharm-title {
-    font-size: 3rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #7f00ff 100%);
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 30%, #00d4ff 60%, #7f00ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+    line-height: 1.2;
 }
 
 .pycharm-subtitle {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.65);
     font-weight: 400;
+    line-height: 1.6;
 }
 
 .pycharm-tabs {
     display: flex;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 8px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
 }
 
 .pycharm-tab {
-    padding: 12px 24px;
+    padding: 12px 20px;
     border: none;
     background: transparent;
-    color: rgba(255, 255, 255, 0.6);
-    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     font-size: 0.95rem;
-    font-weight: 500;
+    font-weight: 600;
+    position: relative;
 }
 
 .pycharm-tab.active {
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
     color: #fff;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
-.pycharm-tab:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+.pycharm-tab.active::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    padding: 1px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.pycharm-tab:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-1px);
+}
+
+.tab-text {
+    font-size: 0.95rem;
 }
 
 .tab-count {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    min-width: 24px;
+    text-align: center;
 }
 
 .pycharm-projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    margin-bottom: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 35px;
+    margin-bottom: 60px;
 }
 
 .pycharm-project-card {
-    background: rgba(255, 255, 255, 0.03);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 30px;
-    transition: all 0.3s ease;
+    border-radius: 20px;
+    padding: 35px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pycharm-project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .pycharm-project-card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-color: rgba(0, 255, 255, 0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4),
+                0 0 40px rgba(0, 255, 255, 0.1);
+}
+
+.pycharm-project-card:hover::before {
+    opacity: 1;
 }
 
 .project-icon-wrapper {
     display: flex;
     align-items: center;
+    margin-bottom: 5px;
 }
 
 .project-icon {
-    width: 70px;
-    height: 70px;
-    border-radius: 16px;
+    width: 75px;
+    height: 75px;
+    border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    font-size: 2.2rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4),
+                0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.pycharm-project-card:hover .project-icon {
+    transform: scale(1.05) rotate(5deg);
 }
 
 .project-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
 }
 
 .project-title {
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: 1.65rem;
+    font-weight: 700;
     color: #fff;
     margin: 0;
+    letter-spacing: -0.5px;
 }
 
 .project-description {
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: rgba(255, 255, 255, 0.7);
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .project-features {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
 }
 
 .feature-tag {
-    padding: 6px 14px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.pycharm-project-card:hover .feature-tag {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 255, 255, 0.2);
 }
 
 .project-stats {
     display: flex;
-    gap: 20px;
+    gap: 24px;
     margin-top: 10px;
 }
 
 .stat-item {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
+    gap: 8px;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.65);
+    font-weight: 500;
 }
 
 .stat-icon {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .project-action {
@@ -3525,68 +3754,141 @@ body.light-mode .value-card {
 
 .project-btn {
     width: 100%;
-    padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
+    padding: 14px 28px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
     color: #fff;
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.project-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .project-btn:hover {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-color: transparent;
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+}
+
+.project-btn:hover::before {
+    opacity: 1;
+}
+
+.project-btn:active {
+    transform: translateY(0);
 }
 
 .pycharm-cta-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 40px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    gap: 30px;
+    padding: 50px;
+    background: linear-gradient(135deg, 
+        rgba(102, 126, 234, 0.15) 0%, 
+        rgba(118, 75, 162, 0.15) 50%,
+        rgba(102, 126, 234, 0.15) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    gap: 35px;
     flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.pycharm-cta-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+    animation: rotate-gradient 10s linear infinite;
+}
+
+@keyframes rotate-gradient {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.cta-content {
+    position: relative;
+    z-index: 1;
 }
 
 .cta-content h3 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
+    font-size: 2rem;
+    margin-bottom: 12px;
     color: #fff;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .cta-content p {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.6;
 }
 
 .cta-button {
-    padding: 15px 35px;
+    padding: 16px 40px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #fff;
     text-decoration: none;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-block;
     white-space: nowrap;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    position: relative;
+    z-index: 1;
 }
 
 .cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.5);
     background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
 }
 
-/* Responsive Design */
+.cta-button:active {
+    transform: translateY(-2px);
+}
+
+/* Responsive Design para Seção de Projetos */
+@media (max-width: 1200px) {
+    .pycharm-container {
+        padding: 50px 40px;
+    }
+    
+    .pycharm-title {
+        font-size: 3rem;
+    }
+    
+    .pycharm-projects-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+}
+
 @media (max-width: 1024px) {
+    .projects-pycharm-section {
+        padding: 80px 20px;
+    }
+    
     .pycharm-container {
         padding: 40px 30px;
     }
@@ -3595,55 +3897,168 @@ body.light-mode .value-card {
         font-size: 2.5rem;
     }
     
+    .pycharm-subtitle {
+        font-size: 1.1rem;
+    }
+    
     .pycharm-projects-grid {
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 25px;
     }
+    
+    .project-icon {
+        width: 65px;
+        height: 65px;
+        font-size: 2rem;
+    }
+    
+    .pycharm-cta-section {
+        padding: 40px 30px;
+    }
 }
 
 @media (max-width: 768px) {
+    .projects-pycharm-section {
+        padding: 60px 15px;
+    }
+    
     .pycharm-container {
         padding: 30px 20px;
+        border-radius: 20px;
     }
     
     .pycharm-header {
         flex-direction: column;
         align-items: flex-start;
+        margin-bottom: 40px;
     }
     
     .pycharm-title {
-        font-size: 2rem;
+        font-size: 2.2rem;
+    }
+    
+    .pycharm-subtitle {
+        font-size: 1rem;
     }
     
     .pycharm-tabs {
         width: 100%;
         flex-wrap: wrap;
+        gap: 6px;
+        padding: 5px;
     }
     
     .pycharm-tab {
         flex: 1;
-        min-width: 100px;
+        min-width: 90px;
         justify-content: center;
-        padding: 10px 16px;
-        font-size: 0.9rem;
+        padding: 10px 14px;
+        font-size: 0.85rem;
+    }
+    
+    .tab-text {
+        font-size: 0.85rem;
+    }
+    
+    .tab-count {
+        font-size: 0.75rem;
+        padding: 2px 8px;
     }
     
     .pycharm-projects-grid {
         grid-template-columns: 1fr;
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+    
+    .pycharm-project-card {
+        padding: 28px;
+    }
+    
+    .project-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+    
+    .project-title {
+        font-size: 1.4rem;
+    }
+    
+    .project-description {
+        font-size: 0.95rem;
     }
     
     .pycharm-cta-section {
         flex-direction: column;
         text-align: center;
-        padding: 30px 20px;
+        padding: 35px 25px;
+        gap: 25px;
     }
     
     .cta-content h3 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+    }
+    
+    .cta-content p {
+        font-size: 1rem;
     }
     
     .cta-button {
         width: 100%;
+        padding: 14px 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .projects-pycharm-section {
+        padding: 50px 10px;
+    }
+    
+    .pycharm-container {
+        padding: 25px 15px;
+    }
+    
+    .pycharm-title {
+        font-size: 1.8rem;
+    }
+    
+    .pycharm-subtitle {
+        font-size: 0.95rem;
+    }
+    
+    .pycharm-project-card {
+        padding: 24px;
+    }
+    
+    .project-title {
+        font-size: 1.3rem;
+    }
+    
+    .feature-tag {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .project-stats {
+        gap: 15px;
+    }
+    
+    .stat-item {
+        font-size: 0.85rem;
+    }
+    
+    .project-btn {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+    
+    .pycharm-cta-section {
+        padding: 30px 20px;
+    }
+    
+    .cta-content h3 {
+        font-size: 1.4rem;
     }
 }
 

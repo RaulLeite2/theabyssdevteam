@@ -173,12 +173,18 @@ function updateUIForLoggedInUser() {
     }
     
     // Atualizar dashboard
-    document.getElementById('dashboardUserName').textContent = currentUser.name;
-    document.getElementById('dashboardUserEmail').textContent = currentUser.email;
+    if (document.getElementById('dashboardUserName')) {
+        document.getElementById('dashboardUserName').textContent = currentUser.name;
+    }
+    if (document.getElementById('dashboardUserEmail')) {
+        document.getElementById('dashboardUserEmail').textContent = currentUser.email;
+    }
     
-    const joinDate = new Date(currentUser.joinDate);
-    const daysActive = Math.floor((new Date() - joinDate) / (1000 * 60 * 60 * 24)) + 1;
-    document.getElementById('activeDays').textContent = daysActive;
+    if (document.getElementById('activeDays') && currentUser.joinDate) {
+        const joinDate = new Date(currentUser.joinDate);
+        const daysActive = Math.floor((new Date() - joinDate) / (1000 * 60 * 60 * 24)) + 1;
+        document.getElementById('activeDays').textContent = daysActive;
+    }
 }
 
 // Atualizar UI quando deslogado

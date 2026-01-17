@@ -46,6 +46,19 @@ tabs.forEach(tab => {
     tab.addEventListener('click', (e) => {
         e.preventDefault();
         const target = tab.dataset.tab;
+        
+        // Se for o logo e já estiver na aba home, apenas scroll suave
+        if (tab.classList.contains('brand-link') && target === 'home') {
+            const homeContent = document.getElementById('home');
+            const isHomeActive = homeContent && homeContent.classList.contains('active');
+            
+            if (isHomeActive) {
+                // Já está na home, apenas scroll para o topo
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+        }
+        
         switchToTab(target);
     });
 });
@@ -595,10 +608,10 @@ function setupContactForm() {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
             const projectType = document.getElementById('projectType').value;
-            const message = document.getElementById('message').value;
+            const message = document.getElementById('contactMessage').value;
             
             // Aqui você pode adicionar integração com backend
             console.log('Form submitted:', { name, email, projectType, message });

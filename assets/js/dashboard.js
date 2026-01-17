@@ -22,8 +22,8 @@ async function loadDashboard() {
   if (hour < 12) greeting = 'Bom dia';
   else if (hour < 18) greeting = 'Boa tarde';
   
-  document.getElementById('dashboardGreeting').textContent = `${greeting}, ${user.username}! 👋`;
-  document.getElementById('dashboardUserName').textContent = user.username;
+  document.getElementById('dashboardGreeting').textContent = `${greeting}, ${user.name}! 👋`;
+  document.getElementById('dashboardUserName').textContent = user.name;
   document.getElementById('dashboardUserEmail').textContent = user.email || '';
   document.getElementById('userAvatar').textContent = user.avatar || '🤖';
   
@@ -47,7 +47,7 @@ async function loadDashboard() {
   
   // Carregar estatísticas
   try {
-    const response = await fetch(`/api/users?id=${user.id}`);
+    const response = await fetch(`/api/users?email=${user.email}`);
     const data = await response.json();
     
     if (data.stats) {
@@ -184,11 +184,13 @@ document.getElementById('explorePosts')?.addEventListener('click', () => {
 
 document.getElementById('changeAvatarBtn')?.addEventListener('click', () => {
   const avatars = ['🤖', '👾', '🎮', '💀', '🔥', '⚡', '🌙', '🌟', '👻', '🦄'];
-  const currentUser = JSON.parse(localStorage.getItem('abyssUser'));
+  const currentUser = JSON.parse(localStorage.getItem('abyssUser')) || {};
   const randomAvatar = avatars[Math.floor(Math.random() * avatars.length)];
   currentUser.avatar = randomAvatar;
   localStorage.setItem('abyssUser', JSON.stringify(currentUser));
-  document.getElementById('userAvatar').textContent = randomAvatar;
+  if (document.getElementById('userAvatar')) {
+    document.getElementById('userAvatar').textContent = randomAvatar;
+  }
   showNotification('Avatar atualizado!', 'success');
 });
 
