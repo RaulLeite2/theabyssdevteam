@@ -6,7 +6,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "wait": "node wait-for-server.js",
+    "wait:local": "TARGET_URL=http://localhost:3000 node wait-for-server.js",
+    "wait:railway": "node wait-for-server.js"
   },
   "engines": {
     "node": ">=18.0.0"
