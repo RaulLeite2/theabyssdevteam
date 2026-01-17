@@ -45,8 +45,93 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
+// Health check endpoint para monitoramento
+app.get("/health", async (req, res) => {
+  console.log('🏥 [REQUEST] GET /health - Health check');
+  try {
+    const { getPool } = await import('./api/database.js');
+    const pool = getPool();
+    await pool.query('SELECT 1');
+    res.json({ 
+      status: 'ok', 
+      database: 'connected',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime() + 's'
+    });
+  } catch (error) {
+    res.status(503).json({ 
+      status: 'error', 
+      database: 'disconnected',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 console.log('   ✅ Routes configured');
+console.log('   📍 Main: GET /');
+console.log('   📍 Health: GET /health');
 console.log('');
+
+// Função para fazer auto-request ao servidor após inicialização
+async function pingServer() {
+  // Aguardar 2 segundos para garantir que o servidor está pronto
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  
+  try {
+    console.log('');
+    console.log('═'.repeat(60));
+    console.log('🔔 AUTO-PING: Testing server availability...');
+    console.log('═'.repeat(60));
+    console.log('');
+    
+    const startTime = Date.now();
+    
+    // Detectar URL do Railway ou usar localhost
+    const railwayUrl = process.env.RAILWAY_PUBLIC_DOMAIN 
+      ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+      : process.env.RAILWAY_STATIC_URL
+      ? `https://${process.env.RAILWAY_STATIC_URL}`
+      : `http://localhost:${PORT}`;
+    
+    console.log('📍 Target URL:', railwayUrl);
+    console.log('🔌 Sending GET request...');
+    
+    const response = await fetch(railwayUrl);
+    const duration = Date.now() - startTime;
+    
+    if (response.ok) {
+      const contentLength = response.headers.get('content-length');
+      console.log('');
+      console.log('✅ Auto-ping SUCCESSFUL!');
+      console.log('   Status:', response.status, response.statusText);
+      console.log('   Response Time:', duration + 'ms');
+      console.log('   Content-Type:', response.headers.get('content-type') || 'N/A');
+      console.log('   Content-Length:', contentLength ? contentLength + ' bytes' : 'N/A');
+      console.log('');
+      console.log('🎉 Server is publicly accessible and responding!');
+      console.log('');
+      console.log('═'.repeat(60));
+    } else {
+      console.log('');
+      console.log('⚠️ Auto-ping received non-OK status:', response.status);
+      console.log('');
+    }
+  } catch (error) {
+    console.log('');
+    console.log('⚠️ Auto-ping failed (this is normal for Railway during first deploy)');
+    console.log('   Reason:', error.message);
+    console.log('   Note: Server is running, but public URL may not be ready yet');
+    console.log('');
+    console.log('💡 Railway Setup:');
+    console.log('   1. Go to your service settings');
+    console.log('   2. Click "Networking" tab');
+    console.log('   3. Generate a public domain if not already created');
+    console.log('');
+    console.log('═'.repeat(60));
+    console.log('');
+  }
+}
 
 // Inicializar banco de dados e iniciar servidor
 async function start() {
@@ -67,7 +152,7 @@ async function start() {
     console.log('═'.repeat(60));
     console.log('');
     
-    app.listen(PORT, '0.0.0.0', () => {
+    app.listen(PORT, '0.0.0.0', async () => {
       console.log('✅ HTTP Server started successfully!');
       console.log('');
       console.log('🌐 Server Information:');
@@ -75,14 +160,26 @@ async function start() {
       console.log('   Network: http://0.0.0.0:' + PORT);
       console.log('   Port:', PORT);
       console.log('   Status: READY');
-      console.log('   Railway URL: Check Railway dashboard for public URL');
+      
+      // Detectar Railway URL
+      const railwayUrl = process.env.RAILWAY_PUBLIC_DOMAIN 
+        ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+        : process.env.RAILWAY_STATIC_URL
+        ? `https://${process.env.RAILWAY_STATIC_URL}`
+        : 'Check Railway dashboard';
+      
+      console.log('   Railway URL:', railwayUrl);
       console.log('');
       console.log('═'.repeat(60));
       console.log('✅✅✅ SERVER FULLY OPERATIONAL ✅✅✅');
       console.log('═'.repeat(60));
       console.log('');
       console.log('🟢 Waiting for requests...');
-      console.log('');
+      
+      // Auto-ping para iniciar o servidor
+      pingServer().catch(err => {
+        console.log('⚠️ Auto-ping error:', err.message);
+      });
     });
   } catch (error) {
     console.log('');
