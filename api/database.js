@@ -8,8 +8,18 @@ export function getPool() {
     const databaseUrl = process.env.DATABASE_URL;
     
     if (!databaseUrl) {
-      console.warn('⚠️  DATABASE_URL not configured - database features disabled');
-      return null;
+      console.error('❌❌❌ DATABASE_URL NOT CONFIGURED ❌❌❌');
+      console.error('');
+      console.error('🚨 PostgreSQL is REQUIRED for this application to work!');
+      console.error('');
+      console.error('👉 Railway Setup:');
+      console.error('   1. Go to your Railway project');
+      console.error('   2. Click "+ New" button');
+      console.error('   3. Select "Database" → "Add PostgreSQL"');
+      console.error('   4. Railway will auto-configure DATABASE_URL');
+      console.error('   5. Redeploy your application');
+      console.error('');
+      throw new Error('DATABASE_URL environment variable is not set');
     }
     
     try {
@@ -28,7 +38,7 @@ export function getPool() {
       console.log('✅ PostgreSQL pool created successfully');
     } catch (error) {
       console.error('❌ Failed to create PostgreSQL pool:', error.message);
-      return null;
+      throw error;
     }
   }
   
@@ -38,11 +48,6 @@ export function getPool() {
 // Inicializar banco de dados
 export async function initDatabase() {
   const pool = getPool();
-  
-  if (!pool) {
-    console.warn('⚠️  Skipping database initialization - no database connection');
-    return false;
-  }
   
   try {
     // Testar conexão primeiro
@@ -82,15 +87,13 @@ export async function initDatabase() {
     return true;
   } catch (error) {
     console.error('❌ Error initializing database:', error.message);
-    console.warn('⚠️  Server will run without database features');
-    return false;
+    throw error;
   }
 }
 
 // Helper functions para manter compatibilidade com código existente
 export async function kvGet(key) {
   const pool = getPool();
-  if (!pool) return null;
   
   if (key.startsWith('session:')) {
     const token = key.replace('session:', '');
@@ -129,7 +132,6 @@ export async function kvGet(key) {
 
 export async function kvSet(key, value, options = {}) {
   const pool = getPool();
-  if (!pool) return false;
   
   if (key.startsWith('session:')) {
     const token = key.replace('session:', '');
@@ -149,7 +151,6 @@ export async function kvSet(key, value, options = {}) {
 
 export async function kvDel(key) {
   const pool = getPool();
-  if (!pool) return false;
   
   if (key.startsWith('session:')) {
     const token = key.replace('session:', '');
@@ -160,7 +161,6 @@ export async function kvDel(key) {
 
 export async function kvKeys(pattern) {
   const pool = getPool();
-  if (!pool) return [];
   
   if (pattern === 'session:*') {
     const result = await pool.query('SELECT token FROM sessions WHERE expires_at > $1', [Date.now()]);
@@ -173,7 +173,6 @@ export async function kvKeys(pattern) {
 // Funções específicas para posts
 export async function createPost(title, content, author) {
   const pool = getPool();
-  if (!pool) throw new Error('Database not available');
   const result = await pool.query(
     'INSERT INTO posts (title, content, author) VALUES ($1, $2, $3) RETURNING *',
     [title, content, author]
@@ -192,7 +191,6 @@ export async function createPost(title, content, author) {
 
 export async function updatePost(id, title, content) {
   const pool = getPool();
-  if (!pool) throw new Error('Database not available');
   const result = await pool.query(
     'UPDATE posts SET title = $1, content = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $3 RETURNING *',
     [title, content, id]
@@ -213,13 +211,11 @@ export async function updatePost(id, title, content) {
 
 export async function deletePost(id) {
   const pool = getPool();
-  if (!pool) throw new Error('Database not available');
   await pool.query('DELETE FROM posts WHERE id = $1', [id]);
 }
 
 export async function getAllPosts() {
   const pool = getPool();
-  if (!pool) return [];
   const result = await pool.query(
     'SELECT id, title, content, author, created_at, updated_at FROM posts ORDER BY created_at DESC'
   );

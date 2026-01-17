@@ -48,41 +48,41 @@ O servidor estará rodando em `http://localhost:3000`
 
 ## 🚂 Deploy no Railway
 
-### ⚠️ IMPORTANTE: Ordem de Deploy
+### ⚠️ ATENÇÃO: PostgreSQL é OBRIGATÓRIO
 
-**O servidor agora roda mesmo SEM banco de dados!** Isso permite deploy em 2 fases:
+Este projeto **EXIGE** PostgreSQL para funcionar. Siga os passos na ordem correta:
 
-#### Fase 1: Deploy Inicial (Só Frontend)
+### Passo a Passo Correto
+
+#### 1️⃣ Criar Projeto no Railway
 1. Acesse [Railway](https://railway.app)
-2. Clique em "New Project" → "Deploy from GitHub repo"
-3. Selecione este repositório
-4. **Deploy será feito automaticamente** ✅
-5. Seu site estará online rodando em modo estático
+2. Clique em "New Project"
+3. Selecione "Deploy from GitHub repo"
+4. Escolha este repositório
+5. **NÃO faça deploy ainda!** ⚠️
 
-#### Fase 2: Adicionar PostgreSQL (Opcional)
-1. No seu projeto Railway, clique em "+ New"
-2. Selecione "Database" → "Add PostgreSQL"
-3. Railway criará automaticamente a variável `DATABASE_URL`
-4. **Redesploy automático** - banco será inicializado
-5. Features de blog/posts estarão habilitadas ✅
+#### 2️⃣ Adicionar PostgreSQL (ANTES do deploy)
+1. No seu projeto Railway, clique em **"+ New"**
+2. Selecione **"Database" → "Add PostgreSQL"**
+3. Aguarde o PostgreSQL ser provisionado
+4. Railway criará automaticamente a variável `DATABASE_URL`
 
-### Opção 2: Deploy via CLI
+#### 3️⃣ Deploy Automático
+1. Agora sim! O deploy será feito automaticamente
+2. Railway detectará o Node.js e instalará dependências
+3. Servidor iniciará com PostgreSQL conectado ✅
+4. Seu site estará online!
+
+### Se você receber erro "DATABASE_URL NOT CONFIGURED"
+
+Significa que você pulou o passo 2. Para corrigir:
 
 ```bash
-# Instale o Railway CLI
-npm i -g @railway/cli
-
-# Faça login
-railway login
-
-# Inicialize o projeto
-railway init
-
-# Deploy (funciona sem banco!)
-railway up
-
-# [Opcional] Adicionar PostgreSQL depois
-railway add
+1. Vá no seu projeto Railway
+2. Clique em "+ New"
+3. Adicione "PostgreSQL"
+4. Aguarde provisionar
+5. Faça redeploy (botão "Deploy")
 ```
 
 ### Configuração Railway
