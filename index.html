@@ -33,8 +33,8 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f0c29">
     
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="auth-dashboard.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/auth-dashboard.css">
 </head>
 <body>
     <!-- Loading Screen -->
@@ -88,6 +88,10 @@
             <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro">
                 <span class="theme-icon" aria-hidden="true">🌙</span>
             </button>
+            <a href="dashboard.html" class="btn-dashboard" aria-label="Acessar dashboard">
+                <span class="dashboard-icon" aria-hidden="true">📊</span>
+                <span class="dashboard-text">Dashboard</span>
+            </a>
             <button class="btn-login" id="loginBtn" aria-label="Fazer login">
                 <span class="login-icon" aria-hidden="true">👤</span>
                 <span class="login-text">Entrar</span>
@@ -166,190 +170,174 @@
 
     </div>
 
+    <!-- PROJECTS SECTION - PYCHARM STYLE -->
+    <div class="projects-pycharm-section animate-on-scroll">
+        <div class="pycharm-container">
+            <!-- Header Section -->
+            <div class="pycharm-header">
+                <div class="pycharm-title-group">
+                    <h2 class="pycharm-title">Nossos Projetos</h2>
+                    <p class="pycharm-subtitle">Ferramentas profissionais para desenvolvedores de elite</p>
+                </div>
+                <div class="pycharm-tabs">
+                    <button class="pycharm-tab active" data-pycharm-tab="all">
+                        <span class="tab-text">Todos</span>
+                        <span class="tab-count">4</span>
+                    </button>
+                    <button class="pycharm-tab" data-pycharm-tab="featured">
+                        <span class="tab-text">Em Destaque</span>
+                        <span class="tab-count">2</span>
+                    </button>
+                    <button class="pycharm-tab" data-pycharm-tab="recent">
+                        <span class="tab-text">Recentes</span>
+                        <span class="tab-count">1</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="pycharm-projects-grid">
+                <!-- Discord Bot Project -->
+                <div class="pycharm-project-card">
+                    <div class="project-icon-wrapper">
+                        <div class="project-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                            🤖
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Discord Bots Elite</h3>
+                        <p class="project-description">Bots personalizados com comandos slash, sistemas de moderação, economia e integrações avançadas.</p>
+                        <div class="project-features">
+                            <span class="feature-tag">Discord.py</span>
+                            <span class="feature-tag">Python 3.11</span>
+                            <span class="feature-tag">PostgreSQL</span>
+                        </div>
+                        <div class="project-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">⚡</span>
+                                <span class="stat-text">Alta Performance</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">🔒</span>
+                                <span class="stat-text">Seguro</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-action">
+                        <button class="project-btn">Ver Detalhes →</button>
+                    </div>
+                </div>
+
+                <!-- Web Apps Project -->
+                <div class="pycharm-project-card">
+                    <div class="project-icon-wrapper">
+                        <div class="project-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                            🌐
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Web Applications</h3>
+                        <p class="project-description">Aplicações web modernas com React, TypeScript e APIs RESTful. Design responsivo e performance otimizada.</p>
+                        <div class="project-features">
+                            <span class="feature-tag">React</span>
+                            <span class="feature-tag">TypeScript</span>
+                            <span class="feature-tag">Node.js</span>
+                        </div>
+                        <div class="project-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">📱</span>
+                                <span class="stat-text">Responsivo</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">⚡</span>
+                                <span class="stat-text">Rápido</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-action">
+                        <button class="project-btn">Ver Detalhes →</button>
+                    </div>
+                </div>
+
+                <!-- Automation Project -->
+                <div class="pycharm-project-card">
+                    <div class="project-icon-wrapper">
+                        <div class="project-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+                            ⚡
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Automação Inteligente</h3>
+                        <p class="project-description">Scripts Python para automação de tarefas, web scraping e processamento de dados em larga escala.</p>
+                        <div class="project-features">
+                            <span class="feature-tag">Python</span>
+                            <span class="feature-tag">Selenium</span>
+                            <span class="feature-tag">BeautifulSoup</span>
+                        </div>
+                        <div class="project-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">🎯</span>
+                                <span class="stat-text">Preciso</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">⏱️</span>
+                                <span class="stat-text">Eficiente</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-action">
+                        <button class="project-btn">Ver Detalhes →</button>
+                    </div>
+                </div>
+
+                <!-- Custom Solutions Project -->
+                <div class="pycharm-project-card">
+                    <div class="project-icon-wrapper">
+                        <div class="project-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
+                            🎯
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Soluções Personalizadas</h3>
+                        <p class="project-description">Desenvolvimento sob medida para atender suas necessidades específicas com arquitetura escalável.</p>
+                        <div class="project-features">
+                            <span class="feature-tag">Custom Stack</span>
+                            <span class="feature-tag">Escalável</span>
+                            <span class="feature-tag">Suporte 24/7</span>
+                        </div>
+                        <div class="project-stats">
+                            <div class="stat-item">
+                                <span class="stat-icon">🔧</span>
+                                <span class="stat-text">Flexível</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-icon">💡</span>
+                                <span class="stat-text">Inovador</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-action">
+                        <button class="project-btn">Ver Detalhes →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Learn More Section -->
+            <div class="pycharm-cta-section">
+                <div class="cta-content">
+                    <h3>Pronto para começar seu projeto?</h3>
+                    <p>Entre em contato e vamos transformar sua ideia em realidade</p>
+                </div>
+                <a href="#" class="cta-button tab-link" data-tab="contact">
+                    Falar com a Equipe →
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- AUTO-ROTATING TABS SECTIONS - ESTILO JETBRAINS -->
     <div class="rotating-tabs-section animate-on-scroll">
         
-        <!-- PROJETOS -->
-        <div class="rotating-section">
-            <div class="section-header">
-                <span class="section-number">01</span>
-                <h2>Projetos</h2>
-                <p class="section-subtitle">Aplicações que fazem a diferença</p>
-            </div>
-            
-            <div class="rotating-tabs-container">
-                <div class="tabs-navigation">
-                    <button class="tab-btn active" data-section="projects" data-tab="discord-bots">
-                        <span class="tab-icon">🤖</span>
-                        <span class="tab-label">Discord Bots</span>
-                    </button>
-                    <button class="tab-btn" data-section="projects" data-tab="web-apps">
-                        <span class="tab-icon">🌐</span>
-                        <span class="tab-label">Web Apps</span>
-                    </button>
-                    <button class="tab-btn" data-section="projects" data-tab="automation">
-                        <span class="tab-icon">⚡</span>
-                        <span class="tab-label">Automação</span>
-                    </button>
-                    <button class="tab-btn" data-section="projects" data-tab="custom">
-                        <span class="tab-icon">🎯</span>
-                        <span class="tab-label">Customizado</span>
-                    </button>
-                </div>
-                
-                <div class="tabs-content-wrapper">
-                    <div class="tab-content-item active" data-content="discord-bots">
-                        <div class="content-grid">
-                            <div class="content-visual">
-                                <div class="code-preview">
-                                    <div class="code-header">
-                                        <span class="file-icon">📄</span>
-                                        <span>bot.py</span>
-                                    </div>
-                                    <pre><code>@bot.command()
-async def status(ctx):
-    """Sistema de status avançado"""
-    embed = discord.Embed(
-        title="⚡ Status do Servidor",
-        color=0x00ff00
-    )
-    embed.add_field(
-        name="Uptime",
-        value=get_uptime()
-    )
-    await ctx.send(embed=embed)</code></pre>
-                                </div>
-                            </div>
-                            <div class="content-info">
-                                <h3>Bots Discord Profissionais</h3>
-                                <p>Criamos bots personalizados com comandos avançados, sistemas de moderação, economia, música e muito mais.</p>
-                                <ul class="feature-checklist">
-                                    <li><span class="check-icon">✓</span> Comandos Slash modernos</li>
-                                    <li><span class="check-icon">✓</span> Sistema de permissões</li>
-                                    <li><span class="check-icon">✓</span> Integração com APIs</li>
-                                    <li><span class="check-icon">✓</span> Dashboard web integrado</li>
-                                </ul>
-                                <div class="tech-badges">
-                                    <span class="tech-badge">Discord.py</span>
-                                    <span class="tech-badge">Python</span>
-                                    <span class="tech-badge">PostgreSQL</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content-item" data-content="web-apps">
-                        <div class="content-grid">
-                            <div class="content-visual">
-                                <div class="browser-mockup">
-                                    <div class="browser-header">
-                                        <span class="dot"></span>
-                                        <span class="dot"></span>
-                                        <span class="dot"></span>
-                                    </div>
-                                    <div class="browser-content">
-                                        <div class="app-preview">
-                                            <div class="app-sidebar">
-                                                <div class="sidebar-item">📊 Dashboard</div>
-                                                <div class="sidebar-item">👥 Usuários</div>
-                                                <div class="sidebar-item">⚙️ Config</div>
-                                            </div>
-                                            <div class="app-main">
-                                                <div class="stat-box">1.2K</div>
-                                                <div class="stat-box">89%</div>
-                                                <div class="stat-box">342</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="content-info">
-                                <h3>Aplicações Web Modernas</h3>
-                                <p>Desenvolvemos plataformas web completas com design responsivo, APIs RESTful e arquitetura escalável.</p>
-                                <ul class="feature-checklist">
-                                    <li><span class="check-icon">✓</span> Interface responsiva</li>
-                                    <li><span class="check-icon">✓</span> APIs REST/GraphQL</li>
-                                    <li><span class="check-icon">✓</span> Autenticação segura</li>
-                                    <li><span class="check-icon">✓</span> Real-time updates</li>
-                                </ul>
-                                <div class="tech-badges">
-                                    <span class="tech-badge">React</span>
-                                    <span class="tech-badge">Node.js</span>
-                                    <span class="tech-badge">TypeScript</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content-item" data-content="automation">
-                        <div class="content-grid">
-                            <div class="content-visual">
-                                <div class="automation-diagram">
-                                    <div class="automation-step">
-                                        <div class="step-icon">📥</div>
-                                        <div class="step-label">Input</div>
-                                    </div>
-                                    <div class="automation-arrow">→</div>
-                                    <div class="automation-step">
-                                        <div class="step-icon">⚙️</div>
-                                        <div class="step-label">Process</div>
-                                    </div>
-                                    <div class="automation-arrow">→</div>
-                                    <div class="automation-step">
-                                        <div class="step-icon">📤</div>
-                                        <div class="step-label">Output</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="content-info">
-                                <h3>Automação Inteligente</h3>
-                                <p>Scripts e sistemas que automatizam tarefas repetitivas, economizando tempo e reduzindo erros.</p>
-                                <ul class="feature-checklist">
-                                    <li><span class="check-icon">✓</span> Web scraping avançado</li>
-                                    <li><span class="check-icon">✓</span> Processamento de dados</li>
-                                    <li><span class="check-icon">✓</span> Agendamento de tarefas</li>
-                                    <li><span class="check-icon">✓</span> Notificações automáticas</li>
-                                </ul>
-                                <div class="tech-badges">
-                                    <span class="tech-badge">Python</span>
-                                    <span class="tech-badge">Selenium</span>
-                                    <span class="tech-badge">Cron</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content-item" data-content="custom">
-                        <div class="content-grid">
-                            <div class="content-visual">
-                                <div class="custom-grid">
-                                    <div class="custom-card">💡 Ideias</div>
-                                    <div class="custom-card">🎨 Design</div>
-                                    <div class="custom-card">⚡ Código</div>
-                                    <div class="custom-card">🚀 Deploy</div>
-                                </div>
-                            </div>
-                            <div class="content-info">
-                                <h3>Soluções Personalizadas</h3>
-                                <p>Desenvolvemos projetos sob medida para atender necessidades específicas do seu negócio.</p>
-                                <ul class="feature-checklist">
-                                    <li><span class="check-icon">✓</span> Análise de requisitos</li>
-                                    <li><span class="check-icon">✓</span> Arquitetura customizada</li>
-                                    <li><span class="check-icon">✓</span> Integração com sistemas</li>
-                                    <li><span class="check-icon">✓</span> Suporte dedicado</li>
-                                </ul>
-                                <div class="tech-badges">
-                                    <span class="tech-badge">Flexible</span>
-                                    <span class="tech-badge">Scalable</span>
-                                    <span class="tech-badge">Custom</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- TECNOLOGIA -->
         <div class="rotating-section">
             <div class="section-header">
@@ -1537,9 +1525,9 @@ async def status(ctx):
     <p class="footer-tagline">Do abismo emergem as melhores soluções 🌊</p>
 </footer>
 
-<script src="script.js"></script>
-<script src="auth-system.js"></script>
-<script src="dashboard.js"></script>
+<script src="assets/js/script.js"></script>
+<script src="assets/js/auth-system.js"></script>
+<script src="assets/js/dashboard.js"></script>
 </body>
 </html>
 

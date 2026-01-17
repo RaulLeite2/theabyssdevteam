@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - The Abyss Dev Team</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Dashboard administrativo do The Abyss Development Team">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/auth-dashboard.css">
+    
+    <style>
+        /* Dashboard Specific Styles */
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        }
+
+        /* Sidebar */
+        .dashboard-sidebar {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-brand-icon {
+            font-size: 2rem;
+        }
+
+        .sidebar-brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .sidebar-brand-tagline {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            margin-bottom: 8px;
+            padding: 0 15px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .sidebar-link-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-user:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Main Content */
+        .dashboard-main {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard-title-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #7f00ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dashboard-title-section p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .dashboard-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dashboard-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .dashboard-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+
+        .dashboard-btn.primary:hover {
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card-dashboard {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card-dashboard:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .stat-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-card-trend {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .trend-up {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+        }
+
+        .trend-down {
+            background: rgba(245, 87, 108, 0.2);
+            color: #f5576c;
+        }
+
+        .stat-card-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .stat-card-label {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Content Grid */
+        .content-grid-dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .dashboard-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .card-action-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .card-action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* Projects List */
+        .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .project-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .project-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .project-icon-small {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .project-info {
+            flex: 1;
+        }
+
+        .project-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .project-meta {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .project-status {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+        }
+
+        .status-pending {
+            background: rgba(255, 183, 77, 0.2);
+            color: #ffb74d;
+        }
+
+        .status-completed {
+            background: rgba(79, 172, 254, 0.2);
+            color: #4facfe;
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 12px;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 4px;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid-dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .dashboard-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .dashboard-main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-title-section h1 {
+                font-size: 2rem;
+            }
+
+            .dashboard-actions {
+                width: 100%;
+            }
+
+            .dashboard-btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-sidebar-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-sidebar-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <!-- Brand -->
+            <div class="sidebar-brand">
+                <span class="sidebar-brand-icon">⚡</span>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-name">The Abyss</span>
+                    <span class="sidebar-brand-tagline">Development Team</span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Menu Principal</span>
+                <a href="#" class="sidebar-link active">
+                    <span class="sidebar-link-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">🚀</span>
+                    <span>Projetos</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">👥</span>
+                    <span>Equipe</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">📈</span>
+                    <span>Análises</span>
+                </a>
+            </nav>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Ferramentas</span>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">⚙️</span>
+                    <span>Configurações</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">📝</span>
+                    <span>Documentação</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">💬</span>
+                    <span>Suporte</span>
+                </a>
+            </nav>
+
+            <!-- Footer -->
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="user-avatar">👤</div>
+                    <div class="user-info">
+                        <div class="user-name">Admin</div>
+                        <div class="user-role">Desenvolvedor</div>
+                    </div>
+                </div>
+                <a href="index.html" class="sidebar-link" style="margin-top: 12px;">
+                    <span class="sidebar-link-icon">🏠</span>
+                    <span>Voltar ao Site</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="dashboard-title-section">
+                    <h1>Dashboard</h1>
+                    <p>Bem-vindo ao painel de controle do The Abyss Dev Team</p>
+                </div>
+                <div class="dashboard-actions">
+                    <button class="dashboard-btn">
+                        <span>🔔</span>
+                        <span>Notificações</span>
+                    </button>
+                    <button class="dashboard-btn primary">
+                        <span>➕</span>
+                        <span>Novo Projeto</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                            🚀
+                        </div>
+                        <span class="stat-card-trend trend-up">↑ 12%</span>
+                    </div>
+                    <div class="stat-card-value">24</div>
+                    <div class="stat-card-label">Projetos Ativos</div>
+                </div>
+
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                            👥
+                        </div>
+                        <span class="stat-card-trend trend-up">↑ 8%</span>
+                    </div>
+                    <div class="stat-card-value">128</div>
+                    <div class="stat-card-label">Usuários Ativos</div>
+                </div>
+
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+                            ⚡
+                        </div>
+                        <span class="stat-card-trend trend-up">↑ 24%</span>
+                    </div>
+                    <div class="stat-card-value">99.9%</div>
+                    <div class="stat-card-label">Uptime</div>
+                </div>
+
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
+                            💰
+                        </div>
+                        <span class="stat-card-trend trend-down">↓ 3%</span>
+                    </div>
+                    <div class="stat-card-value">R$ 48K</div>
+                    <div class="stat-card-label">Receita Mensal</div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid-dashboard">
+                <!-- Recent Projects -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h2 class="dashboard-card-title">Projetos Recentes</h2>
+                        <button class="card-action-btn">Ver Todos →</button>
+                    </div>
+                    <div class="projects-list">
+                        <div class="project-item">
+                            <div class="project-icon-small" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                                🤖
+                            </div>
+                            <div class="project-info">
+                                <div class="project-name">Discord Bot Elite</div>
+                                <div class="project-meta">Atualizado há 2 horas</div>
+                            </div>
+                            <span class="project-status status-active">Ativo</span>
+                        </div>
+
+                        <div class="project-item">
+                            <div class="project-icon-small" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                                🌐
+                            </div>
+                            <div class="project-info">
+                                <div class="project-name">Web Dashboard</div>
+                                <div class="project-meta">Atualizado há 5 horas</div>
+                            </div>
+                            <span class="project-status status-active">Ativo</span>
+                        </div>
+
+                        <div class="project-item">
+                            <div class="project-icon-small" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+                                ⚡
+                            </div>
+                            <div class="project-info">
+                                <div class="project-name">Automation Scripts</div>
+                                <div class="project-meta">Atualizado ontem</div>
+                            </div>
+                            <span class="project-status status-completed">Completo</span>
+                        </div>
+
+                        <div class="project-item">
+                            <div class="project-icon-small" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
+                                🎯
+                            </div>
+                            <div class="project-info">
+                                <div class="project-name">Custom API</div>
+                                <div class="project-meta">Atualizado há 3 dias</div>
+                            </div>
+                            <span class="project-status status-pending">Pendente</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h2 class="dashboard-card-title">Atividade Recente</h2>
+                        <button class="card-action-btn">Ver Mais →</button>
+                    </div>
+                    <div class="activity-feed">
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                                ✅
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">Projeto "Discord Bot" foi atualizado</div>
+                                <div class="activity-time">Há 2 horas</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                                👥
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">Novo membro adicionado à equipe</div>
+                                <div class="activity-time">Há 4 horas</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+                                🚀
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">Deploy realizado com sucesso</div>
+                                <div class="activity-time">Há 6 horas</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
+                                💬
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">Nova mensagem de suporte</div>
+                                <div class="activity-time">Há 8 horas</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                                📊
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">Relatório mensal gerado</div>
+                                <div class="activity-time">Ontem</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            ☰
+        </button>
+    </div>
+
+    <script>
+        // Mobile Sidebar Toggle
+        const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+        const dashboardSidebar = document.getElementById('dashboardSidebar');
+
+        if (mobileSidebarToggle && dashboardSidebar) {
+            mobileSidebarToggle.addEventListener('click', () => {
+                dashboardSidebar.classList.toggle('open');
+            });
+
+            // Close sidebar when clicking outside
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    if (!dashboardSidebar.contains(e.target) && !mobileSidebarToggle.contains(e.target)) {
+                        dashboardSidebar.classList.remove('open');
+                    }
+                }
+            });
+        }
+
+        // Add smooth animations on load
+        window.addEventListener('load', () => {
+            const cards = document.querySelectorAll('.stat-card-dashboard, .dashboard-card, .project-item, .activity-item');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 50);
+            });
+        });
+    </script>
+</body>
+</html>

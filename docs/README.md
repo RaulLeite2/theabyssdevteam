@@ -2,7 +2,26 @@
 
 Plataforma de blog moderna com sistema de posts dinâmicos e integração com PostgreSQL para gerenciamento de dados.
 
-## 🚀 Tecnologias
+## � Estrutura do Projeto
+
+```
+theabyssdevteam/
+├── assets/          # CSS e JavaScript
+│   ├── css/         # Arquivos de estilo
+│   └── js/          # Scripts do frontend
+├── api/             # Endpoints da API
+├── docs/            # Documentação completa
+├── img/             # Imagens e ícones
+├── pages/           # Páginas secundárias
+├── posts/           # Posts do blog
+├── index.html       # Página principal
+├── dashboard.html   # Dashboard administrativo
+└── server.js        # Servidor Express
+```
+
+📖 **Documentação completa da estrutura:** [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)
+
+## �🚀 Tecnologias
 
 - **Node.js** - Runtime JavaScript
 - **Express** - Framework web
