@@ -1,18 +1,18 @@
 # The Abyss Development Team - Blog Platform
 
-Plataforma de blog moderna com sistema de posts dinâmicos e integração com Redis para gerenciamento de dados.
+Plataforma de blog moderna com sistema de posts dinâmicos e integração com PostgreSQL para gerenciamento de dados.
 
 ## 🚀 Tecnologias
 
 - **Node.js** - Runtime JavaScript
 - **Express** - Framework web
-- **Redis** - Banco de dados em memória
-- **Vercel/Railway** - Deploy e hospedagem
+- **PostgreSQL** - Banco de dados relacional
+- **Railway** - Deploy e hospedagem
 
 ## 📋 Pré-requisitos
 
 - Node.js >= 18.0.0
-- Instância Redis (Railway fornece automaticamente)
+- PostgreSQL (Railway fornece automaticamente)
 
 ## 🔧 Instalação Local
 
@@ -34,7 +34,7 @@ cp .env.example .env
 
 Edite o arquivo `.env` com suas configurações:
 ```
-REDIS_URL=redis://localhost:6379
+DATABASE_URL=postgresql://user:password@localhost:5432/theabyss
 PORT=3000
 NODE_ENV=development
 ```
@@ -55,12 +55,12 @@ O servidor estará rodando em `http://localhost:3000`
 3. Selecione "Deploy from GitHub repo"
 4. Escolha este repositório
 5. Railway detectará automaticamente o projeto Node.js
-6. Adicione o serviço Redis:
+6. Adicione o serviço PostgreSQL:
    - Clique em "+ New"
-   - Selecione "Database" → "Add Redis"
+   - Selecione "Database" → "Add PostgreSQL"
 7. Configure a variável de ambiente:
    - Vá em "Variables"
-   - Railway adicionará automaticamente `REDIS_URL`
+   - Railway adicionará automaticamente `DATABASE_URL`
 8. Deploy automático será iniciado!
 
 ### Opção 2: Deploy via CLI
@@ -75,7 +75,7 @@ railway login
 # Inicialize o projeto
 railway init
 
-# Adicione Redis
+# Adicione PostgreSQL
 railway add
 
 # Deploy
@@ -88,6 +88,26 @@ O Railway usará automaticamente:
 - **Start Command**: `npm start` (definido no package.json)
 - **Port**: Detectado automaticamente via variável `PORT`
 - **Node Version**: >= 18.0.0 (definido em engines)
+- **Database**: PostgreSQL com `DATABASE_URL` configurado automaticamente
+
+### Estrutura do Banco de Dados
+
+O banco será inicializado automaticamente na primeira execução com as seguintes tabelas:
+
+**posts**
+- `id` - Chave primária (auto-incremento)
+- `title` - Título do post (VARCHAR 500)
+- `content` - Conteúdo do post (TEXT)
+- `author` - Autor do post (VARCHAR 255)
+- `created_at` - Data de criação (TIMESTAMP)
+- `updated_at` - Data de atualização (TIMESTAMP)
+
+**sessions**
+- `token` - Token de sessão (VARCHAR 255, PK)
+- `user_id` - ID do usuário (VARCHAR 255)
+- `username` - Nome de usuário (VARCHAR 255)
+- `expires_at` - Timestamp de expiração (BIGINT)
+- `created_at` - Data de criação (TIMESTAMP)
 
 ## 📦 Estrutura do Projeto
 
@@ -96,7 +116,7 @@ theabyssdevteam/
 ├── api/                    # API endpoints
 │   ├── logout.js          # Endpoint de logout
 │   ├── posts.js           # Gerenciamento de posts
-│   └── redis.js           # Cliente Redis
+│   └── database.js        # Cliente PostgreSQL
 ├── posts/                 # Posts do blog
 │   ├── post1.html/json
 │   ├── post2.html/json
@@ -117,7 +137,7 @@ theabyssdevteam/
 
 | Variável | Descrição | Padrão |
 |----------|-----------|--------|
-| `REDIS_URL` | URL de conexão Redis | Obrigatório |
+| `DATABASE_URL` | URL de conexão PostgreSQL | Obrigatório |
 | `PORT` | Porta do servidor | 3000 |
 | `NODE_ENV` | Ambiente de execução | production |
 
@@ -139,17 +159,26 @@ npm run dev    # Inicia em modo desenvolvimento
 
 ## 🐛 Troubleshooting
 
-### Erro de conexão Redis
+### Erro de conexão PostgreSQL
 ```
-Error: REDIS_URL environment variable is not set
+Error: DATABASE_URL environment variable is not set
 ```
-**Solução**: Configure a variável `REDIS_URL` no Railway ou arquivo `.env`
+**Solução**: Configure a variável `DATABASE_URL` no Railway ou arquivo `.env`
+
+### Erro de SSL na conexão
+```
+Error: SSL connection required
+```
+**Solução**: O código já está configurado para usar SSL em produção automaticamente
 
 ### Porta já em uso
 ```
 Error: listen EADDRINUSE: address already in use :::3000
 ```
 **Solução**: Altere a variável `PORT` para outra porta disponível
+
+### Tabelas não criadas
+**Solução**: As tabelas são criadas automaticamente na primeira execução. Verifique os logs do servidor.
 
 ## 📄 Licença
 
