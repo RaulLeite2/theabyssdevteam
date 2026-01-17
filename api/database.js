@@ -8,20 +8,28 @@ export function getPool() {
     const databaseUrl = process.env.DATABASE_URL;
     
     if (!databaseUrl) {
-      throw new Error('DATABASE_URL environment variable is not set');
+      console.warn('⚠️  DATABASE_URL not configured - database features disabled');
+      return null;
     }
     
-    pool = new Pool({
-      connectionString: databaseUrl,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-      max: 20,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 10000,
-    });
-    
-    pool.on('error', (err) => {
-      console.error('Unexpected error on idle PostgreSQL client', err);
-    });
+    try {
+      pool = new Pool({
+        connectionString: databaseUrl,
+        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 10000,
+      });
+      
+      pool.on('error', (err) => {
+        console.error('Unexpected error on idle PostgreSQL client', err);
+      });
+      
+      console.log('✅ PostgreSQL pool created successfully');
+    } catch (error) {
+      console.error('❌ Failed to create PostgreSQL pool:', error.message);
+      return null;
+    }
   }
   
   return pool;
@@ -31,7 +39,16 @@ export function getPool() {
 export async function initDatabase() {
   const pool = getPool();
   
+  if (!pool) {
+    console.warn('⚠️  Skipping database initialization - no database connection');
+    return false;
+  }
+  
   try {
+    // Testar conexão primeiro
+    await pool.query('SELECT NOW()');
+    console.log('✅ Database connection successful');
+    
     // Criar tabela de posts se não existir
     await pool.query(`
       CREATE TABLE IF NOT EXISTS posts (
@@ -61,16 +78,19 @@ export async function initDatabase() {
       ON sessions(expires_at)
     `);
     
-    console.log('Database initialized successfully');
+    console.log('✅ Database tables initialized successfully');
+    return true;
   } catch (error) {
-    console.error('Error initializing database:', error);
-    throw error;
+    console.error('❌ Error initializing database:', error.message);
+    console.warn('⚠️  Server will run without database features');
+    return false;
   }
 }
 
 // Helper functions para manter compatibilidade com código existente
 export async function kvGet(key) {
   const pool = getPool();
+  if (!pool) return null;
   
   if (key.startsWith('session:')) {
     const token = key.replace('session:', '');
@@ -109,6 +129,7 @@ export async function kvGet(key) {
 
 export async function kvSet(key, value, options = {}) {
   const pool = getPool();
+  if (!pool) return false;
   
   if (key.startsWith('session:')) {
     const token = key.replace('session:', '');
@@ -128,6 +149,7 @@ export async function kvSet(key, value, options = {}) {
 
 export async function kvDel(key) {
   const pool = getPool();
+  if (!pool) return false;
   
   if (key.startsWith('session:')) {
     const token = key.replace('session:', '');
@@ -138,6 +160,7 @@ export async function kvDel(key) {
 
 export async function kvKeys(pattern) {
   const pool = getPool();
+  if (!pool) return [];
   
   if (pattern === 'session:*') {
     const result = await pool.query('SELECT token FROM sessions WHERE expires_at > $1', [Date.now()]);
@@ -150,6 +173,7 @@ export async function kvKeys(pattern) {
 // Funções específicas para posts
 export async function createPost(title, content, author) {
   const pool = getPool();
+  if (!pool) throw new Error('Database not available');
   const result = await pool.query(
     'INSERT INTO posts (title, content, author) VALUES ($1, $2, $3) RETURNING *',
     [title, content, author]
@@ -168,6 +192,7 @@ export async function createPost(title, content, author) {
 
 export async function updatePost(id, title, content) {
   const pool = getPool();
+  if (!pool) throw new Error('Database not available');
   const result = await pool.query(
     'UPDATE posts SET title = $1, content = $2, updated_at = CURRENT_TIMESTAMP WHERE id = $3 RETURNING *',
     [title, content, id]
@@ -188,11 +213,13 @@ export async function updatePost(id, title, content) {
 
 export async function deletePost(id) {
   const pool = getPool();
+  if (!pool) throw new Error('Database not available');
   await pool.query('DELETE FROM posts WHERE id = $1', [id]);
 }
 
 export async function getAllPosts() {
   const pool = getPool();
+  if (!pool) return [];
   const result = await pool.query(
     'SELECT id, title, content, author, created_at, updated_at FROM posts ORDER BY created_at DESC'
   );

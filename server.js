@@ -18,15 +18,28 @@ app.get("/", (req, res) => {
 
 // Inicializar banco de dados e iniciar servidor
 async function start() {
+  console.log('🚀 Starting The Abyss Dev Team server...');
+  console.log('📍 Environment:', process.env.NODE_ENV || 'development');
+  console.log('🔌 Port:', PORT);
+  
   try {
-    await initDatabase();
-    console.log('Database initialized successfully');
+    // Tentar inicializar banco (não crítico)
+    const dbInitialized = await initDatabase();
+    
+    if (dbInitialized) {
+      console.log('✅ Database features enabled');
+    } else {
+      console.log('⚠️  Running in static mode (database features disabled)');
+      console.log('💡 To enable database: Set DATABASE_URL environment variable');
+    }
     
     app.listen(PORT, () => {
-      console.log("Servidor rodando na porta " + PORT);
+      console.log('✅ Servidor rodando na porta ' + PORT);
+      console.log('🌐 Server ready and accepting connections');
     });
   } catch (error) {
-    console.error('Failed to start server:', error);
+    console.error('❌ Failed to start server:', error);
+    console.error('Stack:', error.stack);
     process.exit(1);
   }
 }

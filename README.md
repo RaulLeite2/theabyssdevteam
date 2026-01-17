@@ -48,20 +48,23 @@ O servidor estará rodando em `http://localhost:3000`
 
 ## 🚂 Deploy no Railway
 
-### Opção 1: Deploy Automático (Recomendado)
+### ⚠️ IMPORTANTE: Ordem de Deploy
 
+**O servidor agora roda mesmo SEM banco de dados!** Isso permite deploy em 2 fases:
+
+#### Fase 1: Deploy Inicial (Só Frontend)
 1. Acesse [Railway](https://railway.app)
-2. Clique em "New Project"
-3. Selecione "Deploy from GitHub repo"
-4. Escolha este repositório
-5. Railway detectará automaticamente o projeto Node.js
-6. Adicione o serviço PostgreSQL:
-   - Clique em "+ New"
-   - Selecione "Database" → "Add PostgreSQL"
-7. Configure a variável de ambiente:
-   - Vá em "Variables"
-   - Railway adicionará automaticamente `DATABASE_URL`
-8. Deploy automático será iniciado!
+2. Clique em "New Project" → "Deploy from GitHub repo"
+3. Selecione este repositório
+4. **Deploy será feito automaticamente** ✅
+5. Seu site estará online rodando em modo estático
+
+#### Fase 2: Adicionar PostgreSQL (Opcional)
+1. No seu projeto Railway, clique em "+ New"
+2. Selecione "Database" → "Add PostgreSQL"
+3. Railway criará automaticamente a variável `DATABASE_URL`
+4. **Redesploy automático** - banco será inicializado
+5. Features de blog/posts estarão habilitadas ✅
 
 ### Opção 2: Deploy via CLI
 
@@ -75,11 +78,11 @@ railway login
 # Inicialize o projeto
 railway init
 
-# Adicione PostgreSQL
-railway add
-
-# Deploy
+# Deploy (funciona sem banco!)
 railway up
+
+# [Opcional] Adicionar PostgreSQL depois
+railway add
 ```
 
 ### Configuração Railway
