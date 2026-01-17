@@ -245,13 +245,58 @@ export async function initDatabase() {
       `);
       console.log('   ✅ Table "sessions" ready');
       
-      // Criar índice
-      console.log('📦 Creating index: idx_sessions_expires_at...');
+      // Criar tabela de usuários
+      console.log('📦 Creating table: users...');
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS users (
+          id SERIAL PRIMARY KEY,
+          username VARCHAR(255) UNIQUE NOT NULL,
+          email VARCHAR(255) UNIQUE NOT NULL,
+          password_hash VARCHAR(255) NOT NULL,
+          role VARCHAR(50) DEFAULT 'viewer',
+          avatar VARCHAR(10) DEFAULT '🤖',
+          bio TEXT,
+          xp INTEGER DEFAULT 0,
+          level INTEGER DEFAULT 1,
+          streak_days INTEGER DEFAULT 0,
+          last_login TIMESTAMP,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          CONSTRAINT valid_role CHECK (role IN ('viewer', 'editor', 'admin'))
+        )
+      `);
+      console.log('   ✅ Table "users" ready');
+      
+      // Criar tabela de contatos
+      console.log('📦 Creating table: contacts...');
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS contacts (
+          id SERIAL PRIMARY KEY,
+          name VARCHAR(255) NOT NULL,
+          email VARCHAR(255) NOT NULL,
+          message TEXT NOT NULL,
+          status VARCHAR(50) DEFAULT 'pending',
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          CONSTRAINT valid_status CHECK (status IN ('pending', 'read', 'replied'))
+        )
+      `);
+      console.log('   ✅ Table "contacts" ready');
+      
+      // Criar índices
+      console.log('📦 Creating indexes...');
       await pool.query(`
         CREATE INDEX IF NOT EXISTS idx_sessions_expires_at 
         ON sessions(expires_at)
       `);
-      console.log('   ✅ Index created');
+      await pool.query(`
+        CREATE INDEX IF NOT EXISTS idx_users_email 
+        ON users(email)
+      `);
+      await pool.query(`
+        CREATE INDEX IF NOT EXISTS idx_contacts_status 
+        ON contacts(status)
+      `);
+      console.log('   ✅ Indexes created');
       console.log('');
       
       // Verificar tabelas criadas
@@ -275,6 +320,12 @@ export async function initDatabase() {
       
       const sessionCount = await pool.query('SELECT COUNT(*) as count FROM sessions');
       console.log(`   sessions: ${sessionCount.rows[0].count} records`);
+      
+      const userCount = await pool.query('SELECT COUNT(*) as count FROM users');
+      console.log(`   users: ${userCount.rows[0].count} records`);
+      
+      const contactCount = await pool.query('SELECT COUNT(*) as count FROM contacts');
+      console.log(`   contacts: ${contactCount.rows[0].count} records`);
       console.log('');
       
       console.log('═'.repeat(50));
@@ -460,4 +511,102 @@ export async function getAllPosts() {
     createdAt: new Date(row.created_at).getTime(),
     updatedAt: new Date(row.updated_at).getTime()
   }));
+}
+
+// Funções específicas para users
+export async function createUser(username, email, passwordHash, role = 'viewer') {
+  const pool = getPool();
+  const result = await pool.query(
+    'INSERT INTO users (username, email, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING id, username, email, role, avatar, xp, level, created_at',
+    [username, email, passwordHash, role]
+  );
+  return result.rows[0];
+}
+
+export async function getUserByEmail(email) {
+  const pool = getPool();
+  const result = await pool.query(
+    'SELECT * FROM users WHERE email = $1',
+    [email]
+  );
+  return result.rows[0] || null;
+}
+
+export async function getUserById(id) {
+  const pool = getPool();
+  const result = await pool.query(
+    'SELECT id, username, email, role, avatar, bio, xp, level, streak_days, last_login, created_at FROM users WHERE id = $1',
+    [id]
+  );
+  return result.rows[0] || null;
+}
+
+export async function updateUserLastLogin(userId) {
+  const pool = getPool();
+  await pool.query(
+    'UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = $1',
+    [userId]
+  );
+}
+
+export async function updateUserXP(userId, xpToAdd) {
+  const pool = getPool();
+  const result = await pool.query(
+    'UPDATE users SET xp = xp + $1, level = FLOOR((xp + $1) / 100) + 1 WHERE id = $2 RETURNING xp, level',
+    [xpToAdd, userId]
+  );
+  return result.rows[0];
+}
+
+export async function getUserStats(userId) {
+  const pool = getPool();
+  
+  // Contar posts do usuário
+  const postsResult = await pool.query(
+    'SELECT COUNT(*) as count FROM posts WHERE author = (SELECT username FROM users WHERE id = $1)',
+    [userId]
+  );
+  
+  // Contar sessões ativas
+  const sessionsResult = await pool.query(
+    'SELECT COUNT(*) as count FROM sessions WHERE user_id = $1 AND expires_at > $2',
+    [userId.toString(), Date.now()]
+  );
+  
+  // Obter dados do usuário
+  const user = await getUserById(userId);
+  
+  return {
+    posts: parseInt(postsResult.rows[0].count),
+    sessions: parseInt(sessionsResult.rows[0].count),
+    xp: user.xp,
+    level: user.level,
+    streak: user.streak_days
+  };
+}
+
+// Funções específicas para contacts
+export async function createContact(name, email, message) {
+  const pool = getPool();
+  const result = await pool.query(
+    'INSERT INTO contacts (name, email, message) VALUES ($1, $2, $3) RETURNING *',
+    [name, email, message]
+  );
+  return result.rows[0];
+}
+
+export async function getAllContacts() {
+  const pool = getPool();
+  const result = await pool.query(
+    'SELECT * FROM contacts ORDER BY created_at DESC'
+  );
+  return result.rows;
+}
+
+export async function updateContactStatus(id, status) {
+  const pool = getPool();
+  await pool.query(
+    'UPDATE contacts SET status = $1 WHERE id = $2',
+    [status, id]
+  );
 }

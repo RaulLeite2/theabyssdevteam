@@ -4,6 +4,8 @@ import { fileURLToPath } from 'url';
 import https from 'https';
 import http from 'http';
 import { initDatabase } from './api/database.js';
+import usersRouter from './api/users.js';
+import contactRouter from './api/contact.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -70,9 +72,15 @@ app.get("/health", async (req, res) => {
   }
 });
 
+// API Routes
+app.use('/api/users', usersRouter);
+app.use('/api/contact', contactRouter);
+
 console.log('   ✅ Routes configured');
 console.log('   📍 Main: GET /');
 console.log('   📍 Health: GET /health');
+console.log('   📍 API Users: /api/users (POST register, POST login, GET profile)');
+console.log('   📍 API Contact: /api/contact (POST, GET, PATCH)');
 console.log('');
 
 // Função para fazer auto-request ao servidor após inicialização

@@ -936,68 +936,206 @@ async def status(ctx):
 
 <!-- DASHBOARD (Área Logada) -->
 <section id="dashboard" class="tab-content dashboard-section" style="display: none;">
+    <!-- Header do Dashboard -->
     <div class="dashboard-header">
-        <h2 class="section-title">Dashboard</h2>
+        <div class="welcome-message">
+            <h2 id="dashboardGreeting">Olá, Usuário! 👋</h2>
+            <p id="dashboardSubtitle">Bem-vindo de volta ao abismo</p>
+        </div>
         <button class="btn-logout" id="logoutBtn">
             <span>🚪</span> Sair
         </button>
     </div>
     
+    <!-- Stats Cards -->
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-icon">📝</div>
+            <div class="stat-content">
+                <span class="stat-value" id="userPostsCount">0</span>
+                <span class="stat-label">Posts Criados</span>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">🔥</div>
+            <div class="stat-content">
+                <span class="stat-value" id="userStreakDays">0</span>
+                <span class="stat-label">Dias Seguidos</span>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-content">
+                <span class="stat-value" id="userXP">0</span>
+                <span class="stat-label">XP Total</span>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-content">
+                <span class="stat-value" id="userLevel">1</span>
+                <span class="stat-label">Nível</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Grid -->
     <div class="dashboard-grid">
+        <!-- Perfil Card -->
         <div class="dashboard-card profile-card">
             <h3>👤 Perfil</h3>
             <div class="profile-info">
-                <div class="profile-avatar">
-                    <span class="avatar-placeholder">👤</span>
-                </div>
+                <div class="profile-avatar" id="userAvatar">🤖</div>
                 <div class="profile-details">
                     <h4 id="dashboardUserName">Usuário</h4>
                     <p id="dashboardUserEmail">email@exemplo.com</p>
-                    <span class="profile-badge">🌟 Membro</span>
+                    <div class="profile-badges">
+                        <span class="badge badge-role" id="userRoleBadge">Viewer</span>
+                        <span class="badge badge-level" id="userLevelBadge">Nível 1</span>
+                    </div>
                 </div>
             </div>
-            <button class="btn-secondary">Editar Perfil</button>
-        </div>
-        
-        <div class="dashboard-card stats-card">
-            <h3>📊 Estatísticas</h3>
-            <div class="stats-list">
-                <div class="stat-item">
-                    <span class="stat-label">Projetos Salvos</span>
-                    <span class="stat-value" id="savedProjects">0</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Últi access</span>
-                    <span class="stat-value" id="lastAccess">Agora</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">Dias ativo</span>
-                    <span class="stat-value" id="activeDays">1</span>
-                </div>
+            <div class="profile-actions">
+                <button class="btn-secondary btn-small">Editar Perfil</button>
+                <button class="btn-secondary btn-small" id="changeAvatarBtn">Mudar Avatar</button>
             </div>
         </div>
         
+        <!-- Ações Rápidas -->
+        <div class="dashboard-card actions-card">
+            <h3>🚀 Ações Rápidas</h3>
+            <div class="quick-actions">
+                <button class="action-btn" id="createPostBtn" disabled>
+                    <span class="action-icon">✍️</span>
+                    <span class="action-label">Criar Post</span>
+                    <span class="action-desc">Compartilhe algo</span>
+                </button>
+                <button class="action-btn" id="viewSessionsBtn">
+                    <span class="action-icon">🔐</span>
+                    <span class="action-label">Sessões</span>
+                    <span class="action-desc">Ver sessões ativas</span>
+                </button>
+                <button class="action-btn" id="explorePosts">
+                    <span class="action-icon">🌟</span>
+                    <span class="action-label">Explorar</span>
+                    <span class="action-desc">Ver posts</span>
+                </button>
+                <button class="action-btn" id="contactBtn">
+                    <span class="action-icon">💬</span>
+                    <span class="action-label">Contato</span>
+                    <span class="action-desc">Fale conosco</span>
+                </button>
+            </div>
+            <div class="permission-notice" id="permissionNotice" style="display: none;">
+                ℹ️ Apenas Editors e Admins podem criar posts
+            </div>
+        </div>
+        
+        <!-- Missão do Dia -->
+        <div class="dashboard-card mission-card">
+            <h3>🎯 Missão do Dia</h3>
+            <div class="mission-content">
+                <div class="mission-icon">✨</div>
+                <h4 id="missionTitle">Primeira Contribuição</h4>
+                <p id="missionDescription">Crie seu primeiro post e ganhe 50 XP!</p>
+                <div class="mission-reward">
+                    <span>Recompensa: <strong>+50 XP</strong></span>
+                </div>
+                <div class="mission-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="missionProgress" style="width: 0%"></div>
+                    </div>
+                    <span class="progress-text" id="missionProgressText">0/1</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Atividade Recente -->
         <div class="dashboard-card activity-card">
-            <h3>⚡ Atividade Recente</h3>
-            <div class="activity-list" id="recentActivity">
+            <h3>📰 Atividade Recente</h3>
+            <div class="activity-list" id="activityList">
                 <div class="activity-item">
-                    <span class="activity-icon">✓</span>
+                    <span class="activity-icon">🎉</span>
                     <div class="activity-details">
-                        <p>Conta criada com sucesso</p>
+                        <p><strong>Conta criada!</strong></p>
                         <span class="activity-time">Agora</span>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="dashboard-card projects-card">
-            <h3>🚀 Meus Projetos</h3>
-            <div class="saved-projects" id="userProjects">
-                <p class="empty-state">Nenhum projeto salvo ainda</p>
+        <!-- Formulário de Contato -->
+        <div class="dashboard-card contact-card">
+            <h3>💬 Entre em Contato</h3>
+            <form id="contactForm" class="contact-form">
+                <div class="form-group">
+                    <label for="contactName">Nome</label>
+                    <input 
+                        type="text" 
+                        id="contactName" 
+                        class="form-input" 
+                        placeholder="Seu nome"
+                        required
+                    />
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactEmail">Email</label>
+                    <input 
+                        type="email" 
+                        id="contactEmail" 
+                        class="form-input" 
+                        placeholder="seu@email.com"
+                        required
+                    />
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactMessage">Mensagem</label>
+                    <textarea 
+                        id="contactMessage" 
+                        class="form-textarea" 
+                        placeholder="Sua mensagem..."
+                        rows="4"
+                        required
+                    ></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-full">
+                    <span id="contactBtnText">Enviar Mensagem</span>
+                    <span id="contactBtnLoading" style="display: none;">Enviando...</span>
+                </button>
+                
+                <div id="contactFeedback" class="form-feedback" style="display: none;"></div>
+            </form>
+        </div>
+        
+        <!-- Gráfico de Posts (Placeholder) -->
+        <div class="dashboard-card chart-card">
+            <h3>📊 Posts por Mês</h3>
+            <div class="chart-placeholder">
+                <svg viewBox="0 0 300 150" class="mini-chart">
+                    <rect x="10" y="120" width="30" height="30" fill="#6366f1" opacity="0.3"/>
+                    <rect x="50" y="100" width="30" height="50" fill="#6366f1" opacity="0.5"/>
+                    <rect x="90" y="80" width="30" height="70" fill="#6366f1" opacity="0.7"/>
+                    <rect x="130" y="60" width="30" height="90" fill="#6366f1"/>
+                    <rect x="170" y="90" width="30" height="60" fill="#6366f1" opacity="0.8"/>
+                    <rect x="210" y="110" width="30" height="40" fill="#6366f1" opacity="0.6"/>
+                    <rect x="250" y="130" width="30" height="20" fill="#6366f1" opacity="0.4"/>
+                </svg>
+                <p class="chart-summary">Você está criando mais conteúdo! 📈</p>
             </div>
-            <button class="btn-primary">Explorar Projetos</button>
         </div>
     </div>
+    
+    <!-- Notificações de Sistema -->
+    <div id="systemNotifications" class="system-notifications">
+        <!-- Notificações aparecerão aqui dinamicamente -->
+    </div>
+</section>
 </section>
 
 <!-- PROJETOS -->
@@ -1401,6 +1539,7 @@ async def status(ctx):
 
 <script src="script.js"></script>
 <script src="auth-system.js"></script>
+<script src="dashboard.js"></script>
 </body>
 </html>
 
