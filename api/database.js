@@ -11,9 +11,12 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export function getPool() {
   if (!pool) {
+    console.log('📦 Creating PostgreSQL connection pool...');
+    
     const databaseUrl = process.env.DATABASE_URL;
     
     if (!databaseUrl) {
+      console.error('');
       console.error('❌❌❌ DATABASE_URL NOT CONFIGURED ❌❌❌');
       console.error('');
       console.error('🚨 PostgreSQL is REQUIRED for this application to work!');
@@ -28,9 +31,30 @@ export function getPool() {
       throw new Error('DATABASE_URL environment variable is not set');
     }
     
-    console.log('📊 Database URL detected:', databaseUrl.replace(/:[^:]*@/, ':****@'));
+    // Parsear URL para mostrar detalhes (escondendo senha)
+    const urlParts = databaseUrl.match(/postgresql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+    if (urlParts) {
+      console.log('📊 Database Connection Details:');
+      console.log('   User:', urlParts[1]);
+      console.log('   Password:', '*'.repeat(urlParts[2].length));
+      console.log('   Host:', urlParts[3]);
+      console.log('   Port:', urlParts[4]);
+      console.log('   Database:', urlParts[5]);
+    } else {
+      console.log('📊 Database URL:', databaseUrl.substring(0, 40) + '...');
+    }
+    console.log('');
     
     try {
+      console.log('⚙️ Pool Configuration:');
+      console.log('   Max connections: 20');
+      console.log('   Min connections: 2');
+      console.log('   Idle timeout: 30000ms');
+      console.log('   Connection timeout: 30000ms');
+      console.log('   SSL:', process.env.NODE_ENV === 'production' ? 'enabled' : 'disabled');
+      console.log('   Keep-alive: enabled');
+      console.log('');
+      
       // Configuração otimizada para Railway
       pool = new Pool({
         connectionString: databaseUrl,
@@ -38,21 +62,29 @@ export function getPool() {
         max: 20,
         min: 2,
         idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 30000, // Aumentado para 30s
-        // Railway specific settings
+        connectionTimeoutMillis: 30000,
         keepAlive: true,
         keepAliveInitialDelayMillis: 10000,
       });
       
       pool.on('error', (err) => {
-        console.error('❌ Unexpected error on idle PostgreSQL client:', err.message);
+        console.error('❌ [POOL ERROR] Unexpected error on idle client:', err.message);
       });
       
-      pool.on('connect', () => {
-        console.log('✅ New client connected to PostgreSQL');
+      pool.on('connect', (client) => {
+        console.log('🔗 [POOL] New client connected to database');
+      });
+      
+      pool.on('acquire', (client) => {
+        console.log('🔒 [POOL] Client acquired from pool');
+      });
+      
+      pool.on('remove', (client) => {
+        console.log('🗑️ [POOL] Client removed from pool');
       });
       
       console.log('✅ PostgreSQL pool created successfully');
+      console.log('');
     } catch (error) {
       console.error('❌ Failed to create PostgreSQL pool:', error.message);
       throw error;
@@ -64,19 +96,33 @@ export function getPool() {
 
 // Inicializar banco de dados com retry
 export async function initDatabase() {
+  console.log('📦 Starting database initialization...');
+  console.log('');
+  
   const pool = getPool();
   
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      console.log(`🔄 Database connection attempt ${attempt}/${MAX_RETRIES}...`);
+      console.log('═'.repeat(50));
+      console.log(`🔄 CONNECTION ATTEMPT ${attempt}/${MAX_RETRIES}`);
+      console.log('═'.repeat(50));
+      console.log('');
       
-      // Testar conexão primeiro
-      const result = await pool.query('SELECT NOW() as time, version() as version');
-      console.log('✅ Database connection successful!');
-      console.log('⏰ Database time:', result.rows[0].time);
-      console.log('📦 PostgreSQL version:', result.rows[0].version.split(' ')[0] + ' ' + result.rows[0].version.split(' ')[1]);
+      console.log('🔌 Executing test query (SELECT NOW())...');
+      const startTime = Date.now();
+      const result = await pool.query('SELECT NOW() as time, version() as version, current_database() as db');
+      const duration = Date.now() - startTime;
       
-      // Criar tabela de posts se não existir
+      console.log(`✅ Query executed successfully in ${duration}ms`);
+      console.log('');
+      console.log('📊 Database Information:');
+      console.log('   Current Time:', result.rows[0].time);
+      console.log('   Database Name:', result.rows[0].db);
+      console.log('   PostgreSQL Version:', result.rows[0].version.split(',')[0]);
+      console.log('');
+      
+      // Criar tabela de posts
+      console.log('📦 Creating table: posts...');
       await pool.query(`
         CREATE TABLE IF NOT EXISTS posts (
           id SERIAL PRIMARY KEY,
@@ -87,8 +133,10 @@ export async function initDatabase() {
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
       `);
+      console.log('   ✅ Table "posts" ready');
       
-      // Criar tabela de sessões se não existir
+      // Criar tabela de sessões
+      console.log('📦 Creating table: sessions...');
       await pool.query(`
         CREATE TABLE IF NOT EXISTS sessions (
           token VARCHAR(255) PRIMARY KEY,
@@ -98,50 +146,80 @@ export async function initDatabase() {
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
       `);
+      console.log('   ✅ Table "sessions" ready');
       
-      // Criar índice para expiração de sessões
+      // Criar índice
+      console.log('📦 Creating index: idx_sessions_expires_at...');
       await pool.query(`
         CREATE INDEX IF NOT EXISTS idx_sessions_expires_at 
         ON sessions(expires_at)
       `);
+      console.log('   ✅ Index created');
+      console.log('');
       
-      // Verificar se as tabelas foram criadas
+      // Verificar tabelas criadas
+      console.log('🔍 Verifying database schema...');
       const tables = await pool.query(`
         SELECT tablename FROM pg_tables 
         WHERE schemaname = 'public' 
         ORDER BY tablename
       `);
       
-      console.log('✅ Database tables initialized successfully');
-      console.log('📋 Available tables:', tables.rows.map(r => r.tablename).join(', '));
+      console.log('📋 Available Tables:', tables.rows.length);
+      tables.rows.forEach((row, idx) => {
+        console.log(`   ${idx + 1}. ${row.tablename}`);
+      });
+      console.log('');
+      
+      // Contar registros em cada tabela
+      console.log('📈 Table Statistics:');
+      const postCount = await pool.query('SELECT COUNT(*) as count FROM posts');
+      console.log(`   posts: ${postCount.rows[0].count} records`);
+      
+      const sessionCount = await pool.query('SELECT COUNT(*) as count FROM sessions');
+      console.log(`   sessions: ${sessionCount.rows[0].count} records`);
+      console.log('');
+      
+      console.log('═'.repeat(50));
+      console.log('✅✅✅ DATABASE INITIALIZATION SUCCESSFUL ✅✅✅');
+      console.log('═'.repeat(50));
+      console.log('');
       
       return true;
     } catch (error) {
-      console.error(`❌ Database connection attempt ${attempt} failed:`, error.message);
+      console.error(`❌ Attempt ${attempt} FAILED`);
+      console.error('   Error:', error.message);
+      console.error('   Code:', error.code || 'N/A');
+      console.error('   Detail:', error.detail || 'N/A');
+      console.error('');
       
       if (attempt < MAX_RETRIES) {
-        console.log(`⏳ Retrying in ${RETRY_DELAY/1000} seconds...`);
+        console.log(`⏳ Waiting ${RETRY_DELAY/1000} seconds before retry...`);
+        console.log('');
         await sleep(RETRY_DELAY);
       } else {
-        console.error('');
-        console.error('❌❌❌ ALL DATABASE CONNECTION ATTEMPTS FAILED ❌❌❌');
-        console.error('');
-        console.error('🔍 Diagnostic Information:');
-        console.error('   Error:', error.message);
-        console.error('   Code:', error.code);
-        console.error('');
-        console.error('💡 Common Solutions:');
-        console.error('   1. Make sure PostgreSQL service is in the SAME Railway project');
-        console.error('   2. Check if DATABASE_URL variable is set correctly');
-        console.error('   3. Verify PostgreSQL service is running (not crashed)');
-        console.error('   4. Try using PUBLIC database URL instead of internal');
-        console.error('');
-        console.error('🔧 How to get PUBLIC URL:');
-        console.error('   1. Go to your PostgreSQL service in Railway');
-        console.error('   2. Click "Connect" tab');
-        console.error('   3. Copy "Postgres Connection URL" (public)');
-        console.error('   4. Add it as DATABASE_URL variable in your app service');
-        console.error('');
+        console.log('');
+        console.log('═'.repeat(50));
+        console.log('❌❌❌ ALL CONNECTION ATTEMPTS FAILED ❌❌❌');
+        console.log('═'.repeat(50));
+        console.log('');
+        console.log('🔍 Diagnostic Information:');
+        console.log('   Error Message:', error.message);
+        console.log('   Error Code:', error.code);
+        console.log('   Error Name:', error.name);
+        console.log('');
+        console.log('💡 Common Solutions:');
+        console.log('   1. Make sure PostgreSQL service is in the SAME Railway project');
+        console.log('   2. Check if DATABASE_URL variable is set correctly');
+        console.log('   3. Verify PostgreSQL service is running (not crashed)');
+        console.log('   4. Try using PUBLIC database URL instead of internal');
+        console.log('');
+        console.log('🔧 How to get PUBLIC URL:');
+        console.log('   1. Go to your PostgreSQL service in Railway');
+        console.log('   2. Click "Connect" tab');
+        console.log('   3. Copy "Postgres Connection URL" (public)');
+        console.log('   4. Add it as DATABASE_URL variable in your app service');
+        console.log('');
         throw error;
       }
     }
