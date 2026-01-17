@@ -67,13 +67,15 @@ async function start() {
     console.log('═'.repeat(60));
     console.log('');
     
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log('✅ HTTP Server started successfully!');
       console.log('');
       console.log('🌐 Server Information:');
-      console.log('   URL: http://localhost:' + PORT);
+      console.log('   Local: http://localhost:' + PORT);
+      console.log('   Network: http://0.0.0.0:' + PORT);
       console.log('   Port:', PORT);
       console.log('   Status: READY');
+      console.log('   Railway URL: Check Railway dashboard for public URL');
       console.log('');
       console.log('═'.repeat(60));
       console.log('✅✅✅ SERVER FULLY OPERATIONAL ✅✅✅');
