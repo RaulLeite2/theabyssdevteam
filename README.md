@@ -85,6 +85,28 @@ Significa que você pulou o passo 2. Para corrigir:
 5. Faça redeploy (botão "Deploy")
 ```
 
+### Se você receber erro "ENOTFOUND postgres.railway.internal"
+
+Isso significa que a aplicação e o PostgreSQL não estão no mesmo projeto ou precisa usar a URL pública:
+
+#### Solução 1: Verificar se estão no mesmo projeto (Recomendado)
+1. Certifique-se que **PostgreSQL** e **aplicação** estão no **mesmo projeto** Railway
+2. Se estiverem em projetos separados, delete e recrie no mesmo projeto
+
+#### Solução 2: Usar URL Pública
+1. Vá no **serviço PostgreSQL** no Railway
+2. Clique na aba **"Connect"**
+3. Copie a **"Postgres Connection URL"** (a URL pública, começa com um domínio railway.app)
+4. Vá no **serviço da aplicação**
+5. Aba **"Variables"**
+6. Edite `DATABASE_URL` e cole a URL pública
+7. **Redeploy** a aplicação
+
+Exemplo de URL pública:
+```
+postgresql://postgres:senha@roundhouse.proxy.rlwy.net:12345/railway
+```
+
 ### Configuração Railway
 
 O Railway usará automaticamente:

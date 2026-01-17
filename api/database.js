@@ -2,6 +2,12 @@ import pg from 'pg';
 const { Pool } = pg;
 
 let pool = null;
+let connectionAttempts = 0;
+const MAX_RETRIES = 5;
+const RETRY_DELAY = 3000; // 3 segundos
+
+// Função para esperar
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 export function getPool() {
   if (!pool) {
@@ -22,17 +28,28 @@ export function getPool() {
       throw new Error('DATABASE_URL environment variable is not set');
     }
     
+    console.log('📊 Database URL detected:', databaseUrl.replace(/:[^:]*@/, ':****@'));
+    
     try {
+      // Configuração otimizada para Railway
       pool = new Pool({
         connectionString: databaseUrl,
         ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
         max: 20,
+        min: 2,
         idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 10000,
+        connectionTimeoutMillis: 30000, // Aumentado para 30s
+        // Railway specific settings
+        keepAlive: true,
+        keepAliveInitialDelayMillis: 10000,
       });
       
       pool.on('error', (err) => {
-        console.error('Unexpected error on idle PostgreSQL client', err);
+        console.error('❌ Unexpected error on idle PostgreSQL client:', err.message);
+      });
+      
+      pool.on('connect', () => {
+        console.log('✅ New client connected to PostgreSQL');
       });
       
       console.log('✅ PostgreSQL pool created successfully');
@@ -45,49 +62,89 @@ export function getPool() {
   return pool;
 }
 
-// Inicializar banco de dados
+// Inicializar banco de dados com retry
 export async function initDatabase() {
   const pool = getPool();
   
-  try {
-    // Testar conexão primeiro
-    await pool.query('SELECT NOW()');
-    console.log('✅ Database connection successful');
-    
-    // Criar tabela de posts se não existir
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS posts (
-        id SERIAL PRIMARY KEY,
-        title VARCHAR(500) NOT NULL,
-        content TEXT NOT NULL,
-        author VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-    
-    // Criar tabela de sessões se não existir
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS sessions (
-        token VARCHAR(255) PRIMARY KEY,
-        user_id VARCHAR(255) NOT NULL,
-        username VARCHAR(255) NOT NULL,
-        expires_at BIGINT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-    
-    // Criar índice para expiração de sessões
-    await pool.query(`
-      CREATE INDEX IF NOT EXISTS idx_sessions_expires_at 
-      ON sessions(expires_at)
-    `);
-    
-    console.log('✅ Database tables initialized successfully');
-    return true;
-  } catch (error) {
-    console.error('❌ Error initializing database:', error.message);
-    throw error;
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      console.log(`🔄 Database connection attempt ${attempt}/${MAX_RETRIES}...`);
+      
+      // Testar conexão primeiro
+      const result = await pool.query('SELECT NOW() as time, version() as version');
+      console.log('✅ Database connection successful!');
+      console.log('⏰ Database time:', result.rows[0].time);
+      console.log('📦 PostgreSQL version:', result.rows[0].version.split(' ')[0] + ' ' + result.rows[0].version.split(' ')[1]);
+      
+      // Criar tabela de posts se não existir
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS posts (
+          id SERIAL PRIMARY KEY,
+          title VARCHAR(500) NOT NULL,
+          content TEXT NOT NULL,
+          author VARCHAR(255) NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+      
+      // Criar tabela de sessões se não existir
+      await pool.query(`
+        CREATE TABLE IF NOT EXISTS sessions (
+          token VARCHAR(255) PRIMARY KEY,
+          user_id VARCHAR(255) NOT NULL,
+          username VARCHAR(255) NOT NULL,
+          expires_at BIGINT NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+      
+      // Criar índice para expiração de sessões
+      await pool.query(`
+        CREATE INDEX IF NOT EXISTS idx_sessions_expires_at 
+        ON sessions(expires_at)
+      `);
+      
+      // Verificar se as tabelas foram criadas
+      const tables = await pool.query(`
+        SELECT tablename FROM pg_tables 
+        WHERE schemaname = 'public' 
+        ORDER BY tablename
+      `);
+      
+      console.log('✅ Database tables initialized successfully');
+      console.log('📋 Available tables:', tables.rows.map(r => r.tablename).join(', '));
+      
+      return true;
+    } catch (error) {
+      console.error(`❌ Database connection attempt ${attempt} failed:`, error.message);
+      
+      if (attempt < MAX_RETRIES) {
+        console.log(`⏳ Retrying in ${RETRY_DELAY/1000} seconds...`);
+        await sleep(RETRY_DELAY);
+      } else {
+        console.error('');
+        console.error('❌❌❌ ALL DATABASE CONNECTION ATTEMPTS FAILED ❌❌❌');
+        console.error('');
+        console.error('🔍 Diagnostic Information:');
+        console.error('   Error:', error.message);
+        console.error('   Code:', error.code);
+        console.error('');
+        console.error('💡 Common Solutions:');
+        console.error('   1. Make sure PostgreSQL service is in the SAME Railway project');
+        console.error('   2. Check if DATABASE_URL variable is set correctly');
+        console.error('   3. Verify PostgreSQL service is running (not crashed)');
+        console.error('   4. Try using PUBLIC database URL instead of internal');
+        console.error('');
+        console.error('🔧 How to get PUBLIC URL:');
+        console.error('   1. Go to your PostgreSQL service in Railway');
+        console.error('   2. Click "Connect" tab');
+        console.error('   3. Copy "Postgres Connection URL" (public)');
+        console.error('   4. Add it as DATABASE_URL variable in your app service');
+        console.error('');
+        throw error;
+      }
+    }
   }
 }
 
