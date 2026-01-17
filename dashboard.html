@@ -228,7 +228,8 @@
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 1fr;
+            max-width: 400px;
             gap: 25px;
             margin-bottom: 40px;
         }
@@ -446,10 +447,241 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .team-member-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .team-member-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .member-header {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .member-status {
+            position: absolute;
+            bottom: 5px;
+            right: 35%;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 3px solid rgba(15, 12, 41, 1);
+        }
+
+        .member-status.online {
+            background: #43e97b;
+            box-shadow: 0 0 10px rgba(67, 233, 123, 0.5);
+        }
+
+        .member-status.offline {
+            background: #6c757d;
+        }
+
+        .member-info {
+            text-align: center;
+        }
+
+        .member-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .member-role {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 12px;
+        }
+
+        .member-bio {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
+        }
+
+        .member-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .member-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .member-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .member-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .member-btn {
+            flex: 1;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .member-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Add Member Card */
+        .add-member-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .add-member-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .add-member-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .add-member-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .add-member-content h3 {
+            font-size: 1.3rem;
+            color: #fff;
+            margin: 0;
+        }
+
+        .add-member-content p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0;
+        }
+
+        .add-member-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-member-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .content-grid-dashboard {
                 grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             }
         }
 
@@ -469,6 +701,10 @@
             }
 
             .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -609,49 +845,14 @@
                     <div class="stat-card-value">24</div>
                     <div class="stat-card-label">Projetos Ativos</div>
                 </div>
-
-                <div class="stat-card-dashboard">
-                    <div class="stat-card-header">
-                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
-                            👥
-                        </div>
-                        <span class="stat-card-trend trend-up">↑ 8%</span>
-                    </div>
-                    <div class="stat-card-value">128</div>
-                    <div class="stat-card-label">Usuários Ativos</div>
-                </div>
-
-                <div class="stat-card-dashboard">
-                    <div class="stat-card-header">
-                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
-                            ⚡
-                        </div>
-                        <span class="stat-card-trend trend-up">↑ 24%</span>
-                    </div>
-                    <div class="stat-card-value">99.9%</div>
-                    <div class="stat-card-label">Uptime</div>
-                </div>
-
-                <div class="stat-card-dashboard">
-                    <div class="stat-card-header">
-                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
-                            💰
-                        </div>
-                        <span class="stat-card-trend trend-down">↓ 3%</span>
-                    </div>
-                    <div class="stat-card-value">R$ 48K</div>
-                    <div class="stat-card-label">Receita Mensal</div>
-                </div>
             </div>
 
-            <!-- Content Grid -->
-            <div class="content-grid-dashboard">
-                <!-- Recent Projects -->
-                <div class="dashboard-card">
-                    <div class="dashboard-card-header">
-                        <h2 class="dashboard-card-title">Projetos Recentes</h2>
-                        <button class="card-action-btn">Ver Todos →</button>
-                    </div>
+            <!-- Recent Projects - Full Width -->
+            <div class="dashboard-card" style="margin-bottom: 25px;">
+                <div class="dashboard-card-header">
+                    <h2 class="dashboard-card-title">Projetos Recentes</h2>
+                    <button class="card-action-btn">Ver Todos →</button>
+                </div>
                     <div class="projects-list">
                         <div class="project-item">
                             <div class="project-icon-small" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
@@ -698,13 +899,14 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Recent Activity -->
-                <div class="dashboard-card">
-                    <div class="dashboard-card-header">
-                        <h2 class="dashboard-card-title">Atividade Recente</h2>
-                        <button class="card-action-btn">Ver Mais →</button>
-                    </div>
+            <!-- Recent Activity - Full Width -->
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2 class="dashboard-card-title">Atividade Recente</h2>
+                    <button class="card-action-btn">Ver Mais →</button>
+                </div>
                     <div class="activity-feed">
                         <div class="activity-item">
                             <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
@@ -758,6 +960,105 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Team Section -->
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2 class="dashboard-card-title">Nossa Equipe</h2>
+                    <button class="card-action-btn">Ver Perfis →</button>
+                </div>
+                <div class="team-grid">
+                    <!-- Team Member 1 -->
+                    <div class="team-member-card">
+                        <div class="member-header">
+                            <div class="member-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                                <img src="img/rauldp.png" alt="RaulDP" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <span class="avatar-fallback" style="display: none;">👨‍💻</span>
+                            </div>
+                            <div class="member-status online"></div>
+                        </div>
+                        <div class="member-info">
+                            <h3 class="member-name">RaulDP</h3>
+                            <p class="member-role">Fundador & Desenvolvedor Full Stack</p>
+                            <p class="member-bio">Especialista em Python, Node.js e arquitetura de sistemas. Criador do The Abyss Dev Team.</p>
+                        </div>
+                        <div class="member-stats">
+                            <div class="member-stat">
+                                <span class="stat-value">15</span>
+                                <span class="stat-label">Projetos</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-value">2.5K</span>
+                                <span class="stat-label">Commits</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-value">98%</span>
+                                <span class="stat-label">Uptime</span>
+                            </div>
+                        </div>
+                        <div class="member-skills">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Node.js</span>
+                        </div>
+                        <div class="member-actions">
+                            <button class="member-btn">📧 Mensagem</button>
+                            <button class="member-btn">👁️ Perfil</button>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 2 -->
+                    <div class="team-member-card">
+                        <div class="member-header">
+                            <div class="member-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                                <img src="img/sel.png" alt="ImSeleverr" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <span class="avatar-fallback" style="display: none;">👩‍💻</span>
+                            </div>
+                            <div class="member-status online"></div>
+                        </div>
+                        <div class="member-info">
+                            <h3 class="member-name">ImSeleverr</h3>
+                            <p class="member-role">Co-Fundadora & Designer UI/UX</p>
+                            <p class="member-bio">Designer criativa especializada em interfaces modernas e experiência do usuário excepcional.</p>
+                        </div>
+                        <div class="member-stats">
+                            <div class="member-stat">
+                                <span class="stat-value">12</span>
+                                <span class="stat-label">Projetos</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-value">1.8K</span>
+                                <span class="stat-label">Commits</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-value">95%</span>
+                                <span class="stat-label">Uptime</span>
+                            </div>
+                        </div>
+                        <div class="member-skills">
+                            <span class="skill-tag">UI/UX</span>
+                            <span class="skill-tag">Figma</span>
+                            <span class="skill-tag">CSS</span>
+                            <span class="skill-tag">Design</span>
+                        </div>
+                        <div class="member-actions">
+                            <button class="member-btn">📧 Mensagem</button>
+                            <button class="member-btn">👁️ Perfil</button>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 3 - Placeholder for future -->
+                    <div class="team-member-card add-member-card">
+                        <div class="add-member-content">
+                            <div class="add-member-icon">➕</div>
+                            <h3>Adicionar Membro</h3>
+                            <p>Expanda sua equipe</p>
+                            <button class="add-member-btn">Convidar Novo Membro</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
 
         <!-- Mobile Menu Toggle -->
@@ -788,7 +1089,7 @@
 
         // Add smooth animations on load
         window.addEventListener('load', () => {
-            const cards = document.querySelectorAll('.stat-card-dashboard, .dashboard-card, .project-item, .activity-item');
+            const cards = document.querySelectorAll('.stat-card-dashboard, .dashboard-card, .project-item, .activity-item, .team-member-card');
             cards.forEach((card, index) => {
                 setTimeout(() => {
                     card.style.opacity = '0';
