@@ -1,0 +1,2 @@
+# No additional dependencies required for basic HTTP server
+# Python 3.x built-in modules are sufficient

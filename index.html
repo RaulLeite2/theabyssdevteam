@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Abyss Team - Explore the Unknown</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="scripts/features.js" defer></script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>The Abyss Team</h2>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="mission.html">Mission</a></li>
+                <li><a href="discoveries.html">Discoveries</a></li>
+                <li><a href="team.html">Team</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="cta-button">Join Expedition</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">The Abyss Team</h1>
+                <h2 class="hero-subtitle">The only deep-sea exploration team you need</h2>
+                <p class="hero-description">
+                    Built for researchers, adventurers, and ocean enthusiasts. 
+                    Supercharged with cutting-edge technology and decades of diving experience.
+                </p>
+                <button class="hero-button">Explore With Us</button>
+            </div>
+            <div class="hero-visual">
+                <div class="circle-graphic">
+                    <div class="circle circle-1"></div>
+                    <div class="circle circle-2"></div>
+                    <div class="circle circle-3"></div>
+                    <div class="logo-badge">TA</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Development Team Features Section -->
+    <section class="dev-features">
+        <div class="dev-features-container">
+            <h2 class="section-title">Development Team Features</h2>
+            
+            <div class="dev-content">
+                <!-- Features List -->
+                <div class="features-list">
+                    <div class="feature-item active" data-feature="python">
+                        <h3>Best-in-class Python Development</h3>
+                        <p>The Abyss Team excels in Python development with advanced backend solutions. 
+                        From Discord bot automation to Railway deployments, we ensure both speed and reliability. 
+                        Benefit from clean code architecture, efficient algorithms, and robust API integrations.</p>
+                    </div>
+                    
+                    <div class="feature-item" data-feature="web">
+                        <h3>Modern Web Development</h3>
+                        <p>Creating responsive and dynamic web applications with cutting-edge technologies. 
+                        Full-stack solutions from frontend design to backend APIs, optimized for performance and user experience.</p>
+                    </div>
+                    
+                    <div class="feature-item" data-feature="csharp">
+                        <h3>C# Solutions & Integration</h3>
+                        <p>Developing robust applications with C# for desktop, server, and cross-platform needs. 
+                        Expert integration with .NET ecosystem for enterprise-level solutions.</p>
+                    </div>
+                    
+                    <div class="feature-item" data-feature="bots">
+                        <h3>Discord Bot Automation</h3>
+                        <p>Specialized in creating powerful Discord bots with complete RPG systems. 
+                        Featured project: The Abyss bot - a comprehensive RPG bot based on Albion mechanics with 
+                        server automation, economy systems, and interactive gameplay.</p>
+                    </div>
+                    
+                    <div class="feature-item" data-feature="railway">
+                        <h3>Railway & Cloud Deployment</h3>
+                        <p>Expert deployment and management of applications on Railway platform. 
+                        Automated CI/CD pipelines, environment configuration, and scalable infrastructure.</p>
+                    </div>
+                    
+                    <div class="feature-item" data-feature="training">
+                        <h3>Python Training Programs</h3>
+                        <p>Comprehensive Python training courses covering fundamentals to advanced topics. 
+                        Hands-on learning with real-world projects, best practices, and mentorship from experienced developers.</p>
+                    </div>
+                </div>
+                
+                <!-- Code Preview -->
+                <div class="code-preview">
+                    <div class="code-window">
+                        <div class="code-header">
+                            <span class="file-name" id="fileName">the_abyss_bot.py</span>
+                        </div>
+                        <div class="code-content" id="codeContent">
+                            <pre><code><span class="keyword">import</span> discord
+<span class="keyword">from</span> discord.ext <span class="keyword">import</span> commands
+<span class="keyword">import</span> asyncio
+
+<span class="keyword">class</span> <span class="class-name">TheAbyssBot</span>(commands.Bot):
+    <span class="keyword">def</span> <span class="function">__init__</span>(self):
+        <span class="function">super</span>().__init__(
+            command_prefix=<span class="string">"!"</span>,
+            intents=discord.Intents.all()
+        )
+        self.rpg_system = <span class="class-name">AlbionRPG</span>()
+    
+    <span class="keyword">async def</span> <span class="function">on_ready</span>(self):
+        <span class="function">print</span>(<span class="string">f'Bot ready: {self.user}'</span>)
+        <span class="keyword">await</span> self.<span class="function">load_extensions</span>()
+
+<span class="comment"># Initialize The Abyss Bot</span>
+bot = <span class="class-name">TheAbyssBot</span>()
+bot.<span class="function">run</span>(<span class="string">TOKEN</span>)</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="team-container">
+            <h2>Meet Our Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-icon">🐍</div>
+                    <h3>Back-End Python Developer</h3>
+                    <p>Specializing in Python backend development, Discord bots, and Railway deployments. 
+                    Creator of The Abyss bot and automation systems.</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-icon">💡</div>
+                    <h3>Idealist & Visionary</h3>
+                    <p>Conceptualizing innovative solutions and project architecture. 
+                    Driving the vision behind our development initiatives.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
