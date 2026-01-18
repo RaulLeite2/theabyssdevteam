@@ -32,57 +32,42 @@ class CompleteDashboard {
         style.textContent = `
             /* Reset e Base */
             * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { 
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                background: #1a1625;
-                color: #fff;
-                overflow-x: hidden;
-            }
+            body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
             
             /* Dashboard Wrapper */
             .dashboard-wrapper {
                 display: flex;
                 min-height: 100vh;
-                background: #1a1625;
+                background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             }
 
             /* Sidebar */
             .dashboard-sidebar {
-                width: 370px;
-                background: #221c35;
-                border-right: 1px solid rgba(255, 255, 255, 0.05);
-                padding: 32px 24px;
+                width: 280px;
+                background: rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(10px);
+                border-right: 1px solid rgba(255, 255, 255, 0.1);
+                padding: 30px 20px;
                 display: flex;
                 flex-direction: column;
-                gap: 32px;
+                gap: 30px;
                 position: fixed;
                 height: 100vh;
                 overflow-y: auto;
                 z-index: 1000;
             }
 
-            .sidebar-section-title {
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                letter-spacing: 1.5px;
-                color: rgba(255, 255, 255, 0.4);
-                font-weight: 700;
-                margin-bottom: 16px;
-                margin-top: 16px;
-            }
-
             .sidebar-brand {
                 display: flex;
                 align-items: center;
-                gap: 16px;
-                padding: 0;
-                margin-bottom: 8px;
+                gap: 12px;
+                padding: 15px;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 12px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
             }
 
-            .sidebar-brand-icon { 
-                font-size: 2.5rem;
-                filter: drop-shadow(0 0 20px rgba(124, 104, 238, 0.8));
-            }
+            .sidebar-brand-icon { font-size: 2rem; }
             
             .sidebar-brand-text {
                 display: flex;
@@ -90,89 +75,64 @@ class CompleteDashboard {
             }
 
             .sidebar-brand-name {
-                font-size: 1.4rem;
-                font-weight: 800;
-                background: linear-gradient(135deg, #7c68ee, #a78bfa);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: #fff;
             }
 
             .sidebar-brand-tagline {
-                font-size: 0.8rem;
-                color: rgba(255, 255, 255, 0.5);
-                font-weight: 500;
+                font-size: 0.75rem;
+                color: rgba(255, 255, 255, 0.6);
             }
 
             .sidebar-nav {
                 display: flex;
                 flex-direction: column;
-                gap: 6px;
+                gap: 8px;
             }
 
             .sidebar-link {
                 display: flex;
                 align-items: center;
-                gap: 16px;
-                padding: 14px 20px;
-                color: rgba(255, 255, 255, 0.65);
+                gap: 12px;
+                padding: 12px 15px;
+                color: rgba(255, 255, 255, 0.7);
                 text-decoration: none;
-                border-radius: 12px;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                font-size: 1rem;
-                font-weight: 600;
+                border-radius: 10px;
+                transition: all 0.3s ease;
+                font-size: 0.95rem;
                 cursor: pointer;
-                position: relative;
-            }
-
-            .sidebar-link span:first-child {
-                font-size: 1.3rem;
-                opacity: 0.9;
             }
 
             .sidebar-link:hover {
-                background: rgba(124, 104, 238, 0.1);
-                color: #a78bfa;
-                transform: translateX(4px);
+                background: rgba(255, 255, 255, 0.1);
+                color: #fff;
             }
 
             .sidebar-link.active {
-                background: linear-gradient(135deg, #7c68ee 0%, #a78bfa 100%);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: #fff;
-                box-shadow: 0 8px 24px rgba(124, 104, 238, 0.4);
-            }
-
-            .sidebar-link.active span:first-child {
-                opacity: 1;
             }
 
             .sidebar-user {
                 display: flex;
                 align-items: center;
-                gap: 14px;
-                padding: 18px;
-                background: rgba(124, 104, 238, 0.08);
-                border: 1px solid rgba(124, 104, 238, 0.2);
-                border-radius: 16px;
+                gap: 12px;
+                padding: 15px;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 12px;
                 margin-top: auto;
-                transition: all 0.3s ease;
-            }
-
-            .sidebar-user:hover {
-                background: rgba(124, 104, 238, 0.12);
-                border-color: rgba(124, 104, 238, 0.3);
             }
 
             .user-avatar {
-                width: 52px;
-                height: 52px;
+                width: 45px;
+                height: 45px;
                 border-radius: 50%;
-                background: linear-gradient(135deg, #7c68ee 0%, #a78bfa 100%);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 1.5rem;
-                box-shadow: 0 4px 12px rgba(124, 104, 238, 0.3);
+                font-size: 1.2rem;
             }
 
             .user-info {
@@ -180,146 +140,59 @@ class CompleteDashboard {
             }
 
             .user-name {
-                font-weight: 700;
+                font-weight: 600;
                 color: #fff;
-                font-size: 1rem;
-                margin-bottom: 2px;
+                font-size: 0.95rem;
             }
 
             .user-role {
-                font-size: 0.85rem;
-                color: rgba(255, 255, 255, 0.5);
-                font-weight: 500;
+                font-size: 0.8rem;
+                color: rgba(255, 255, 255, 0.6);
             }
 
             .btn-logout {
-                background: transparent;
-                color: rgba(255, 255, 255, 0.6);
+                background: rgba(245, 87, 108, 0.2);
+                color: #f5576c;
                 border: none;
-                padding: 10px;
-                border-radius: 10px;
+                padding: 8px 12px;
+                border-radius: 8px;
                 cursor: pointer;
-                font-size: 1.2rem;
+                font-size: 1rem;
                 transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                justify-content: center;
             }
 
             .btn-logout:hover {
-                background: rgba(239, 68, 68, 0.15);
-                color: #ef4444;
-            }
-
-            .sidebar-footer {
-                padding: 24px;
-                background: rgba(124, 104, 238, 0.05);
-                border-radius: 16px;
-                border: 1px solid rgba(124, 104, 238, 0.1);
-            }
-
-            .sidebar-footer-brand {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-            }
-
-            .sidebar-footer-icon {
-                font-size: 2rem;
-                filter: drop-shadow(0 0 10px rgba(124, 104, 238, 0.6));
-            }
-
-            .sidebar-footer-text h3 {
-                font-size: 1rem;
-                font-weight: 700;
-                color: #fff;
-                margin-bottom: 2px;
-            }
-
-            .sidebar-footer-text p {
-                font-size: 0.8rem;
-                color: rgba(255, 255, 255, 0.5);
+                background: rgba(245, 87, 108, 0.3);
+                transform: scale(1.05);
             }
 
             /* Main Content */
             .dashboard-main {
                 flex: 1;
-                margin-left: 370px;
-                padding: 48px 56px;
-                background: #1a1625;
+                margin-left: 280px;
+                padding: 40px;
             }
 
             .dashboard-header {
                 display: flex;
                 justify-content: space-between;
-                align-items: flex-start;
-                margin-bottom: 48px;
+                align-items: center;
+                margin-bottom: 30px;
             }
 
-            .dashboard-header-left h1 {
-                font-size: 3rem;
-                background: linear-gradient(135deg, #00d4ff, #7c68ee);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                font-weight: 900;
-                margin-bottom: 8px;
-                letter-spacing: -1px;
+            .dashboard-title {
+                font-size: 2rem;
+                color: #fff;
+                font-weight: 700;
             }
 
             .dashboard-greeting {
                 font-size: 1.1rem;
-                color: rgba(255, 255, 255, 0.6);
-                font-weight: 500;
-            }
-
-            .dashboard-header-right {
-                display: flex;
-                gap: 12px;
-            }
-
-            .btn-header {
-                padding: 12px 24px;
-                border-radius: 12px;
-                border: none;
-                font-weight: 600;
-                font-size: 0.95rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .btn-notifications {
-                background: rgba(255, 255, 255, 0.05);
                 color: rgba(255, 255, 255, 0.8);
-                border: 1px solid rgba(255, 255, 255, 0.1);
+                margin-top: 5px;
             }
 
-            .btn-notifications:hover {
-                background: rgba(255, 255, 255, 0.08);
-                border-color: rgba(255, 255, 255, 0.15);
-            }
-
-            .btn-new-project {
-                background: linear-gradient(135deg, #7c68ee 0%, #a78bfa 100%);
-                color: #fff;
-                box-shadow: 0 4px 12px rgba(124, 104, 238, 0.4);
-            }
-
-            .btn-new-project:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(124, 104, 238, 0.5);
-            }
-
-            /* Dashboard Tabs */
-            .dashboard-tabs {
-                display: flex;
-                flex-direction: column;
-                gap: 40px;
-            }
-
+            /* Tabs */
             .dashboard-tab-content {
                 display: none;
             }
@@ -328,214 +201,79 @@ class CompleteDashboard {
                 display: block;
             }
 
-            /* Stats Grid */
+            /* Cards */
+            .dashboard-card {
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 16px;
+                padding: 30px;
+                margin-bottom: 20px;
+            }
+
+            .card-title {
+                font-size: 1.3rem;
+                color: #fff;
+                margin-bottom: 20px;
+                font-weight: 600;
+            }
+
+            /* Stats Cards */
             .stats-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 24px;
-                margin-bottom: 48px;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-bottom: 30px;
             }
 
             .stat-card {
-                background: #221c35;
-                border: 1px solid rgba(255, 255, 255, 0.06);
-                border-radius: 20px;
-                padding: 32px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 25px;
                 display: flex;
-                flex-direction: column;
-                gap: 16px;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                position: relative;
-                overflow: hidden;
-            }
-
-            .stat-card::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 3px;
-                background: linear-gradient(90deg, #7c68ee, #a78bfa);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-
-            .stat-card:hover {
-                border-color: rgba(124, 104, 238, 0.3);
-                transform: translateY(-4px);
-                box-shadow: 0 12px 32px rgba(124, 104, 238, 0.15);
-            }
-
-            .stat-card:hover::before {
-                opacity: 1;
-            }
-
-            .stat-card-header {
-                display: flex;
-                justify-content: space-between;
                 align-items: center;
+                gap: 20px;
             }
 
             .stat-icon {
-                width: 64px;
-                height: 64px;
-                border-radius: 16px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 2rem;
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            }
-
-            .stat-badge {
-                padding: 6px 12px;
-                border-radius: 20px;
-                font-size: 0.8rem;
-                font-weight: 700;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-
-            .stat-badge.up {
-                background: rgba(34, 197, 94, 0.15);
-                color: #22c55e;
-            }
-
-            .stat-badge.neutral {
-                background: rgba(59, 130, 246, 0.15);
-                color: #3b82f6;
-            }
-
-            .stat-number {
-                font-size: 2.75rem;
-                font-weight: 900;
-                color: #fff;
-                line-height: 1;
-                margin-top: 8px;
-            }
-
-            .stat-label {
-                font-size: 0.95rem;
-                color: rgba(255, 255, 255, 0.5);
-                font-weight: 600;
-                margin-top: 4px;
-            }
-
-            /* Alerts & Notifications */
-            .alert-card {
-                background: #221c35;
-                border: 1px solid rgba(255, 255, 255, 0.06);
-                border-left: 4px solid;
-                border-radius: 16px;
-                padding: 24px;
-                display: flex;
-                align-items: flex-start;
-                gap: 20px;
-                margin-bottom: 24px;
-                transition: all 0.3s ease;
-            }
-
-            .alert-card.critical {
-                border-left-color: #ef4444;
-                background: rgba(239, 68, 68, 0.05);
-            }
-
-            .alert-card.warning {
-                border-left-color: #f59e0b;
-                background: rgba(245, 158, 11, 0.05);
-            }
-
-            .alert-card:hover {
-                transform: translateX(4px);
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            }
-
-            .alert-icon {
-                width: 48px;
-                height: 48px;
+                width: 60px;
+                height: 60px;
                 border-radius: 12px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 1.5rem;
-                flex-shrink: 0;
+                font-size: 1.8rem;
             }
 
-            .alert-icon.critical {
-                background: rgba(239, 68, 68, 0.15);
-            }
-
-            .alert-icon.warning {
-                background: rgba(245, 158, 11, 0.15);
-            }
-
-            .alert-content {
-                flex: 1;
-            }
-
-            .alert-content h3 {
-                font-size: 1.1rem;
+            .stat-info h3 {
+                font-size: 2rem;
+                color: #fff;
                 font-weight: 700;
-                color: #fff;
-                margin-bottom: 6px;
             }
 
-            .alert-content p {
-                font-size: 0.95rem;
+            .stat-info p {
                 color: rgba(255, 255, 255, 0.6);
-                margin-bottom: 8px;
-            }
-
-            .alert-time {
-                font-size: 0.85rem;
-                color: rgba(255, 255, 255, 0.4);
-            }
-
-            .alert-actions {
-                display: flex;
-                align-items: center;
-            }
-
-            .btn-alert {
-                padding: 10px 20px;
-                border-radius: 10px;
-                border: none;
-                font-weight: 600;
                 font-size: 0.9rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-
-            .btn-alert.primary {
-                background: linear-gradient(135deg, #7c68ee 0%, #a78bfa 100%);
-                color: #fff;
-            }
-
-            .btn-alert.primary:hover {
-                transform: scale(1.05);
-                box-shadow: 0 4px 12px rgba(124, 104, 238, 0.4);
             }
 
             /* Projects */
             .projects-grid {
                 display: grid;
-                gap: 24px;
+                gap: 20px;
             }
 
             .project-card {
-                background: #221c35;
-                border: 1px solid rgba(255, 255, 255, 0.06);
-                border-radius: 20px;
-                padding: 28px;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 25px;
+                transition: all 0.3s ease;
             }
 
             .project-card:hover {
-                transform: translateY(-4px);
-                border-color: rgba(124, 104, 238, 0.3);
-                box-shadow: 0 12px 32px rgba(124, 104, 238, 0.15);
+                transform: translateY(-5px);
+                border-color: rgba(255, 255, 255, 0.2);
             }
 
             .project-header {
@@ -619,90 +357,77 @@ class CompleteDashboard {
                 color: #fff;
             }
 
-            /* Team Cards */
+            .btn-project:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            /* Team Members */
             .team-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 24px;
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
             }
 
             .team-card {
-                background: #221c35;
-                border: 1px solid rgba(255, 255, 255, 0.06);
-                border-radius: 20px;
-                padding: 32px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 25px;
                 text-align: center;
-                transition: all 0.3s ease;
-            }
-
-            .team-card:hover {
-                transform: translateY(-4px);
-                border-color: rgba(124, 104, 238, 0.3);
-                box-shadow: 0 12px 32px rgba(124, 104, 238, 0.15);
             }
 
             .member-avatar {
                 width: 80px;
                 height: 80px;
                 border-radius: 50%;
-                background: linear-gradient(135deg, #7c68ee 0%, #a78bfa 100%);
+                margin: 0 auto 15px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 2.5rem;
-                margin-bottom: 16px;
-                box-shadow: 0 8px 24px rgba(124, 104, 238, 0.3);
+                font-size: 2rem;
             }
 
             .member-name {
-                font-size: 1.2rem;
-                font-weight: 700;
+                font-size: 1.1rem;
                 color: #fff;
-                margin-bottom: 6px;
+                font-weight: 600;
+                margin-bottom: 5px;
             }
 
             .member-role {
-                font-size: 0.9rem;
                 color: rgba(255, 255, 255, 0.6);
-                margin-bottom: 12px;
+                font-size: 0.9rem;
+                margin-bottom: 10px;
             }
 
             .member-status {
-                padding: 6px 16px;
+                display: inline-block;
+                padding: 4px 12px;
                 border-radius: 20px;
-                font-size: 0.85rem;
-                font-weight: 600;
-                background: rgba(34, 197, 94, 0.15);
-                color: #22c55e;
-            }
-
-            .card-title {
-                font-size: 1.3rem;
-                color: #fff;
-                margin-bottom: 20px;
-                font-weight: 600;
+                font-size: 0.8rem;
+                background: rgba(76, 175, 80, 0.2);
+                color: #4caf50;
             }
 
             /* Mobile */
             .mobile-sidebar-toggle {
                 display: none;
                 position: fixed;
-                top: 24px;
-                left: 24px;
+                top: 20px;
+                left: 20px;
                 z-index: 1001;
-                background: #221c35;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                padding: 14px;
-                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                padding: 12px;
+                border-radius: 10px;
                 cursor: pointer;
                 font-size: 1.5rem;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             }
 
-            @media (max-width: 1024px) {
+            @media (max-width: 768px) {
                 .dashboard-sidebar {
                     transform: translateX(-100%);
                     transition: transform 0.3s ease;
@@ -710,26 +435,15 @@ class CompleteDashboard {
 
                 .dashboard-sidebar.open {
                     transform: translateX(0);
-                    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
                 }
 
                 .dashboard-main {
                     margin-left: 0;
-                    padding: 96px 32px 32px;
+                    padding: 80px 20px 20px;
                 }
 
                 .mobile-sidebar-toggle {
                     display: block;
-                }
-
-                .stats-grid {
-                    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-                }
-            }
-
-            @media (max-width: 640px) {
-                .dashboard-main {
-                    padding: 96px 20px 20px;
                 }
 
                 .stats-grid {
@@ -738,19 +452,6 @@ class CompleteDashboard {
 
                 .team-grid {
                     grid-template-columns: 1fr;
-                }
-
-                .dashboard-header {
-                    flex-direction: column;
-                    gap: 20px;
-                }
-
-                .dashboard-header-right {
-                    width: 100%;
-                }
-
-                .btn-header {
-                    flex: 1;
                 }
             }
 
@@ -986,15 +687,13 @@ class CompleteDashboard {
                     <div class="sidebar-brand-icon">⚡</div>
                     <div class="sidebar-brand-text">
                         <div class="sidebar-brand-name">The Abyss</div>
-                        <div class="sidebar-brand-tagline">Development Team</div>
+                        <div class="sidebar-brand-tagline">Dev Team</div>
                     </div>
                 </div>
 
-                <div class="sidebar-section-title">MENU PRINCIPAL</div>
-
                 <nav class="sidebar-nav">
                     <a class="sidebar-link active" data-tab="overview">
-                        <span>📊</span> Visão Geral
+                        <span>📊</span> Overview
                     </a>
                     <a class="sidebar-link" data-tab="projects">
                         <span>🚀</span> Projetos
@@ -1002,109 +701,67 @@ class CompleteDashboard {
                     <a class="sidebar-link" data-tab="team">
                         <span>👥</span> Equipe
                     </a>
-                </nav>
-
-                <div class="sidebar-section-title">CONFIGURAÇÕES</div>
-
-                <nav class="sidebar-nav">
                     <a class="sidebar-link" data-tab="settings">
                         <span>⚙️</span> Configurações
                     </a>
                 </nav>
 
                 <div class="sidebar-user">
-                    <div class="user-avatar">👨‍💻</div>
+                    <div class="user-avatar">👤</div>
                     <div class="user-info">
-                        <div class="user-name">${this.currentUser?.name || 'Usuário'}</div>
-                        <div class="user-role">${this.currentUser?.role || 'Membro'}</div>
+                        <div class="user-name">${this.currentUser.name}</div>
+                        <div class="user-role">${this.currentUser.role === 'admin' ? 'Administrador' : 'Membro'}</div>
                     </div>
                     <button class="btn-logout" id="logoutBtn">🚪</button>
-                </div>
-
-                <div class="sidebar-footer">
-                    <div class="sidebar-footer-brand">
-                        <div class="sidebar-footer-icon">⚡</div>
-                        <div class="sidebar-footer-text">
-                            <h3>The Abyss</h3>
-                            <p>Dev Team 2025</p>
-                        </div>
-                    </div>
                 </div>
             </aside>
 
             <main class="dashboard-main">
-                <div class="dashboard-tabs">
-                    <!-- VISÃO GERAL TAB -->
-                    <div class="dashboard-tab-content active" id="overviewTab">
-                        <div class="dashboard-header">
-                            <div class="dashboard-header-left">
-                                <h1>Visão Geral</h1>
-                                <p class="dashboard-greeting">Bem-vindo ao painel de controle</p>
-                            </div>
-                            <div class="dashboard-header-right">
-                                <button class="btn-header btn-notifications">
-                                    🔔 Notificações
-                                </button>
-                                <button class="btn-header btn-new-project">
-                                    ➕ Novo Projeto
-                                </button>
-                            </div>
+                <div id="overviewTab" class="dashboard-tab-content active">
+                    <div class="dashboard-header">
+                        <div>
+                            <h1 class="dashboard-title">Dashboard</h1>
+                            <p class="dashboard-greeting">Bem-vindo, ${this.currentUser.name}! 👋</p>
                         </div>
+                    </div>
 
-                        <div class="stats-grid" id="statsGrid">
-                            <!-- Stats will be loaded here -->
-                        </div>
+                    <div class="stats-grid" id="statsGrid">
+                        <!-- Stats serão carregadas aqui -->
+                    </div>
 
-                        <div id="alertsContainer">
-                            <!-- Alerts will be loaded here -->
-                        </div>
-
-                        <h2 class="card-title">🚀 Projetos Recentes</h2>
+                    <div class="dashboard-card">
+                        <h3 class="card-title">Projetos Recentes</h3>
                         <div class="projects-grid" id="recentProjects">
-                            <!-- Projects will be loaded here -->
+                            <!-- Projetos recentes aqui -->
                         </div>
                     </div>
+                </div>
 
-                    <!-- PROJETOS TAB -->
-                    <div class="dashboard-tab-content" id="projectsTab">
-                        <div class="dashboard-header">
-                            <div class="dashboard-header-left">
-                                <h1>Projetos</h1>
-                                <p class="dashboard-greeting">Gerencie todos os seus projetos</p>
-                            </div>
-                        </div>
-
-                        <div class="projects-grid" id="allProjects">
-                            <!-- All projects will be loaded here -->
-                        </div>
+                <div id="projectsTab" class="dashboard-tab-content">
+                    <div class="dashboard-header">
+                        <h1 class="dashboard-title">Projetos</h1>
                     </div>
-
-                    <!-- EQUIPE TAB -->
-                    <div class="dashboard-tab-content" id="teamTab">
-                        <div class="dashboard-header">
-                            <div class="dashboard-header-left">
-                                <h1>Equipe</h1>
-                                <p class="dashboard-greeting">Conheça nosso time de desenvolvimento</p>
-                            </div>
-                        </div>
-
-                        <div class="team-grid" id="teamMembers">
-                            <!-- Team members will be loaded here -->
-                        </div>
+                    <div class="projects-grid" id="allProjects">
+                        <!-- Todos os projetos aqui -->
                     </div>
+                </div>
 
-                    <!-- CONFIGURAÇÕES TAB -->
-                    <div class="dashboard-tab-content" id="settingsTab">
-                        <div class="dashboard-header">
-                            <div class="dashboard-header-left">
-                                <h1>Configurações</h1>
-                                <p class="dashboard-greeting">Personalize sua experiência</p>
-                            </div>
-                        </div>
-                        <div class="dashboard-card" style="background: #221c35; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 20px; padding: 32px;">
-                            <h3 style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 16px;">Configurações da Conta</h3>
-                            <p style="color: rgba(255,255,255,0.6); font-size: 1rem;">Em breve: Personalização de perfil, notificações e preferências</p>
-                        </div>
+                <div id="teamTab" class="dashboard-tab-content">
+                    <div class="dashboard-header">
+                        <h1 class="dashboard-title">Equipe</h1>
+                    </div>
+                    <div class="team-grid" id="teamMembers">
+                        <!-- Membros da equipe aqui -->
+                    </div>
+                </div>
+
+                <div id="settingsTab" class="dashboard-tab-content">
+                    <div class="dashboard-header">
+                        <h1 class="dashboard-title">Configurações</h1>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3 class="card-title">Configurações da Conta</h3>
+                        <p style="color: rgba(255,255,255,0.7);">Em breve: Personalização de perfil, notificações e preferências</p>
                     </div>
                 </div>
             </main>
@@ -1302,69 +959,27 @@ class CompleteDashboard {
 
         statsContainer.innerHTML = `
             <div class="stat-card">
-                <div class="stat-card-header">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #7c68ee 0%, #a78bfa 100%);">🚀</div>
-                    <div class="stat-badge up">↑12%</div>
+                <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🚀</div>
+                <div class="stat-info">
+                    <h3>${activeProjects}</h3>
+                    <p>Projetos Ativos</p>
                 </div>
-                <div class="stat-number">${activeProjects}</div>
-                <div class="stat-label">Projetos Ativos</div>
             </div>
             <div class="stat-card">
-                <div class="stat-card-header">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%);">👥</div>
-                    <div class="stat-badge neutral">${totalMembers} Online</div>
+                <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">👥</div>
+                <div class="stat-info">
+                    <h3>${totalMembers}</h3>
+                    <p>Membros da Equipe</p>
                 </div>
-                <div class="stat-number">${totalMembers}</div>
-                <div class="stat-label">Membros do Time</div>
             </div>
             <div class="stat-card">
-                <div class="stat-card-header">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);">💻</div>
-                    <div class="stat-badge up">↑156</div>
+                <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">📊</div>
+                <div class="stat-info">
+                    <h3>${avgProgress}%</h3>
+                    <p>Progresso Médio</p>
                 </div>
-                <div class="stat-number">1.2K</div>
-                <div class="stat-label">Commits este mês</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-card-header">
-                    <div class="stat-icon" style="background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);">🏆</div>
-                    <div class="stat-badge neutral">RanIDP</div>
-                </div>
-                <div class="stat-number">
-                    <div style="font-size: 2.5rem;">🥇</div>
-                </div>
-                <div class="stat-label">Dev do Mês</div>
             </div>
         `;
-
-        // Adicionar alertas críticos
-        const alertsContainer = document.getElementById('alertsContainer');
-        if (alertsContainer) {
-            alertsContainer.innerHTML = `
-                <div class="alert-card critical">
-                    <div class="alert-icon critical">🚨</div>
-                    <div class="alert-content">
-                        <h3>Bug Crítico Detectado</h3>
-                        <p>Falha no sistema de autenticação - API retornando erro 500</p>
-                        <div class="alert-time">Há 15 minutos</div>
-                    </div>
-                    <div class="alert-actions">
-                        <button class="btn-alert primary">Resolver</button>
-                    </div>
-                </div>
-                <div class="alert-card warning">
-                    <div class="alert-icon warning">⚠️</div>
-                    <div class="alert-content">
-                        <h3>3 PRs Aguardando Review</h3>
-                        <p>Feature/dashboard-update, Fix/auth-bug, Update/dependencies</p>
-                        <div class="alert-time">Há 2 horas</div>
-                    </div>
-                    <div class="alert-actions">
-                        <button class="btn-alert primary">Ver PRs</button>
-                    </div>
-                </div>
-            `;
-        }
     }
 
     // ============================================
