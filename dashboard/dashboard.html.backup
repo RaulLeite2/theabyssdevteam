@@ -1,0 +1,2562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - The Abyss Dev Team</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Dashboard administrativo do The Abyss Development Team">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/auth-dashboard.css">
+    
+    <style>
+        /* Dashboard Specific Styles */
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        }
+
+        /* Sidebar */
+        .dashboard-sidebar {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-brand-icon {
+            font-size: 2rem;
+        }
+
+        .sidebar-brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .sidebar-brand-tagline {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            margin-bottom: 8px;
+            padding: 0 15px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .sidebar-link-icon {
+            font-size: 1.3rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-user:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Main Content */
+        .dashboard-main {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard-title-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 50%, #7f00ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dashboard-title-section p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .dashboard-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dashboard-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .dashboard-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+
+        .dashboard-btn.primary:hover {
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card-dashboard {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card-dashboard:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .online-badge {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Alerts Section */
+        .alerts-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .alert-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .alert-card.critical {
+            background: rgba(245, 87, 108, 0.1);
+            border-color: #f5576c;
+        }
+
+        .alert-card.warning {
+            background: rgba(255, 183, 77, 0.1);
+            border-color: #ffb74d;
+        }
+
+        .alert-card.info {
+            background: rgba(79, 172, 254, 0.1);
+            border-color: #4facfe;
+        }
+
+        .alert-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-content h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .alert-content p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 5px;
+        }
+
+        .alert-time {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .alert-action {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .alert-action:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Dashboard Grid Layout */
+        .dashboard-grid-two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        /* Team Status */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .status-dot.online {
+            background: #43e97b;
+            box-shadow: 0 0 10px rgba(67, 233, 123, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .team-status-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .team-status-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .member-mini {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .member-mini-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .member-mini-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .member-mini-info p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.online {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+        }
+
+        /* Tasks Section */
+        .tasks-section {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-tag {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .priority-high {
+            background: rgba(245, 87, 108, 0.2);
+            color: #f5576c;
+        }
+
+        .priority-medium {
+            background: rgba(255, 183, 77, 0.2);
+            color: #ffb74d;
+        }
+
+        .priority-low {
+            background: rgba(79, 172, 254, 0.2);
+            color: #4facfe;
+        }
+
+        .task-title {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .task-assignee {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Projects Progress */
+        .projects-progress-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .project-progress-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .project-progress-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .project-progress-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .project-progress-info {
+            flex: 1;
+        }
+
+        .project-progress-info h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .project-progress-info p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .project-progress-percent {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .progress-bar-container {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .metric-icon {
+            font-size: 1.8rem;
+        }
+
+        .metric-data {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metric-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Leaderboard */
+        .leaderboard-section {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .leaderboard-item.gold {
+            border-color: rgba(255, 215, 0, 0.3);
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .leaderboard-item.silver {
+            border-color: rgba(192, 192, 192, 0.3);
+            background: rgba(192, 192, 192, 0.05);
+        }
+
+        .rank-medal {
+            font-size: 1.8rem;
+        }
+
+        .rank-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rank-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .rank-commits {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .rank-points {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #43e97b;
+        }
+
+        /* Quick Links */
+        .quick-links-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .quick-link-card {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .quick-link-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--link-color);
+            transform: translateY(-3px);
+        }
+
+        .quick-link-icon {
+            font-size: 1.8rem;
+        }
+
+        .quick-link-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        /* Templates Section */
+        .code-templates-section {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .template-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .template-icon {
+            font-size: 1.3rem;
+        }
+
+        .template-name {
+            flex: 1;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .template-btn {
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .template-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Achievements Feed */
+        .achievements-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .achievement-item {
+            display: flex;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .achievement-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .achievement-icon.trophy {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .achievement-icon.deploy {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .achievement-icon.milestone {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .achievement-icon.code {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .achievement-content h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .achievement-content p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 5px;
+        }
+
+        .achievement-time {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Real-time Tower */
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #f5576c;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #f5576c;
+            animation: pulse 1.5s infinite;
+        }
+
+        .realtime-stats {
+            margin-bottom: 25px;
+        }
+
+        .realtime-metric {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .realtime-graph {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 100px;
+            margin-bottom: 15px;
+        }
+
+        .graph-bar {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+        }
+
+        .graph-bar.active {
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .realtime-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .deploy-status {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(67, 233, 123, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(67, 233, 123, 0.2);
+        }
+
+        .deploy-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .deploy-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #43e97b;
+        }
+
+        .deploy-time {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Quote Section */
+        .quote-section {
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 25px;
+        }
+
+        .quote-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .daily-quote {
+            font-size: 1rem;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .daily-quote footer {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-style: normal;
+        }
+
+        /* Meme Corner */
+        .meme-corner {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .meme-item {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .meme-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Challenge Ranking */
+        .challenge-ranking {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+
+        .challenge-card {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .challenge-title {
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .challenge-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .challenge-progress span {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .challenge-join-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-join-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .stat-card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-card-trend {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .trend-up {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+        }
+
+        .trend-down {
+            background: rgba(245, 87, 108, 0.2);
+            color: #f5576c;
+        }
+
+        .stat-card-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .stat-card-label {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Content Grid */
+        .content-grid-dashboard {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .dashboard-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .dashboard-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .card-action-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .card-action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* Projects List */
+        .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .project-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .project-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .project-icon-small {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .project-info {
+            flex: 1;
+        }
+
+        .project-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .project-meta {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .project-status {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(67, 233, 123, 0.2);
+            color: #43e97b;
+        }
+
+        .status-pending {
+            background: rgba(255, 183, 77, 0.2);
+            color: #ffb74d;
+        }
+
+        .status-completed {
+            background: rgba(79, 172, 254, 0.2);
+            color: #4facfe;
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 12px;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 4px;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .team-member-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .team-member-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .member-header {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .member-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .member-status {
+            position: absolute;
+            bottom: 5px;
+            right: 35%;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 3px solid rgba(15, 12, 41, 1);
+        }
+
+        .member-status.online {
+            background: #43e97b;
+            box-shadow: 0 0 10px rgba(67, 233, 123, 0.5);
+        }
+
+        .member-status.offline {
+            background: #6c757d;
+        }
+
+        .member-info {
+            text-align: center;
+        }
+
+        .member-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .member-role {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 12px;
+        }
+
+        .member-bio {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
+        }
+
+        .member-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .member-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .member-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .member-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .member-btn {
+            flex: 1;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .member-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Add Member Card */
+        .add-member-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .add-member-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .add-member-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .add-member-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .add-member-content h3 {
+            font-size: 1.3rem;
+            color: #fff;
+            margin: 0;
+        }
+
+        .add-member-content p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0;
+        }
+
+        .add-member-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-member-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content-grid-dashboard,
+            .dashboard-grid-two-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-links-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .dashboard-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .dashboard-main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .alert-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .alert-action {
+                width: 100%;
+            }
+
+            .quick-links-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .realtime-graph {
+                height: 80px;
+            }
+
+            .dashboard-title-section h1 {
+                font-size: 2rem;
+            }
+
+            .dashboard-actions {
+                width: 100%;
+            }
+
+            .dashboard-btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-sidebar-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-sidebar-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <div class="sidebar-brand">
+                <span class="sidebar-brand-icon">⚡</span>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-name">The Abyss</span>
+                    <span class="sidebar-brand-tagline">Elite Dashboard</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="sidebar-section-title">Menu Principal</div>
+                <a href="#" class="sidebar-link active" data-tab="overview">
+                    <span class="sidebar-link-icon">📊</span>
+                    <span>Visão Geral</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="projects">
+                    <span class="sidebar-link-icon">🚀</span>
+                    <span>Projetos</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="team">
+                    <span class="sidebar-link-icon">👥</span>
+                    <span>Equipe</span>
+                </a>
+                
+                <div class="sidebar-section-title" style="margin-top: 20px;">Configurações</div>
+                <a href="#" class="sidebar-link" data-tab="settings">
+                    <span class="sidebar-link-icon">⚙️</span>
+                    <span>Configurações</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="sidebar-user" id="sidebarUser">
+                    <div class="user-avatar">👤</div>
+                    <div class="user-info">
+                        <div class="user-name">Usuário</div>
+                        <div class="user-role">Membro</div>
+                    </div>
+                </div>
+                <button class="dashboard-btn" id="logoutBtn" style="width: 100%; margin-top: 10px;">
+                    🚪 Sair
+                </button>
+            </div>
+            <!-- Brand -->
+            <div class="sidebar-brand">
+                <span class="sidebar-brand-icon">⚡</span>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-name">The Abyss</span>
+                    <span class="sidebar-brand-tagline">Development Team</span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Menu Principal</span>
+                <a href="#" class="sidebar-link active">
+                    <span class="sidebar-link-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">🚀</span>
+                    <span>Projetos</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">👥</span>
+                    <span>Equipe</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">📈</span>
+                    <span>Análises</span>
+                </a>
+            </nav>
+
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">Ferramentas</span>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">⚙️</span>
+                    <span>Configurações</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">📝</span>
+                    <span>Documentação</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-link-icon">💬</span>
+                    <span>Suporte</span>
+                </a>
+            </nav>
+
+            <!-- Footer -->
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="user-avatar">👤</div>
+                    <div class="user-info">
+                        <div class="user-name">Admin</div>
+                        <div class="user-role">Desenvolvedor</div>
+                    </div>
+                </div>
+                <a href="index.html" class="sidebar-link" style="margin-top: 12px;">
+                    <span class="sidebar-link-icon">🏠</span>
+                    <span>Voltar ao Site</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Visão Geral (Overview) -->
+            <div class="dashboard-tab-content active" id="overview-tab">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Visão Geral</h1>
+                        <p id="dashboardGreeting">Bem-vindo ao Dashboard</p>
+                    </div>
+                </div>
+
+                <!-- Métricas Principais -->
+                <div class="stats-grid">
+                    <div class="stat-card-dashboard">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                ✅
+                            </div>
+                            <div class="stat-card-trend trend-up">↑ 12%</div>
+                        </div>
+                        <div class="stat-card-value" id="completedTasks">0</div>
+                        <div class="stat-card-label">Tarefas Concluídas</div>
+                    </div>
+
+                    <div class="stat-card-dashboard">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                📝
+                            </div>
+                            <div class="stat-card-trend trend-up">↑ 5</div>
+                        </div>
+                        <div class="stat-card-value" id="newTasks">0</div>
+                        <div class="stat-card-label">Novas Tarefas</div>
+                    </div>
+
+                    <div class="stat-card-dashboard">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                ⚡
+                            </div>
+                            <div class="stat-card-trend trend-up">↑ 3</div>
+                        </div>
+                        <div class="stat-card-value" id="inProgressTasks">0</div>
+                        <div class="stat-card-label">Tarefas em Andamento</div>
+                    </div>
+
+                    <div class="stat-card-dashboard">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                🚀
+                            </div>
+                            <div class="online-badge">● Online</div>
+                        </div>
+                        <div class="stat-card-value" id="activeProjects">0</div>
+                        <div class="stat-card-label">Projetos Ativos</div>
+                    </div>
+                </div>
+
+                <!-- Preview de Conteúdos -->
+                <div class="content-grid-dashboard">
+                    <!-- Projetos Recentes -->
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <h3 class="dashboard-card-title">Projetos Recentes</h3>
+                            <button class="card-action-btn" onclick="switchTab('projects')">Ver Todos →</button>
+                        </div>
+                        <div class="projects-list" id="recentProjects">
+                            <p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">Nenhum projeto ativo no momento</p>
+                        </div>
+                    </div>
+
+                    <!-- Atividades Recentes -->
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <h3 class="dashboard-card-title">Atividades Recentes</h3>
+                        </div>
+                        <div class="activity-feed" id="recentActivity">
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    📝
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Dashboard atualizado com novas funcionalidades</p>
+                                    <span class="activity-time">Agora mesmo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarefas Urgentes Preview -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Tarefas Urgentes</h3>
+                        <button class="card-action-btn" onclick="switchTab('tasks')">Ver Todas →</button>
+                    </div>
+                    <div id="urgentTasksPreview">
+                        <p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">Nenhuma tarefa urgente</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="dashboard-title-section">
+                    <h1>Dashboard</h1>
+                    <p>Bem-vindo ao painel de controle do The Abyss Dev Team</p>
+                </div>
+                <div class="dashboard-actions">
+                    <button class="dashboard-btn">
+                        <span>🔔</span>
+                        <span>Notificações</span>
+                    </button>
+                    <button class="dashboard-btn primary">
+                        <span>➕</span>
+                        <span>Novo Projeto</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                            🚀
+                        </div>
+                        <span class="stat-card-trend trend-up">↑ 12%</span>
+                    </div>
+                    <div class="stat-card-value">24</div>
+                    <div class="stat-card-label">Projetos Ativos</div>
+                </div>
+
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
+                            👥
+                        </div>
+                        <span class="stat-card-trend online-badge">2 Online</span>
+                    </div>
+                    <div class="stat-card-value">2</div>
+                    <div class="stat-card-label">Membros do Time</div>
+                </div>
+
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                            💻
+                        </div>
+                        <span class="stat-card-trend trend-up">↑ 156</span>
+                    </div>
+                    <div class="stat-card-value">1.2K</div>
+                    <div class="stat-card-label">Commits este mês</div>
+                </div>
+
+                <div class="stat-card-dashboard">
+                    <div class="stat-card-header">
+                        <div class="stat-card-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+                            🏆
+                        </div>
+                        <span class="stat-card-trend trend-up">RaulDP</span>
+                    </div>
+                    <div class="stat-card-value">🥇</div>
+                    <div class="stat-card-label">Dev do Mês</div>
+                </div>
+            </div>
+
+            <!-- Critical Alerts Section -->
+            <div class="alerts-section">
+                <div class="alert-card critical">
+                    <div class="alert-icon">🚨</div>
+                    <div class="alert-content">
+                        <h4>Bug Crítico Detectado</h4>
+                        <p>Falha no sistema de autenticação - API retornando erro 500</p>
+                        <span class="alert-time">Há 15 minutos</span>
+                    </div>
+                    <button class="alert-action">Resolver</button>
+                </div>
+
+                <div class="alert-card warning">
+                    <div class="alert-icon">⚠️</div>
+                    <div class="alert-content">
+                        <h4>3 PRs Aguardando Review</h4>
+                        <p>Feature/dashboard-update, Fix/auth-bug, Update/dependencies</p>
+                        <span class="alert-time">Há 2 horas</span>
+                    </div>
+                    <button class="alert-action">Ver PRs</button>
+                </div>
+
+                <div class="alert-card info">
+                    <div class="alert-icon">💬</div>
+                    <div class="alert-content">
+                        <h4>Mensagem do Líder</h4>
+                        <p>Reunião de planning amanhã às 14h - Discord voice channel</p>
+                        <span class="alert-time">Há 3 horas</span>
+                    </div>
+                    <button class="alert-action">Confirmar</button>
+                </div>
+            </div>
+
+            <!-- Team Status & Projects Grid -->
+            <div class="dashboard-grid-two-columns">
+                <!-- Team Status -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h2 class="dashboard-card-title">Status do Time</h2>
+                        <div class="status-indicator">
+                            <span class="status-dot online"></span>
+                            <span>2 Online</span>
+                        </div>
+                    </div>
+                    <div class="team-status-list">
+                        <div class="team-status-item">
+                            <div class="member-mini">
+                                <div class="member-mini-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                                    👨‍💻
+                                </div>
+                                <div class="member-mini-info">
+                                    <h4>RaulDP</h4>
+                                    <p>Desenvolvendo API de notificações</p>
+                                </div>
+                            </div>
+                            <span class="status-badge online">Online</span>
+                        </div>
+
+                        <div class="team-status-item">
+                            <div class="member-mini">
+                                <div class="member-mini-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                                    👩‍💻
+                                </div>
+                                <div class="member-mini-info">
+                                    <h4>ImSeleverr</h4>
+                                    <p>Revisando design do dashboard</p>
+                                </div>
+                            </div>
+                            <span class="status-badge online">Online</span>
+                        </div>
+                    </div>
+
+                    <div class="tasks-section">
+                        <h3 class="section-subtitle">Tarefas em Andamento</h3>
+                        <div class="task-item">
+                            <div class="task-info">
+                                <span class="task-tag priority-high">Alta</span>
+                                <span class="task-title">Correção de bug crítico</span>
+                            </div>
+                            <span class="task-assignee">RaulDP</span>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-info">
+                                <span class="task-tag priority-medium">Média</span>
+                                <span class="task-title">Atualizar documentação</span>
+                            </div>
+                            <span class="task-assignee">ImSeleverr</span>
+                        </div>
+                        <div class="task-item">
+                            <div class="task-info">
+                                <span class="task-tag priority-low">Baixa</span>
+                                <span class="task-title">Refatorar componentes CSS</span>
+                            </div>
+                            <span class="task-assignee">RaulDP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Projects -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h2 class="dashboard-card-title">Projetos Ativos</h2>
+                        <button class="card-action-btn">Ver Todos →</button>
+                    </div>
+                    <div class="projects-progress-list">
+                        <div class="project-progress-item">
+                            <div class="project-progress-header">
+                                <div class="project-progress-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                                    🤖
+                                </div>
+                                <div class="project-progress-info">
+                                    <h4>Discord Bot Elite</h4>
+                                    <p>Sistema de moderação avançado</p>
+                                </div>
+                                <span class="project-progress-percent">85%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: 85%; background: linear-gradient(90deg, #667eea, #764ba2)"></div>
+                            </div>
+                        </div>
+
+                        <div class="project-progress-item">
+                            <div class="project-progress-header">
+                                <div class="project-progress-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                                    🌐
+                                </div>
+                                <div class="project-progress-info">
+                                    <h4>Dashboard Web</h4>
+                                    <p>Interface de administração</p>
+                                </div>
+                                <span class="project-progress-percent">92%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: 92%; background: linear-gradient(90deg, #f093fb, #f5576c)"></div>
+                            </div>
+                        </div>
+
+                        <div class="project-progress-item">
+                            <div class="project-progress-header">
+                                <div class="project-progress-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+                                    ⚡
+                                </div>
+                                <div class="project-progress-info">
+                                    <h4>Automation Scripts</h4>
+                                    <p>Scripts de automação Python</p>
+                                </div>
+                                <span class="project-progress-percent">67%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: 67%; background: linear-gradient(90deg, #4facfe, #00f2fe)"></div>
+                            </div>
+                        </div>
+
+                        <div class="project-progress-item">
+                            <div class="project-progress-header">
+                                <div class="project-progress-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)">
+                                    🎯
+                                </div>
+                                <div class="project-progress-info">
+                                    <h4>API Custom</h4>
+                                    <p>RESTful API com FastAPI</p>
+                                </div>
+                                <span class="project-progress-percent">45%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: 45%; background: linear-gradient(90deg, #43e97b, #38f9d7)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics & Quick Resources -->
+            <div class="dashboard-grid-two-columns">
+                <!-- Metrics & Statistics -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h2 class="dashboard-card-title">Métricas & Estatísticas</h2>
+                        <button class="card-action-btn">Ver Relatório →</button>
+                    </div>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">📊</div>
+                            <div class="metric-data">
+                                <span class="metric-value">156</span>
+                                <span class="metric-label">Commits esta semana</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">⏱️</div>
+                            <div class="metric-data">
+                                <span class="metric-value">2.3h</span>
+                                <span class="metric-label">Tempo médio de resolução</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">🐛</div>
+                            <div class="metric-data">
+                                <span class="metric-value">12</span>
+                                <span class="metric-label">Bugs resolvidos</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">🚀</div>
+                            <div class="metric-data">
+                                <span class="metric-value">8</span>
+                                <span class="metric-label">Deploys este mês</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="leaderboard-section">
+                        <h3 class="section-subtitle">🏆 Ranking de Contribuições</h3>
+                        <div class="leaderboard-item gold">
+                            <span class="rank-medal">🥇</span>
+                            <div class="rank-info">
+                                <span class="rank-name">RaulDP</span>
+                                <span class="rank-commits">892 commits</span>
+                            </div>
+                            <span class="rank-points">+250 pts</span>
+                        </div>
+
+                        <div class="leaderboard-item silver">
+                            <span class="rank-medal">🥈</span>
+                            <div class="rank-info">
+                                <span class="rank-name">ImSeleverr</span>
+                                <span class="rank-commits">647 commits</span>
+                            </div>
+                            <span class="rank-points">+180 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Resources -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h2 class="dashboard-card-title">Recursos Rápidos</h2>
+                        <button class="card-action-btn">Adicionar →</button>
+                    </div>
+
+                    <div class="quick-links-grid">
+                        <a href="https://github.com/theabyssdevteam" target="_blank" class="quick-link-card" style="--link-color: #667eea">
+                            <div class="quick-link-icon">📂</div>
+                            <span class="quick-link-label">GitHub</span>
+                        </a>
+
+                        <a href="#" class="quick-link-card" style="--link-color: #f093fb">
+                            <div class="quick-link-icon">📝</div>
+                            <span class="quick-link-label">Docs</span>
+                        </a>
+
+                        <a href="#" class="quick-link-card" style="--link-color: #4facfe">
+                            <div class="quick-link-icon">📋</div>
+                            <span class="quick-link-label">Trello</span>
+                        </a>
+
+                        <a href="#" class="quick-link-card" style="--link-color: #43e97b">
+                            <div class="quick-link-icon">💬</div>
+                            <span class="quick-link-label">Discord</span>
+                        </a>
+
+                        <a href="#" class="quick-link-card" style="--link-color: #ffb74d">
+                            <div class="quick-link-icon">🎨</div>
+                            <span class="quick-link-label">Figma</span>
+                        </a>
+
+                        <a href="#" class="quick-link-card" style="--link-color: #f5576c">
+                            <div class="quick-link-icon">🔧</div>
+                            <span class="quick-link-label">Snippets</span>
+                        </a>
+                    </div>
+
+                    <div class="code-templates-section">
+                        <h3 class="section-subtitle">📦 Templates Rápidos</h3>
+                        <div class="template-item">
+                            <div class="template-icon">🐍</div>
+                            <span class="template-name">Python FastAPI Starter</span>
+                            <button class="template-btn">Usar</button>
+                        </div>
+                        <div class="template-item">
+                            <div class="template-icon">⚛️</div>
+                            <span class="template-name">React Component</span>
+                            <button class="template-btn">Usar</button>
+                        </div>
+                        <div class="template-item">
+                            <div class="template-icon">🟢</div>
+                            <span class="template-name">Node.js Express API</span>
+                            <button class="template-btn">Usar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements & Real-time Activity -->
+            <div class="dashboard-grid-two-columns">
+                <!-- Achievements Feed -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h2 class="dashboard-card-title">🎉 Conquistas do Time</h2>
+                        <button class="card-action-btn">Ver Todas →</button>
+                    </div>
+                    <div class="achievements-feed">
+                        <div class="achievement-item">
+                            <div class="achievement-icon trophy">🏆</div>
+                            <div class="achievement-content">
+                                <h4>Feature Major Lançada!</h4>
+                                <p>Sistema de notificações em tempo real implementado</p>
+                                <span class="achievement-time">Hoje às 14:30</span>
+                            </div>
+                        </div>
+
+                        <div class="achievement-item">
+                            <div class="achievement-icon deploy">🚀</div>
+                            <div class="achievement-content">
+                                <h4>Deploy Bem-Sucedido</h4>
+                                <p>Dashboard v2.0 publicado em produção sem erros</p>
+                                <span class="achievement-time">Hoje às 11:15</span>
+                            </div>
+                        </div>
+
+                        <div class="achievement-item">
+                            <div class="achievement-icon milestone">🎯</div>
+                            <div class="achievement-content">
+                                <h4>Marco Atingido</h4>
+                                <p>1000 commits no repositório principal!</p>
+                                <span class="achievement-time">Ontem às 18:45</span>
+                            </div>
+                        </div>
+
+                        <div class="achievement-item">
+                            <div class="achievement-icon code">💻</div>
+                            <div class="achievement-content">
+                                <h4>Code Review Completo</h4>
+                                <p>Todos os PRs da sprint revisados e aprovados</p>
+                                <span class="achievement-time">Ontem às 16:20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-time Tower & Inspiration -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h2 class="dashboard-card-title">⚡ Torre de Controle</h2>
+                        <div class="live-indicator">
+                            <span class="pulse-dot"></span>
+                            <span>LIVE</span>
+                        </div>
+                    </div>
+
+                    <div class="realtime-stats">
+                        <div class="realtime-metric">
+                            <div class="realtime-graph">
+                                <div class="graph-bar" style="height: 60%"></div>
+                                <div class="graph-bar" style="height: 80%"></div>
+                                <div class="graph-bar" style="height: 45%"></div>
+                                <div class="graph-bar" style="height: 90%"></div>
+                                <div class="graph-bar" style="height: 70%"></div>
+                                <div class="graph-bar active" style="height: 95%"></div>
+                            </div>
+                            <span class="realtime-label">Builds Hoje: 12</span>
+                        </div>
+
+                        <div class="deploy-status">
+                            <div class="deploy-indicator success">
+                                <span class="deploy-dot"></span>
+                                <span>Último deploy: Sucesso</span>
+                            </div>
+                            <span class="deploy-time">Há 2 horas</span>
+                        </div>
+                    </div>
+
+                    <div class="quote-section">
+                        <div class="quote-icon">💡</div>
+                        <blockquote class="daily-quote">
+                            "Code is like humor. When you have to explain it, it's bad."
+                            <footer>- Cory House</footer>
+                        </blockquote>
+                    </div>
+
+                    <div class="meme-corner">
+                        <h3 class="section-subtitle">😄 Mural de Humor</h3>
+                        <div class="meme-item">
+                            <p>🐛 "99 bugs in the code, 99 bugs in the code... Take one down, patch it around, 127 bugs in the code!"</p>
+                        </div>
+                        <div class="meme-item">
+                            <p>☕ "Café: porque debugar sem dormir é mais produtivo!"</p>
+                        </div>
+                    </div>
+
+                    <div class="challenge-ranking">
+                        <h3 class="section-subtitle">🎮 Desafio da Semana</h3>
+                        <div class="challenge-card">
+                            <div class="challenge-title">Code Golf Challenge</div>
+                            <div class="challenge-progress">
+                                <span>3 participantes</span>
+                                <button class="challenge-join-btn">Participar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h2 class="dashboard-card-title">Nossa Equipe</h2>
+                    <button class="card-action-btn">Ver Perfis →</button>
+                </div>
+                <div class="team-grid">
+                    <!-- Team Member 1 -->
+                    <div class="team-member-card">
+                        <div class="member-header">
+                            <div class="member-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                                <img src="img/rauldp.png" alt="RaulDP" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <span class="avatar-fallback" style="display: none;">👨‍💻</span>
+                            </div>
+                            <div class="member-status online"></div>
+                        </div>
+                        <div class="member-info">
+                            <h3 class="member-name">RaulDP</h3>
+                            <p class="member-role">Fundador & Desenvolvedor Full Stack</p>
+                            <p class="member-bio">Especialista em Python, Node.js e arquitetura de sistemas. Criador do The Abyss Dev Team.</p>
+                        </div>
+                        <div class="member-stats">
+                            <div class="member-stat">
+                                <span class="stat-value">15</span>
+                                <span class="stat-label">Projetos</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-value">2.5K</span>
+                                <span class="stat-label">Commits</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-value">98%</span>
+                                <span class="stat-label">Uptime</span>
+                            </div>
+                        </div>
+                        <div class="member-skills">
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Node.js</span>
+                        </div>
+                        <div class="member-actions">
+                            <button class="member-btn">📧 Mensagem</button>
+                            <button class="member-btn">👁️ Perfil</button>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 2 -->
+                    <div class="team-member-card">
+                        <div class="member-header">
+                            <div class="member-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+                                <img src="img/sel.png" alt="ImSeleverr" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <span class="avatar-fallback" style="display: none;">👩‍💻</span>
+                            </div>
+                            <div class="member-status online"></div>
+                        </div>
+                        <div class="member-info">
+                            <h3 class="member-name">ImSeleverr</h3>
+                            <p class="member-role">Co-Fundadora & Designer UI/UX</p>
+                            <p class="member-bio">Designer criativa especializada em interfaces modernas e experiência do usuário excepcional.</p>
+                        </div>
+                        <div class="member-stats">
+                            <div class="member-stat">
+                                <span class="stat-value">12</span>
+                                <span class="stat-label">Projetos</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-value">1.8K</span>
+                                <span class="stat-label">Commits</span>
+                            </div>
+                            <div class="member-stat">
+                                <span class="stat-value">95%</span>
+                                <span class="stat-label">Uptime</span>
+                            </div>
+                        </div>
+                        <div class="member-skills">
+                            <span class="skill-tag">UI/UX</span>
+                            <span class="skill-tag">Figma</span>
+                            <span class="skill-tag">CSS</span>
+                            <span class="skill-tag">Design</span>
+                        </div>
+                        <div class="member-actions">
+                            <button class="member-btn">📧 Mensagem</button>
+                            <button class="member-btn">👁️ Perfil</button>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 3 - Placeholder for future -->
+                    <div class="team-member-card add-member-card">
+                        <div class="add-member-content">
+                            <div class="add-member-icon">➕</div>
+                            <h3>Adicionar Membro</h3>
+                            <p>Expanda sua equipe</p>
+                            <button class="add-member-btn">Convidar Novo Membro</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Aba de Projetos -->
+            <div class="dashboard-tab-content" id="projects-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Gerenciar Projetos</h1>
+                        <p>Ative ou desative projetos da equipe</p>
+                    </div>
+                    <div class="dashboard-actions">
+                        <button class="dashboard-btn primary" id="addProjectBtn" style="display: none;">
+                            ➕ Novo Projeto
+                        </button>
+                    </div>
+                </div>
+
+                <div class="projects-list" id="allProjects">
+                    <!-- Projetos serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Aba de Equipe -->
+            <div class="dashboard-tab-content" id="team-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Equipe</h1>
+                        <p>Membros e colaboradores</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="team-grid" id="teamMembers">
+                        <div class="team-member-card">
+                            <div class="member-header">
+                                <div class="member-avatar">
+                                    <div class="avatar-fallback">👨‍💻</div>
+                                </div>
+                                <div class="member-status online">🟢 Online</div>
+                            </div>
+                            <div class="member-info">
+                                <h3 class="member-name">Raul Leite</h3>
+                                <p class="member-role">Founder & Lead Developer</p>
+                                <p class="member-bio">Especialista em backend e arquitetura de sistemas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba de Configurações -->
+            <div class="dashboard-tab-content" id="settings-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Configurações</h1>
+                        <p>Personalize sua experiência</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>⚙️ Preferências</h3>
+                    <div style="margin-top: 20px;">
+                        <div style="padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 15px;">
+                            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                                <span>Notificações</span>
+                                <input type="checkbox" checked style="width: 20px; height: 20px;">
+                            </label>
+                        </div>
+                        <div style="padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 15px;">
+                            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                                <span>Modo Escuro</span>
+                                <input type="checkbox" checked style="width: 20px; height: 20px;">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+            ☰
+        </button>
+    </div>
+
+    <style>
+        .notification-badge {
+            background: #f5576c;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: auto;
+            font-weight: 700;
+        }
+
+        .dashboard-tab-content {
+            display: none;
+        }
+
+        .dashboard-tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .task-column {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .task-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .task-column-header h3 {
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .task-count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 200px;
+        }
+
+        .task-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .request-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .request-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-approve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 233, 123, 0.4);
+        }
+
+        .btn-deny {
+            background: rgba(245, 87, 108, 0.2);
+            border: 1px solid #f5576c;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #f5576c;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-deny:hover {
+            background: rgba(245, 87, 108, 0.3);
+        }
+
+        .project-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            left: 27px;
+        }
+
+        #statusMenu {
+            position: absolute;
+            background: rgba(15, 12, 41, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+        }
+
+        .status-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+
+    <!-- Scripts -->
+    <script src="assets/js/dashboard-manager.js"></script>
+    <script>
+        // Mobile Sidebar Toggle
+        const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+        const dashboardSidebar = document.getElementById('dashboardSidebar');
+
+        if (mobileSidebarToggle && dashboardSidebar) {
+            mobileSidebarToggle.addEventListener('click', () => {
+                dashboardSidebar.classList.toggle('open');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!dashboardSidebar.contains(e.target) && !mobileSidebarToggle.contains(e.target)) {
+                    dashboardSidebar.classList.remove('open');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
