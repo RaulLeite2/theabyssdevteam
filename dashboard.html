@@ -2708,12 +2708,10 @@
     </style>
 
     <script>
-        // Sistema de Autenticação e Permissões
-        const AUTHORIZED_USERS = [
-            { email: 'raul@theabyss.dev', name: 'Raul Leite', role: 'admin', permissions: ['all'] },
-            { email: 'admin@theabyss.dev', name: 'Admin', role: 'admin', permissions: ['all'] }
-        ];
+        // Configuração da API
+        const API_URL = window.location.origin;
 
+        // Sistema de Autenticação e Permissões
         let currentUser = null;
         let accessRequests = [];
         let projects = [];
@@ -2723,31 +2721,132 @@
         // Verificar autenticação ao carregar
         window.addEventListener('DOMContentLoaded', () => {
             checkAuthentication();
-            initializeDashboard();
         });
 
-        function checkAuthentication() {
-            const userEmail = localStorage.getItem('userEmail');
-            const user = AUTHORIZED_USERS.find(u => u.email === userEmail);
+        async function checkAuthentication() {
+            const token = localStorage.getItem('authToken');
             
-            if (!user) {
-                // Redirecionar para login ou mostrar página de solicitação
-                showAccessRequestForm();
+            if (!token) {
+                showLoginForm();
                 return;
             }
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/verify`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentUser = data.user;
+                    updateUserInterface();
+                    initializeDashboard();
+                } else {
+                    localStorage.removeItem('authToken');
+                    showLoginForm();
+                }
+            } catch (error) {
+                console.error('Erro na verificação:', error);
+                localStorage.removeItem('authToken');
+                showLoginForm();
+            }
+        }
+
+        function showLoginForm() {
+            document.querySelector('.dashboard-wrapper').innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);">
+                    <div class="dashboard-card" style="max-width: 450px; width: 100%;">
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">⚡</div>
+                            <h2 style="margin-bottom: 10px;">The Abyss Dashboard</h2>
+                            <p style="color: rgba(255,255,255,0.6);">Acesso exclusivo para membros autorizados</p>
+                        </div>
+                        
+                        <form id="loginForm" onsubmit="handleLogin(event)">
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.8); font-weight: 500;">Email</label>
+                                <input type="email" id="loginEmail" required 
+                                    style="width: 100%; padding: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 1rem;"
+                                    placeholder="seu@email.com">
+                            </div>
+                            <div style="margin-bottom: 25px;">
+                                <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.8); font-weight: 500;">Senha</label>
+                                <input type="password" id="loginPassword" required 
+                                    style="width: 100%; padding: 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 1rem;"
+                                    placeholder="••••••••">
+                            </div>
+                            <div id="loginError" style="display: none; padding: 12px; background: rgba(245, 87, 108, 0.1); border: 1px solid rgba(245, 87, 108, 0.3); border-radius: 8px; color: #f5576c; margin-bottom: 20px; font-size: 0.9rem;"></div>
+                            <button type="submit" class="dashboard-btn primary" style="width: 100%; padding: 14px; font-size: 1rem;" id="loginBtn">
+                                🔐 Entrar
+                            </button>
+                        </form>
+                        
+                        <div style="text-align: center; margin-top: 25px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 10px;">Não tem acesso?</p>
+                            <button onclick="showAccessRequestForm()" class="dashboard-btn" style="width: 100%;">
+                                📩 Solicitar Acesso
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
             
-            currentUser = user;
-            updateUserInterface();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const errorDiv = document.getElementById('loginError');
+            
+            loginBtn.disabled = true;
+            loginBtn.textContent = '⏳ Entrando...';
+            errorDiv.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('userEmail', data.user.email);
+                    location.reload();
+                } else {
+                    errorDiv.textContent = data.message || 'Erro ao fazer login';
+                    errorDiv.style.display = 'block';
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = '🔐 Entrar';
+                }
+            } catch (error) {
+                console.error('Erro no login:', error);
+                errorDiv.textContent = 'Erro ao conectar com o servidor';
+                errorDiv.style.display = 'block';
+                loginBtn.disabled = false;
+                loginBtn.textContent = '🔐 Entrar';
+            }
         }
 
         function showAccessRequestForm() {
             document.querySelector('.dashboard-wrapper').innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+                <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);">
                     <div class="dashboard-card" style="max-width: 500px; width: 100%;">
-                        <h2 style="text-align: center; margin-bottom: 20px;">🔒 Acesso Restrito</h2>
-                        <p style="text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 30px;">
-                            Este dashboard é apenas para membros autorizados da The Abyss Dev Team.
-                        </p>
+                        <div style="text-align: center; margin-bottom: 25px;">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">🔒</div>
+                            <h2 style="margin-bottom: 10px;">Solicitar Acesso</h2>
+                            <p style="color: rgba(255,255,255,0.6);">Preencha o formulário para solicitar permissão</p>
+                        </div>
+                        
                         <form id="accessRequestForm" onsubmit="submitAccessRequest(event)">
                             <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 8px;">Nome Completo</label>
@@ -2761,29 +2860,46 @@
                                 <label style="display: block; margin-bottom: 8px;">Motivo do Acesso</label>
                                 <textarea id="requestReason" required style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; min-height: 100px;"></textarea>
                             </div>
-                            <button type="submit" class="dashboard-btn primary" style="width: 100%;">Solicitar Acesso</button>
+                            <button type="submit" class="dashboard-btn primary" style="width: 100%;">Enviar Solicitação</button>
                         </form>
-                        <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: rgba(255,255,255,0.5);">
-                            Já tem acesso? <a href="index.html" style="color: #667eea;">Faça login</a>
-                        </p>
+                        
+                        <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <button onclick="showLoginForm()" class="dashboard-btn" style="width: 100%;">
+                                ← Voltar para Login
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
         }
 
-        function submitAccessRequest(event) {
+        async function submitAccessRequest(event) {
             event.preventDefault();
             const name = document.getElementById('requestName').value;
             const email = document.getElementById('requestEmail').value;
             const reason = document.getElementById('requestReason').value;
             
-            // Salvar solicitação (em produção, enviar para servidor)
-            const request = { name, email, reason, date: new Date().toISOString(), status: 'pending' };
-            const requests = JSON.parse(localStorage.getItem('accessRequests') || '[]');
-            requests.push(request);
-            localStorage.setItem('accessRequests', JSON.stringify(requests));
-            
-            alert('Solicitação enviada! Aguarde aprovação do administrador.');
+            try {
+                const response = await fetch(`${API_URL}/api/auth/request-access`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, reason })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ Solicitação enviada! Aguarde aprovação do administrador.');
+                    showLoginForm();
+                } else {
+                    alert('❌ Erro ao enviar solicitação: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('❌ Erro ao enviar solicitação');
+            }
         }
 
         function updateUserInterface() {
@@ -3079,8 +3195,11 @@
         }
 
         function logout() {
-            localStorage.removeItem('userEmail');
-            window.location.href = 'index.html';
+            if (confirm('Deseja realmente sair?')) {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userEmail');
+                location.reload();
+            }
         }
 
         // Mobile Sidebar Toggle

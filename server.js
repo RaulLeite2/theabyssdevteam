@@ -6,6 +6,7 @@ import http from 'http';
 import { initDatabase } from './api/database.js';
 import { handler as usersHandler } from './api/users.js';
 import { handler as contactHandler } from './api/contact.js';
+import authRouter from './api/auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -73,6 +74,7 @@ app.get("/health", async (req, res) => {
 });
 
 // API Routes
+app.use('/api/auth', authRouter);
 app.all('/api/users', usersHandler);
 app.all('/api/users/:action', usersHandler);
 app.all('/api/contact', contactHandler);
