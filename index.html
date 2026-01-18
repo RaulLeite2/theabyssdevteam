@@ -92,7 +92,15 @@
                 <span class="dashboard-icon" aria-hidden="true">📊</span>
                 <span class="dashboard-text">Dashboard</span>
             </a>
-            <button class="btn-login" id="loginBtn" aria-label="Fazer login">
+            <button class="btn-login" id="loginBtn" aria-label="Fazer login" style="display: none;">
+                <span class="login-icon" aria-hidden="true">👤</span>
+                <span class="login-text">Entrar</span>
+            </button>
+            <button class="btn-logout" id="logoutBtnHome" aria-label="Fazer logout" style="display: none;">
+                <span class="logout-icon" aria-hidden="true">🚪</span>
+                <span class="logout-text">Sair</span>
+            </button>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menu de navegação" aria-expanded="false">
                 <span class="login-icon" aria-hidden="true">👤</span>
                 <span class="login-text">Entrar</span>
             </button>
@@ -1687,6 +1695,54 @@
     <p>© 2026 The Abyss Development Team - Elite Development</p>
     <p class="footer-tagline">Do abismo emergem as melhores soluções 🌊</p>
 </footer>
+
+<script>
+    // Verificar se usuário está logado ao carregar a página
+    document.addEventListener('DOMContentLoaded', () => {
+        checkUserLoginStatus();
+        setupLogoutButton();
+    });
+
+    function checkUserLoginStatus() {
+        const authToken = localStorage.getItem('authToken');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtnHome');
+
+        if (authToken) {
+            // Usuário está logado - mostrar botão de logout
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (logoutBtn) logoutBtn.style.display = 'flex';
+        } else {
+            // Usuário não está logado - mostrar botão de login
+            if (loginBtn) loginBtn.style.display = 'flex';
+            if (logoutBtn) logoutBtn.style.display = 'none';
+        }
+    }
+
+    function setupLogoutButton() {
+        const logoutBtn = document.getElementById('logoutBtnHome');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', handleLogout);
+        }
+    }
+
+    function handleLogout() {
+        if (confirm('Deseja realmente sair?')) {
+            // Limpar tokens e dados do localStorage
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userEmail');
+            
+            // Atualizar UI
+            checkUserLoginStatus();
+            
+            // Mostrar mensagem de sucesso
+            alert('✅ Logout realizado com sucesso!');
+            
+            // Opcional: redirecionar para home
+            window.location.reload();
+        }
+    }
+</script>
 
 <script src="assets/js/script.js"></script>
 <script src="assets/js/auth-system.js"></script>

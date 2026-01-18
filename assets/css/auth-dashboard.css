@@ -123,6 +123,30 @@ header.glassmorphism {
     font-size: 1.1rem;
 }
 
+.btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+}
+
+.logout-icon {
+    font-size: 1.1rem;
+}
+
 /* ============================================
    MODAL DE AUTENTICAÇÃO
    ============================================ */
