@@ -1493,6 +1493,69 @@
     <div class="dashboard-wrapper">
         <!-- Sidebar -->
         <aside class="dashboard-sidebar" id="dashboardSidebar">
+            <div class="sidebar-brand">
+                <span class="sidebar-brand-icon">⚡</span>
+                <div class="sidebar-brand-text">
+                    <span class="sidebar-brand-name">The Abyss</span>
+                    <span class="sidebar-brand-tagline">Elite Dashboard</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="sidebar-section-title">Menu Principal</div>
+                <a href="#" class="sidebar-link active" data-tab="overview">
+                    <span class="sidebar-link-icon">📊</span>
+                    <span>Visão Geral</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="projects">
+                    <span class="sidebar-link-icon">🚀</span>
+                    <span>Projetos</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="team">
+                    <span class="sidebar-link-icon">👥</span>
+                    <span>Equipe</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="tasks">
+                    <span class="sidebar-link-icon">✅</span>
+                    <span>Tarefas</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="requests" id="requestsLink" style="display: none;">
+                    <span class="sidebar-link-icon">📩</span>
+                    <span>Solicitações</span>
+                    <span class="notification-badge" id="requestsBadge" style="display: none;">0</span>
+                </a>
+                
+                <div class="sidebar-section-title" style="margin-top: 20px;">Outros</div>
+                <a href="#" class="sidebar-link" data-tab="analytics">
+                    <span class="sidebar-link-icon">📈</span>
+                    <span>Análises</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="docs">
+                    <span class="sidebar-link-icon">📚</span>
+                    <span>Documentação</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="settings">
+                    <span class="sidebar-link-icon">⚙️</span>
+                    <span>Configurações</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="support">
+                    <span class="sidebar-link-icon">💬</span>
+                    <span>Suporte</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="sidebar-user" id="sidebarUser">
+                    <div class="user-avatar">👤</div>
+                    <div class="user-info">
+                        <div class="user-name">Usuário</div>
+                        <div class="user-role">Membro</div>
+                    </div>
+                </div>
+                <button class="dashboard-btn" id="logoutBtn" style="width: 100%; margin-top: 10px;">
+                    🚪 Sair
+                </button>
+            </div>
             <!-- Brand -->
             <div class="sidebar-brand">
                 <span class="sidebar-brand-icon">⚡</span>
@@ -1557,6 +1620,114 @@
 
         <!-- Main Content -->
         <main class="dashboard-main">
+            <!-- Visão Geral (Overview) -->
+            <div class="dashboard-tab-content active" id="overview-tab">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Visão Geral</h1>
+                        <p id="dashboardGreeting">Bem-vindo ao Dashboard</p>
+                    </div>
+                    <div class="dashboard-actions">
+                        <button class="dashboard-btn" id="statusBtn">
+                            <span id="statusIcon">🟢</span>
+                            <span id="statusText">Disponível</span>
+                        </button>
+                        <button class="dashboard-btn primary">
+                            ➕ Nova Tarefa
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Métricas Principais -->
+                <div class="stats-grid">
+                    <div class="stat-card-dashboard">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                ✅
+                            </div>
+                            <div class="stat-card-trend trend-up">↑ 12%</div>
+                        </div>
+                        <div class="stat-card-value" id="completedTasks">0</div>
+                        <div class="stat-card-label">Tarefas Concluídas</div>
+                    </div>
+
+                    <div class="stat-card-dashboard">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                📝
+                            </div>
+                            <div class="stat-card-trend trend-up">↑ 5</div>
+                        </div>
+                        <div class="stat-card-value" id="newTasks">0</div>
+                        <div class="stat-card-label">Novas Tarefas</div>
+                    </div>
+
+                    <div class="stat-card-dashboard">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                ⚡
+                            </div>
+                            <div class="stat-card-trend trend-up">↑ 3</div>
+                        </div>
+                        <div class="stat-card-value" id="inProgressTasks">0</div>
+                        <div class="stat-card-label">Tarefas em Andamento</div>
+                    </div>
+
+                    <div class="stat-card-dashboard">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                🚀
+                            </div>
+                            <div class="online-badge">● Online</div>
+                        </div>
+                        <div class="stat-card-value" id="activeProjects">0</div>
+                        <div class="stat-card-label">Projetos Ativos</div>
+                    </div>
+                </div>
+
+                <!-- Preview de Conteúdos -->
+                <div class="content-grid-dashboard">
+                    <!-- Projetos Recentes -->
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <h3 class="dashboard-card-title">Projetos Recentes</h3>
+                            <button class="card-action-btn" onclick="switchTab('projects')">Ver Todos →</button>
+                        </div>
+                        <div class="projects-list" id="recentProjects">
+                            <p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">Nenhum projeto ativo no momento</p>
+                        </div>
+                    </div>
+
+                    <!-- Atividades Recentes -->
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <h3 class="dashboard-card-title">Atividades Recentes</h3>
+                        </div>
+                        <div class="activity-feed" id="recentActivity">
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    📝
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Dashboard atualizado com novas funcionalidades</p>
+                                    <span class="activity-time">Agora mesmo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarefas Urgentes Preview -->
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Tarefas Urgentes</h3>
+                        <button class="card-action-btn" onclick="switchTab('tasks')">Ver Todas →</button>
+                    </div>
+                    <div id="urgentTasksPreview">
+                        <p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">Nenhuma tarefa urgente</p>
+                    </div>
+                </div>
+            </div>
             <!-- Header -->
             <header class="dashboard-header">
                 <div class="dashboard-title-section">
@@ -2127,6 +2298,218 @@
                     </div>
                 </div>
             </div>
+            <!-- Aba de Projetos -->
+            <div class="dashboard-tab-content" id="projects-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Gerenciar Projetos</h1>
+                        <p>Ative ou desative projetos da equipe</p>
+                    </div>
+                    <div class="dashboard-actions">
+                        <button class="dashboard-btn primary" id="addProjectBtn" style="display: none;">
+                            ➕ Novo Projeto
+                        </button>
+                    </div>
+                </div>
+
+                <div class="projects-list" id="allProjects">
+                    <!-- Projetos serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Aba de Equipe -->
+            <div class="dashboard-tab-content" id="team-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Equipe</h1>
+                        <p>Membros e seus status</p>
+                    </div>
+                </div>
+
+                <div class="team-grid" id="teamMembers">
+                    <!-- Membros serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Aba de Tarefas (MS Planner Style) -->
+            <div class="dashboard-tab-content" id="tasks-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Tarefas da Equipe</h1>
+                        <p>Gerencie tarefas colaborativamente</p>
+                    </div>
+                    <div class="dashboard-actions">
+                        <button class="dashboard-btn primary" id="addTaskBtn">
+                            ➕ Nova Tarefa
+                        </button>
+                        <button class="dashboard-btn" id="filterTasksBtn">
+                            🔍 Filtros
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kanban Board -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div class="task-column">
+                        <div class="task-column-header">
+                            <h3>📝 A Fazer</h3>
+                            <span class="task-count" id="todoCount">0</span>
+                        </div>
+                        <div class="task-list" id="todoTasks">
+                            <!-- Tarefas aqui -->
+                        </div>
+                    </div>
+
+                    <div class="task-column">
+                        <div class="task-column-header">
+                            <h3>⚡ Em Andamento</h3>
+                            <span class="task-count" id="inProgressCount">0</span>
+                        </div>
+                        <div class="task-list" id="inProgressTasksList">
+                            <!-- Tarefas aqui -->
+                        </div>
+                    </div>
+
+                    <div class="task-column">
+                        <div class="task-column-header">
+                            <h3>✅ Concluídas</h3>
+                            <span class="task-count" id="doneCount">0</span>
+                        </div>
+                        <div class="task-list" id="doneTasks">
+                            <!-- Tarefas aqui -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba de Solicitações (Admin Only) -->
+            <div class="dashboard-tab-content" id="requests-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Solicitações de Acesso</h1>
+                        <p>Gerencie pedidos de permissão ao dashboard</p>
+                    </div>
+                </div>
+
+                <div id="requestsList">
+                    <p style="color: rgba(255,255,255,0.5); text-align: center; padding: 40px;">Nenhuma solicitação pendente</p>
+                </div>
+            </div>
+
+            <!-- Aba de Análises -->
+            <div class="dashboard-tab-content" id="analytics-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Análises</h1>
+                        <p>Métricas e estatísticas detalhadas</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card-dashboard">
+                        <h4>Taxa de Conclusão</h4>
+                        <div class="stat-card-value">87%</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: 87%; background: linear-gradient(90deg, #43e97b, #38f9d7);"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card-dashboard">
+                        <h4>Tempo Médio</h4>
+                        <div class="stat-card-value">2.5h</div>
+                        <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">Por tarefa</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card" style="margin-top: 30px;">
+                    <h3>Gráfico de Atividades</h3>
+                    <div class="realtime-graph">
+                        <div class="graph-bar" style="height: 60%;"></div>
+                        <div class="graph-bar active" style="height: 80%;"></div>
+                        <div class="graph-bar" style="height: 45%;"></div>
+                        <div class="graph-bar active" style="height: 90%;"></div>
+                        <div class="graph-bar" style="height: 70%;"></div>
+                        <div class="graph-bar active" style="height: 100%;"></div>
+                        <div class="graph-bar" style="height: 55%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba de Documentação -->
+            <div class="dashboard-tab-content" id="docs-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Documentação</h1>
+                        <p>Guias e recursos da equipe</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>📚 Recursos Disponíveis</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                        <a href="#" class="doc-item" style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; text-decoration: none; color: #fff;">
+                            <h4>📖 Guia de Início Rápido</h4>
+                            <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin: 5px 0 0 0;">Como usar o dashboard</p>
+                        </a>
+                        <a href="#" class="doc-item" style="padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; text-decoration: none; color: #fff;">
+                            <h4>🔧 Boas Práticas</h4>
+                            <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin: 5px 0 0 0;">Desenvolvimento e colaboração</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba de Configurações -->
+            <div class="dashboard-tab-content" id="settings-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Configurações</h1>
+                        <p>Personalize sua experiência</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>⚙️ Preferências</h3>
+                    <div style="margin-top: 20px;">
+                        <div style="padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 15px;">
+                            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                                <span>Notificações de Tarefas</span>
+                                <input type="checkbox" checked style="width: 20px; height: 20px;">
+                            </label>
+                        </div>
+                        <div style="padding: 15px; background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 15px;">
+                            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+                                <span>Modo Escuro</span>
+                                <input type="checkbox" checked style="width: 20px; height: 20px;">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba de Suporte -->
+            <div class="dashboard-tab-content" id="support-tab" style="display: none;">
+                <div class="dashboard-header">
+                    <div class="dashboard-title-section">
+                        <h1>Suporte</h1>
+                        <p>Precisa de ajuda? Estamos aqui!</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>💬 Entre em Contato</h3>
+                    <form id="supportForm" style="margin-top: 20px;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.8);">Assunto</label>
+                            <input type="text" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;" placeholder="Como podemos ajudar?">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 8px; color: rgba(255,255,255,0.8);">Mensagem</label>
+                            <textarea style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; min-height: 150px;" placeholder="Descreva sua dúvida ou problema..."></textarea>
+                        </div>
+                        <button type="submit" class="dashboard-btn primary">Enviar Mensagem</button>
+                    </form>
+                </div>
+            </div>
         </main>
 
         <!-- Mobile Menu Toggle -->
@@ -2135,7 +2518,571 @@
         </button>
     </div>
 
+    <style>
+        .notification-badge {
+            background: #f5576c;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: auto;
+            font-weight: 700;
+        }
+
+        .dashboard-tab-content {
+            display: none;
+        }
+
+        .dashboard-tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .task-column {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .task-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .task-column-header h3 {
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .task-count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 200px;
+        }
+
+        .task-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .request-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .request-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-approve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 233, 123, 0.4);
+        }
+
+        .btn-deny {
+            background: rgba(245, 87, 108, 0.2);
+            border: 1px solid #f5576c;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #f5576c;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-deny:hover {
+            background: rgba(245, 87, 108, 0.3);
+        }
+
+        .project-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            left: 27px;
+        }
+
+        #statusMenu {
+            position: absolute;
+            background: rgba(15, 12, 41, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+        }
+
+        .status-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+
     <script>
+        // Sistema de Autenticação e Permissões
+        const AUTHORIZED_USERS = [
+            { email: 'raul@theabyss.dev', name: 'Raul Leite', role: 'admin', permissions: ['all'] },
+            { email: 'admin@theabyss.dev', name: 'Admin', role: 'admin', permissions: ['all'] }
+        ];
+
+        let currentUser = null;
+        let accessRequests = [];
+        let projects = [];
+        let tasks = [];
+        let teamMembers = [];
+
+        // Verificar autenticação ao carregar
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAuthentication();
+            initializeDashboard();
+        });
+
+        function checkAuthentication() {
+            const userEmail = localStorage.getItem('userEmail');
+            const user = AUTHORIZED_USERS.find(u => u.email === userEmail);
+            
+            if (!user) {
+                // Redirecionar para login ou mostrar página de solicitação
+                showAccessRequestForm();
+                return;
+            }
+            
+            currentUser = user;
+            updateUserInterface();
+        }
+
+        function showAccessRequestForm() {
+            document.querySelector('.dashboard-wrapper').innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+                    <div class="dashboard-card" style="max-width: 500px; width: 100%;">
+                        <h2 style="text-align: center; margin-bottom: 20px;">🔒 Acesso Restrito</h2>
+                        <p style="text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 30px;">
+                            Este dashboard é apenas para membros autorizados da The Abyss Dev Team.
+                        </p>
+                        <form id="accessRequestForm" onsubmit="submitAccessRequest(event)">
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 8px;">Nome Completo</label>
+                                <input type="text" id="requestName" required style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
+                            </div>
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 8px;">Email</label>
+                                <input type="email" id="requestEmail" required style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff;">
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px;">Motivo do Acesso</label>
+                                <textarea id="requestReason" required style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; min-height: 100px;"></textarea>
+                            </div>
+                            <button type="submit" class="dashboard-btn primary" style="width: 100%;">Solicitar Acesso</button>
+                        </form>
+                        <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: rgba(255,255,255,0.5);">
+                            Já tem acesso? <a href="index.html" style="color: #667eea;">Faça login</a>
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function submitAccessRequest(event) {
+            event.preventDefault();
+            const name = document.getElementById('requestName').value;
+            const email = document.getElementById('requestEmail').value;
+            const reason = document.getElementById('requestReason').value;
+            
+            // Salvar solicitação (em produção, enviar para servidor)
+            const request = { name, email, reason, date: new Date().toISOString(), status: 'pending' };
+            const requests = JSON.parse(localStorage.getItem('accessRequests') || '[]');
+            requests.push(request);
+            localStorage.setItem('accessRequests', JSON.stringify(requests));
+            
+            alert('Solicitação enviada! Aguarde aprovação do administrador.');
+        }
+
+        function updateUserInterface() {
+            // Atualizar informações do usuário na sidebar
+            const userName = document.querySelector('.user-name');
+            const userRole = document.querySelector('.user-role');
+            const greeting = document.getElementById('dashboardGreeting');
+            
+            if (userName) userName.textContent = currentUser.name;
+            if (userRole) userRole.textContent = currentUser.role === 'admin' ? 'Administrador' : 'Membro';
+            if (greeting) greeting.textContent = `Bem-vindo, ${currentUser.name}! 👋`;
+            
+            // Mostrar opções de admin
+            if (currentUser.role === 'admin') {
+                document.getElementById('requestsLink').style.display = 'flex';
+                document.getElementById('addProjectBtn').style.display = 'block';
+                loadAccessRequests();
+            }
+        }
+
+        function initializeDashboard() {
+            // Tab navigation
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tab = link.dataset.tab;
+                    switchTab(tab);
+                });
+            });
+            
+            // Status menu
+            const statusBtn = document.getElementById('statusBtn');
+            if (statusBtn) {
+                statusBtn.addEventListener('click', toggleStatusMenu);
+            }
+            
+            // Logout
+            document.getElementById('logoutBtn')?.addEventListener('click', logout);
+            
+            // Carregar dados iniciais
+            loadProjects();
+            loadTasks();
+            loadTeamMembers();
+        }
+
+        function switchTab(tabName) {
+            // Remover active de todos
+            document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.dashboard-tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Ativar tab selecionada
+            document.querySelector(`[data-tab="${tabName}"]`)?.classList.add('active');
+            document.getElementById(`${tabName}-tab`)?.classList.add('active');
+        }
+
+        function toggleStatusMenu() {
+            const menu = document.getElementById('statusMenu') || createStatusMenu();
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function createStatusMenu() {
+            const menu = document.createElement('div');
+            menu.id = 'statusMenu';
+            menu.innerHTML = `
+                <div class="status-option" onclick="changeStatus('disponivel', '🟢', 'Disponível')">
+                    <span>🟢</span> Disponível
+                </div>
+                <div class="status-option" onclick="changeStatus('trabalhando', '🟡', 'Trabalhando')">
+                    <span>🟡</span> Trabalhando
+                </div>
+                <div class="status-option" onclick="changeStatus('nao-perturbe', '🔴', 'Não Perturbe')">
+                    <span>🔴</span> Não Perturbe
+                </div>
+            `;
+            document.getElementById('statusBtn').parentElement.appendChild(menu);
+            return menu;
+        }
+
+        function changeStatus(status, icon, text) {
+            document.getElementById('statusIcon').textContent = icon;
+            document.getElementById('statusText').textContent = text;
+            document.getElementById('statusMenu').style.display = 'none';
+            
+            // Salvar status no localStorage
+            localStorage.setItem('userStatus', JSON.stringify({ status, icon, text }));
+        }
+
+        function loadAccessRequests() {
+            const requests = JSON.parse(localStorage.getItem('accessRequests') || '[]');
+            const pending = requests.filter(r => r.status === 'pending');
+            
+            const badge = document.getElementById('requestsBadge');
+            if (pending.length > 0) {
+                badge.textContent = pending.length;
+                badge.style.display = 'block';
+            }
+            
+            const requestsList = document.getElementById('requestsList');
+            if (requestsList && pending.length > 0) {
+                requestsList.innerHTML = pending.map((req, index) => `
+                    <div class="request-card">
+                        <div class="request-card-header">
+                            <div class="user-avatar">👤</div>
+                            <div>
+                                <h4>${req.name}</h4>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">${req.email}</p>
+                            </div>
+                        </div>
+                        <p style="color: rgba(255,255,255,0.8); margin-bottom: 10px;"><strong>Motivo:</strong> ${req.reason}</p>
+                        <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem;">Solicitado em: ${new Date(req.date).toLocaleDateString('pt-BR')}</p>
+                        <div class="request-actions">
+                            <button class="btn-approve" onclick="approveRequest(${index})">✓ Aprovar</button>
+                            <button class="btn-deny" onclick="denyRequest(${index})">✗ Negar</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function approveRequest(index) {
+            const requests = JSON.parse(localStorage.getItem('accessRequests') || '[]');
+            requests[index].status = 'approved';
+            localStorage.setItem('accessRequests', JSON.stringify(requests));
+            alert('Solicitação aprovada! O usuário receberá um email de confirmação.');
+            loadAccessRequests();
+        }
+
+        function denyRequest(index) {
+            const requests = JSON.parse(localStorage.getItem('accessRequests') || '[]');
+            requests[index].status = 'denied';
+            localStorage.setItem('accessRequests', JSON.stringify(requests));
+            alert('Solicitação negada.');
+            loadAccessRequests();
+        }
+
+        function loadProjects() {
+            projects = [
+                { id: 1, name: 'The Abyss Bot', icon: '🎮', active: true, description: 'Bot de RPG para Discord' },
+                { id: 2, name: 'Luma Bot', icon: '🤖', active: true, description: 'Bot de moderação' },
+                { id: 3, name: 'Dashboard Web', icon: '🌐', active: true, description: 'Sistema de gerenciamento' }
+            ];
+            
+            renderProjects();
+            updateProjectsCount();
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('allProjects');
+            const recentContainer = document.getElementById('recentProjects');
+            
+            const projectsHTML = projects.map(project => `
+                <div class="project-item">
+                    <div class="project-icon-small" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        ${project.icon}
+                    </div>
+                    <div class="project-info">
+                        <div class="project-name">${project.name}</div>
+                        <div class="project-meta">${project.description}</div>
+                    </div>
+                    <div class="project-toggle" onclick="toggleProject(${project.id})">
+                        <div class="toggle-switch ${project.active ? 'active' : ''}" id="toggle-${project.id}">
+                            <div class="toggle-slider"></div>
+                        </div>
+                        <span style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">
+                            ${project.active ? 'Ativo' : 'Inativo'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+            
+            if (container) container.innerHTML = projectsHTML;
+            if (recentContainer) {
+                const activeProjects = projects.filter(p => p.active).slice(0, 3);
+                recentContainer.innerHTML = activeProjects.length > 0 ? projectsHTML : '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">Nenhum projeto ativo</p>';
+            }
+        }
+
+        function toggleProject(projectId) {
+            if (currentUser?.role !== 'admin') {
+                alert('Apenas administradores podem ativar/desativar projetos');
+                return;
+            }
+            
+            const project = projects.find(p => p.id === projectId);
+            if (project) {
+                project.active = !project.active;
+                renderProjects();
+                updateProjectsCount();
+            }
+        }
+
+        function updateProjectsCount() {
+            const count = projects.filter(p => p.active).length;
+            const element = document.getElementById('activeProjects');
+            if (element) element.textContent = count;
+        }
+
+        function loadTasks() {
+            tasks = [
+                { id: 1, title: 'Implementar sistema de auth', status: 'todo', priority: 'high', assignee: 'Raul' },
+                { id: 2, title: 'Criar tela de dashboard', status: 'inprogress', priority: 'high', assignee: 'Raul' },
+                { id: 3, title: 'Testar funcionalidades', status: 'done', priority: 'medium', assignee: 'Equipe' }
+            ];
+            
+            renderTasks();
+            updateTasksMetrics();
+        }
+
+        function renderTasks() {
+            const todoList = document.getElementById('todoTasks');
+            const inProgressList = document.getElementById('inProgressTasksList');
+            const doneList = document.getElementById('doneTasks');
+            
+            const todoTasks = tasks.filter(t => t.status === 'todo');
+            const inProgressTasks = tasks.filter(t => t.status === 'inprogress');
+            const doneTasks = tasks.filter(t => t.status === 'done');
+            
+            if (todoList) {
+                todoList.innerHTML = todoTasks.map(task => createTaskCard(task)).join('') || '<p style="color: rgba(255,255,255,0.5); padding: 20px;">Nenhuma tarefa</p>';
+            }
+            if (inProgressList) {
+                inProgressList.innerHTML = inProgressTasks.map(task => createTaskCard(task)).join('') || '<p style="color: rgba(255,255,255,0.5); padding: 20px;">Nenhuma tarefa</p>';
+            }
+            if (doneList) {
+                doneList.innerHTML = doneTasks.map(task => createTaskCard(task)).join('') || '<p style="color: rgba(255,255,255,0.5); padding: 20px;">Nenhuma tarefa</p>';
+            }
+            
+            // Update counts
+            document.getElementById('todoCount').textContent = todoTasks.length;
+            document.getElementById('inProgressCount').textContent = inProgressTasks.length;
+            document.getElementById('doneCount').textContent = doneTasks.length;
+        }
+
+        function createTaskCard(task) {
+            const priorityColors = {
+                high: 'background: rgba(245, 87, 108, 0.2); color: #f5576c;',
+                medium: 'background: rgba(255, 183, 77, 0.2); color: #ffb74d;',
+                low: 'background: rgba(79, 172, 254, 0.2); color: #4facfe;'
+            };
+            
+            return `
+                <div class="task-card">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <h4 style="font-size: 0.95rem;">${task.title}</h4>
+                        <span style="padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; ${priorityColors[task.priority]}">
+                            ${task.priority.toUpperCase()}
+                        </span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">👤 ${task.assignee}</p>
+                </div>
+            `;
+        }
+
+        function updateTasksMetrics() {
+            const completed = tasks.filter(t => t.status === 'done').length;
+            const newTasks = tasks.filter(t => t.status === 'todo').length;
+            const inProgress = tasks.filter(t => t.status === 'inprogress').length;
+            
+            document.getElementById('completedTasks').textContent = completed;
+            document.getElementById('newTasks').textContent = newTasks;
+            document.getElementById('inProgressTasks').textContent = inProgress;
+        }
+
+        function loadTeamMembers() {
+            teamMembers = [
+                { id: 1, name: 'Raul Leite', role: 'Founder', avatar: '👨‍💻', status: 'online' },
+                { id: 2, name: 'ImSeleverr', role: 'Co-Founder', avatar: '👨‍💼', status: 'online' }
+            ];
+            
+            renderTeamMembers();
+        }
+
+        function renderTeamMembers() {
+            const container = document.getElementById('teamMembers');
+            if (!container) return;
+            
+            container.innerHTML = teamMembers.map(member => `
+                <div class="team-member-card">
+                    <div class="member-header">
+                        <div class="member-avatar">
+                            <div class="avatar-fallback">${member.avatar}</div>
+                        </div>
+                        <div class="member-status ${member.status}">
+                            ${member.status === 'online' ? '🟢 Online' : '⚫ Offline'}
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">${member.name}</h3>
+                        <p class="member-role">${member.role}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function logout() {
+            localStorage.removeItem('userEmail');
+            window.location.href = 'index.html';
+        }
+
         // Mobile Sidebar Toggle
         const mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
         const dashboardSidebar = document.getElementById('dashboardSidebar');
