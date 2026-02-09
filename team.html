@@ -3,187 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosso Time - The Abyss Team</title>
-    <meta name="description" content="Conheça a The Abyss Team — desenvolvedores e visionários construindo bots, cursos e ferramentas.">
-    <meta name="keywords" content="time, desenvolvedores, raul leite, seleverr, theabyss">
-    <meta property="og:title" content="The Abyss Team - Time">
-    <meta property="og:description" content="Conheça Raul Leite e Seleverr — as mentes por trás da The Abyss Team.">
-    <meta property="og:image" content="images/favicon.svg">
-    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <title>Equipe - The Gear of Cataclysm</title>
+    <meta name="description" content="Conheça The Abyss Development Team. Pessoas criativas e disciplinadas construindo o futuro.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script src="scripts/ui.js" defer></script>
 </head>
 <body>
-    <!-- Navigation Header -->
+    <!-- Navigation -->
     <nav class="navbar">
-        <div class="nav-container">
+        <div class="nav-container max-width">
             <div class="logo">
-                <h2>The Abyss Team</h2>
+                <span class="logo-icon">⚙</span>
+                <span class="logo-text">The Abyss</span>
             </div>
-            <button class="nav-toggle" aria-label="Alternar navegação">☰</button>
+            <button class="nav-toggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-menu">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="mission.html">Missão</a></li>
-                <li><a href="discoveries.html">Descobertas</a></li>
-                <li><a href="team.html">Time</a></li>
-                <li><a href="contact.html">Contato</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="vision.html">Visão</a></li>
+                <li><a href="world.html">Mundo</a></li>
+                <li><a href="team.html" class="active">Equipe</a></li>
+                <li><a href="join.html" class="nav-cta">Junte-se</a></li>
             </ul>
-            <button class="cta-button">Junte-se à Expedição</button>
         </div>
     </nav>
 
-    <!-- Team Section -->
-    <section class="team-page-section">
-        <div class="team-page-container">
-            <h2 class="section-title">Conheça Nosso Time</h2>
-            <p class="team-subtitle">As mentes por trás da The Abyss Team, construindo o futuro do desenvolvimento e da educação</p>
-            
-            <!-- Team Members Grid -->
-            <div class="team-members-grid">
-                
-                <!-- Member 1: Raul Leite -->
-                <div class="member-card">
-                    <div class="member-avatar">
-                        <div class="avatar-icon">🐍</div>
-                        <div class="avatar-glow"></div>
-                    </div>
-                    <div class="member-info">
-                        <h3 class="member-name">Raul Leite</h3>
-                        <p class="member-role">Desenvolvedor Back-end Python</p>
-                        <div class="member-badge">
-                            <span>💻 Developer</span>
-                        </div>
-                    </div>
-                    <div class="member-description">
-                        <p>Especializado em desenvolvimento back-end Python, criação de bots para Discord e deploy em nuvem.
-                        Criador do The Abyss bot e arquiteto de sistemas de automação. Experiência em deploy no Railway,
-                        desenvolvimento de APIs e gestão de bancos de dados.</p>
-                    </div>
-                    <div class="member-skills">
-                        <h4>Expertise</h4>
-                        <div class="skills-tags">
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">Discord.py</span>
-                            <span class="skill-tag">Railway</span>
-                            <span class="skill-tag">SQL</span>
-                            <span class="skill-tag">Web Dev</span>
-                            <span class="skill-tag">C#</span>
-                        </div>
-                    </div>
-                    <div class="member-achievements">
-                        <div class="achievement-badge">
-                            <span class="badge-icon">🤖</span>
-                            <span class="badge-text">Bot Creator</span>
-                        </div>
-                        <div class="achievement-badge">
-                            <span class="badge-icon">🎓</span>
-                            <span class="badge-text">Instructor</span>
-                        </div>
-                    </div>
-                    <div class="member-links">
-                        <a href="https://github.com/RaulLeite2" target="_blank" class="member-link">
-                            <span class="link-icon">💼</span>
-                            View GitHub
-                        </a>
-                    </div>
-                </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <svg class="gear-bg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                    <pattern id="gear-pattern-team" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+                        <circle cx="100" cy="100" r="50" fill="none" stroke="#0d2c3a" stroke-width="1"/>
+                        <circle cx="100" cy="100" r="35" fill="none" stroke="#0a1f28" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="1200" height="800" fill="url(#gear-pattern-team)"/>
+            </svg>
+            <div class="hero-overlay"></div>
+        </div>
 
-                <!-- Member 2: Seleverr -->
-                <div class="member-card">
-                    <div class="member-avatar">
-                        <div class="avatar-icon">💡</div>
-                        <div class="avatar-glow"></div>
-                    </div>
-                    <div class="member-info">
-                        <h3 class="member-name">Seleverr</h3>
-                        <p class="member-role">Idealista e Visionário</p>
-                        <div class="member-badge">
-                            <span>✨ Visionary</span>
-                        </div>
-                    </div>
-                    <div class="member-description">
-                        <p>Conceitualizando soluções inovadoras e arquiteturas de projeto. Conduzindo a visão por trás
-                        das iniciativas de desenvolvimento e moldando a direção futura da The Abyss Team.
-                        Apaixonado por tornar a tecnologia acessível e criar experiências educacionais impactantes.</p>
-                    </div>
-                    <div class="member-skills">
-                        <h4>Expertise</h4>
-                        <div class="skills-tags">
-                            <span class="skill-tag">Strategy</span>
-                            <span class="skill-tag">Planning</span>
-                            <span class="skill-tag">Innovation</span>
-                            <span class="skill-tag">Design</span>
-                            <span class="skill-tag">Vision</span>
-                        </div>
-                    </div>
-                    <div class="member-achievements">
-                        <div class="achievement-badge">
-                            <span class="badge-icon">🎯</span>
-                            <span class="badge-text">Strategist</span>
-                        </div>
-                        <div class="achievement-badge">
-                            <span class="badge-icon">🌟</span>
-                            <span class="badge-text">Creative</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Team Stats -->
-            <div class="team-stats-section">
-                <h3>Estatísticas do Time</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">4+</div>
-                        <div class="stat-label">Projetos Lançados</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">2</div>
-                        <div class="stat-label">Alunos Treinados</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">100%</div>
-                        <div class="stat-label">Taxa de Satisfação</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">∞</div>
-                        <div class="stat-label">Dedication</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Join CTA -->
-            <div class="team-cta">
-                <h3>Quer Entrar no Nosso Time?</h3>
-                <p>Estamos sempre à procura de desenvolvedores e visionários apaixonados para somar à nossa missão</p>
-                <a href="contact.html" class="cta-button-large">Entre em Contato</a>
+        <div class="hero-content max-width">
+            <div class="hero-main">
+                <h1 class="hero-title">A Equipe</h1>
+                <p class="hero-subtitle">Pessoas construindo o futuro</p>
+                <p class="hero-description">
+                    Somos um estúdio indie. Pequenos em número. Grandes em visão. 
+                    Cada pessoa tem papel vital na construção de The Gear of Cataclysm.
+                </p>
             </div>
         </div>
     </section>
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="footer-container">
-            <div class="footer-left">
-                <h3>The Abyss Team</h3>
-                <p>Making programming accessible — training, bots, and automation.</p>
+
+    <!-- Team Structure -->
+    <section class="team-structure max-width">
+        <h2 class="section-title">Como Nos Organizamos</h2>
+        <p class="section-subtitle">Sem hierarquias exageradas. Apenas profissionalismo e respeito.</p>
+        <div class="structure-text">
+            <p>
+                The Abyss Development Team não é uma corporação. Não temos 50 cargos diferentes. 
+                Temos pessoas com expertise, responsabilidades e criatividade.
+            </p>
+            <p>
+                Cada membro é respeitado por sua contribuição. Código excelente tem o mesmo valor que 
+                design excelente, que narrativa excelente. Tudo é importante.
+            </p>
+            <p>
+                Procuramos evitar burocracia. Queremos que você trabalhe, não que preencha formulários. 
+                Se você tem uma boa ideia, ela é ouvida. Se encontra um problema, você pode corrigi-lo.
+            </p>
+        </div>
+    </section>
+
+    <!-- Areas and Responsabilities -->
+    <section class="areas-responsibilities max-width">
+        <h2 class="section-title">Áreas de Trabalho</h2>
+        <p class="section-subtitle">Divisão de responsabilidades</p>
+        <div class="areas-flex">
+            <div class="area-box">
+                <h3>🖥️ Programação</h3>
+                <p>Desenvolvimento de systems, gameplay, backend e frontend. Arquitetura de código. Otimização.</p>
             </div>
-            <div class="footer-links">
-                <a href="discoveries.html">Discoveries</a>
-                <a href="mission.html">Mission</a>
-                <a href="team.html">Team</a>
-                <a href="contact.html">Contact</a>
+            <div class="area-box">
+                <h3>🎨 Design</h3>
+                <p>Game design, level design, UI/UX, visual design. Conceituação de gameplay e sistemas.</p>
             </div>
-            <div class="footer-social">
-                <a href="https://github.com/RaulLeite2" target="_blank">GitHub</a>
-                <a href="https://discord.gg/meGs9QPbZd" target="_blank">Discord</a>
-                <a href="mailto:raulpereiraleitee@gmail.com">Email</a>
+            <div class="area-box">
+                <h3>📖 Narrativa</h3>
+                <p>Worldbuilding, lore, roteiros, diálogos. Criação de histórias e universos coesos.</p>
+            </div>
+            <div class="area-box">
+                <h3>🎵 Produção</h3>
+                <p>Coordenação geral. Comunicação entre times. Manutenção de visão coerente do projeto.</p>
+            </div>
+            <div class="area-box">
+                <h3>🐛 Qualidade</h3>
+                <p>Testing, bug fixing, validação de sistemas. Garantir que tudo funciona como esperado.</p>
+            </div>
+            <div class="area-box">
+                <h3>💡 Visão</h3>
+                <p>Ideação contínua. Refinamento de conceitos. Você não precisa ser especialista em uma única área.</p>
             </div>
         </div>
-        <div class="footer-bottom">© 2026 The Abyss Development Team. All rights reserved.</div>
+    </section>
+
+    <!-- Team Values -->
+    <section class="values-section max-width">
+        <h2 class="section-title">Valores da Equipe</h2>
+        <div class="values-list">
+            <div class="value-item">
+                <h3>✓ Autenticidade</h3>
+                <p>Sem bullshit. Sem corpo político. Falamos o que pensamos. Ouvimos o que outros pensam.</p>
+            </div>
+            <div class="value-item">
+                <h3>✓ Excelência</h3>
+                <p>Não é bom o bastante ser medíocre. Procuramos o melhor em você. Em nós mesmos. Em tudo.</p>
+            </div>
+            <div class="value-item">
+                <h3>✓ Colaboração</h3>
+                <p>Ninguém faz isso sozinho. Partilhamos conhecimento. Ajudamos uns aos outros. Crescemos juntos.</p>
+            </div>
+            <div class="value-item">
+                <h3>✓ Criatividade</h3>
+                <p>Ideias são bem-vindas. Inovação é encorajada. Você não é apenas executor — é criador.</p>
+            </div>
+            <div class="value-item">
+                <h3>✓ Respeito</h3>
+                <p>Respeito mútuo. Sem microagressões. Sem toxicidade. Sem hipocrisia. Comunidade sadia.</p>
+            </div>
+            <div class="value-item">
+                <h3>✓ Longo Prazo</h3>
+                <p>Não é sprint. É maratona. Queremos pessoas que pensam em anos, não em meses.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Us -->
+    <section class="join-cta max-width">
+        <h2>Quer Fazer Parte Disso?</h2>
+        <p>
+            Se você compartilha dessa mentalidade, se tem criatividade, disciplina e paciência, 
+            queremos conhecer você.
+        </p>
+        <a href="join.html" class="btn btn-primary">Explore Oportunidades</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content max-width">
+            <div class="footer-section">
+                <h4>The Abyss Development Team</h4>
+                <p>Projeto independente em desenvolvimento</p>
+                <p class="footer-year">© 2026</p>
+            </div>
+            <div class="footer-section">
+                <h4>Links</h4>
+                <ul>
+                    <li><a href="https://discord.gg/theabyss" target="_blank">Discord</a></li>
+                    <li><a href="https://github.com/theabyssdev" target="_blank">GitHub</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Páginas</h4>
+                <ul>
+                    <li><a href="vision.html">Visão</a></li>
+                    <li><a href="world.html">Mundo</a></li>
+                    <li><a href="join.html">Junte-se</a></li>
+                </ul>
+            </div>
+        </div>
     </footer>
 
-    <!-- Scroll to Top -->
-    <button id="scrollTop" class="scroll-top" aria-label="Scroll to top">↑</button>
+    <script src="scripts/animations.js" defer></script>
 </body>
 </html>
