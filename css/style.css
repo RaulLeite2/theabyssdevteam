@@ -1288,6 +1288,72 @@ body.nav-open .nav-toggle span:nth-child(3) {
     }
 }
 
+/* Team Members */
+.team-members {
+    padding: 100px 0;
+}
+
+.members-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-top: 60px;
+}
+
+.member-card {
+    background: linear-gradient(135deg, rgba(20, 40, 60, 0.4) 0%, rgba(10, 30, 50, 0.4) 100%);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    padding: 40px 24px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.member-card:hover {
+    background: linear-gradient(135deg, rgba(20, 40, 60, 0.7) 0%, rgba(10, 30, 50, 0.7) 100%);
+    border-color: rgba(100, 200, 255, 0.5);
+    transform: translateY(-8px);
+    box-shadow: 0 10px 40px rgba(100, 200, 255, 0.2);
+}
+
+.member-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 8px rgba(100, 200, 255, 0.3));
+}
+
+.member-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #64c8ff;
+    margin-bottom: 12px;
+}
+
+.member-role {
+    font-size: 14px;
+    color: #a0a0a0;
+    line-height: 1.6;
+}
+
+@media (max-width: 1200px) {
+    .members-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .members-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .members-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Values List */
 .values-list {
     display: grid;
